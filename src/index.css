@@ -111,8 +111,20 @@ li:active,
 a:active {
   color: var(--mGREEN);
   font-family: "Noto Sans JP", sans-serif;
-  text-decoration: line-through;
+  text-decoration: none;
   transition: 0.3s ease-in-out;
+}
+
+.activLINK {
+  color: var(--mGREEN);
+  font-family: "Noto Sans JP", sans-serif;
+  text-decoration: none;
+}
+
+.activLINK_lang {
+  color: white;
+  font-family: "Noto Sans JP", sans-serif;
+  text-decoration: wavy underline;
 }
 
 /* Text
