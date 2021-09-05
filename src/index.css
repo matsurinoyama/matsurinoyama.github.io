@@ -72,7 +72,6 @@ section {
 .mNAV_lang {
   list-style: none;
   padding-top: 5vh;
-  padding-bottom: 10vh;
 }
 
 .mNAV_lang li {
@@ -85,6 +84,10 @@ section {
 }
 
 .mNAV_copyright {
+  padding-top: 10vh;
+}
+
+.mNAV_copyright p {
   width: 17.5vw;
 }
 
