@@ -11,6 +11,9 @@
 
 body {
   background-color: var(--mRED);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 section {
@@ -29,13 +32,6 @@ section {
 
 /* Content layout types
    ========================================================================== */
-
-.mBG-FULL {
-  background-color: var(--mRED);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 
 .mBG-FULL_content {
   align-items: center;
