@@ -33,7 +33,7 @@ section {
 /* Content layout types
    ========================================================================== */
 
-.mBG-FULL_content {
+.mCONTENT {
   align-items: center;
   display: flex;
   justify-content: center;
