@@ -10,3 +10,100 @@
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
+
+<style>
+    * {
+    box-sizing: border-box;
+
+    margin: 0;
+    border: 0;
+    padding: 0;
+    }
+	
+	body {
+        background-color: var(--mRED);
+		margin: 64px;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        
+        border: white 1px;
+        border-style: solid none none;
+        padding: 32px 0px 0px;
+    }
+
+    .navLinks {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+		height: 64px;
+        padding: 0px 64px 0px 0px;
+    }
+
+    .navTitle {
+        transform: translateY(-64px);
+    }
+
+    :root {
+        --mRED: #f53d3d;
+        --mYELLOW: #f5d63d;
+        --mGREEN: #3df599;
+    }
+
+    h1 {
+        font-family: 'Shippori Mincho Extrabold';
+        font-size: 192px;
+        line-height: 192px;
+        color: var(--mYELLOW);
+
+        writing-mode: vertical-rl;
+    }
+
+    h2 {
+        font-family: 'Shippori Mincho';
+        font-size: 96px;
+        line-height: 96px;
+        color: var(--mYELLOW);
+
+        writing-mode: vertical-rl;
+    }
+
+    h3 {
+        font-family: 'Shippori Mincho';
+        font-size: 64px;
+        line-height: 64px;
+        color: var(--mYELLOW);
+    }
+
+    h4 {
+        font-family: 'Shippori Mincho';
+        font-size: 48px;
+        line-height: 48px;
+        color: var(--mYELLOW);
+    }
+
+    h5 {
+        font-family: 'M PLUS 1 Code';
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+    }
+
+    h6 {
+        font-family: 'M PLUS 1 Code';
+        font-size: 12px;
+        font-weight: 400;
+        color: white;
+    }
+
+    p {
+        font-family: 'M PLUS 1 Code';
+        font-size: 16px;
+        font-weight: 400;
+        color: white;
+    }
+</style>
