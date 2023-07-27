@@ -19,23 +19,35 @@
     border: 0;
     padding: 0;
     }
+    
+    :root {
+        --mRED: #d92837;
+        --mYELLOW: #ffff66;
+        --mGREEN: #21df80;
+        --mBLACK: #3a1427;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--mYELLOW);
+    }
 	
 	body {
         background-color: var(--mRED);
 		margin: 64px;
     }
 
-    nav {
+    header {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
         
         border: white 1px;
         border-style: solid none none;
-        padding: 32px 0px 0px;
+        padding-top: 32px;
     }
 
-    .navLinks {
+    .headerLinks {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -44,14 +56,46 @@
         padding: 0px 64px 0px 0px;
     }
 
-    .navTitle {
+    .headerTitle {
         transform: translateY(-64px);
     }
 
-    :root {
-        --mRED: #f53d3d;
-        --mYELLOW: #f5d63d;
-        --mGREEN: #3df599;
+    footer {
+        display: flex;
+        flex-direction: row;
+        justify-content:space-between;
+        
+        border: white 1px;
+        border-style: solid none none;
+        padding-top: 16px;
+    }
+
+    .footerNotice {
+        display: flex;
+        flex-direction: row;
+
+        padding-right: 32px;
+    }
+
+    .footerNotice_Text {
+        padding-left: 16px;
+
+        max-width: 384px;
+    }
+
+    .footerLinks {
+        display: flex;
+        flex-direction: row;
+
+        padding-left: 16px;
+    }
+
+    .footerLinks a {
+        padding-left: 16px;
+    }
+
+    .footerLinks p {
+        transform: translateY(-3px);
     }
 
     h1 {
@@ -98,6 +142,7 @@
         font-size: 12px;
         font-weight: 400;
         color: white;
+        transform: translateY(-3px);
     }
 
     p {
