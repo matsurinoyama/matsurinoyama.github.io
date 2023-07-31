@@ -1,41 +1,85 @@
+<script>
+    import { onMount, afterUpdate } from "svelte";
+
+    let images = [
+        "test/image_01.jpg",
+        "test/image_02.png",
+        "test/image_03.jpg",
+        "test/image_04.jpg",
+        "test/image_05.png",
+        "test/image_06.jpg",
+        "test/image_07.jpg",
+        "test/image_08.jpg",
+        "test/image_09.jpg",
+        "test/image_10.jpg",
+        "test/image_11.jpg",
+        "test/image_12.png",
+        "test/image_13.png",
+        "test/image_14.jpg",
+        "test/image_15.jpg",
+        "test/image_16.jpg",
+    ];
+
+    // Function to shuffle the array randomly
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // Shuffle the array on component load
+    $: shuffledImages = shuffleArray(images);
+    // Duplicate the shuffled array to repeat the order
+    $: repeatedImages = [...shuffledImages, ...shuffledImages];
+
+    let totalNum = images.length * 2;
+    let totalWidth = 0;
+
+    onMount(() => {
+        calc_totalWidth();
+    });
+
+    afterUpdate(() => {
+        calc_totalWidth();
+    });
+
+    function calc_totalWidth() {
+        const carouselTrack = document.querySelector(".carousel-track");
+        const loadedImages = carouselTrack.querySelectorAll("img");
+
+        totalWidth = Array.from(loadedImages).reduce(
+            (acc, img) => acc + img.width,
+            0
+        );
+    }
+</script>
+
 <div class="carousel-container">
-    <div class="carousel-track">
-      <img src="test/image_01.jpg" alt="test1">
-      <img src="test/image_02.png" alt="test2">
-      <img src="test/image_03.jpg" alt="test3">
-      <img src="test/image_04.jpg" alt="test4">
-      <img src="test/image_05.png" alt="test5">
-      <img src="test/image_06.jpg" alt="test6">
-      <img src="test/image_07.jpg" alt="test7">
-      <img src="test/image_08.jpg" alt="test8">
-      <img src="test/image_09.jpg" alt="test9">
-      <img src="test/image_10.jpg" alt="test10">
-      <img src="test/image_11.jpg" alt="test11">
-      <img src="test/image_12.png" alt="test12">
-      <img src="test/image_13.png" alt="test13">
-      <img src="test/image_14.jpg" alt="test14">
-      <img src="test/image_15.jpg" alt="test15">
-      <img src="test/image_16.jpg" alt="test16">
-      <img src="test/image_01.jpg" alt="test1">
-      <img src="test/image_02.png" alt="test2">
-      <img src="test/image_03.jpg" alt="test3">
-      <!-- Add more images here -->
+    <div
+        class="carousel-track"
+        style={`--total-width: ${totalWidth}px; --total-num: ${totalNum};`}
+    >
+        {#each repeatedImages as image, index}
+            <img src={image} alt={`test-${index + 1}`} />
+        {/each}
     </div>
 </div>
 
 <style>
-
     .carousel-container {
         width: 100vw;
         transform: translateX(-64px);
         mix-blend-mode: exclusion;
+        filter: grayscale(15%) contrast(130%);
         overflow: hidden;
         position: relative;
     }
 
     .carousel-track {
         display: flex;
-        animation: carouselSlide 180s linear infinite;
+        animation: carouselSlide calc(0.5s * var(--total-num)) linear infinite;
     }
 
     .carousel-track img {
@@ -48,12 +92,16 @@
     }
 
     @keyframes carouselSlide {
-    0% {
-        transform: translateX(0);
+        0% {
+            transform: translateX(-8px);
+        }
+        100% {
+            transform: translateX(
+                calc(
+                    var(--total-width) / 2 * -1 - 64px -
+                        calc(8px * var(--total-num) - 20px)
+                )
+            );
+        }
     }
-    100% {
-        transform: translateX(-740%);
-    }
-    }
-
 </style>

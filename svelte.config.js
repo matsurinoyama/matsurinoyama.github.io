@@ -1,4 +1,5 @@
 import adapter from '@sveltejs/adapter-auto';
+import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -10,4 +11,13 @@ const config = {
 	}
 };
 
-export default config;
+export default {
+	preprocess: [
+	  preprocess({
+		scss: {
+		  // Add any SCSS options if needed
+		},
+	  }),
+	],
+	config,
+  };
