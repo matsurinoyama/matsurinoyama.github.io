@@ -19,6 +19,6 @@
         align-items: center;
         background-color: var(--mYELLOW);
         mix-blend-mode: exclusion;
-        z-index: 0;
+        z-index: 999;
     }
 </style>

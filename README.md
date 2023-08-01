@@ -6,5 +6,5 @@
 <img src="static/test/kouji_4.png" alt="worker-4" width="128px">
 <img src="static/test/kouji_3.png" alt="worker-3" width="128px">
 </div>
-<h3 style ="text-align: center;">matsurinoyama.github.ioは開発中でございます！2023年9月までにこのサイトを再開する予定でございます。ご理解とご協力をお願いいたします。<br>matsurinoyama.github.io is still under development! Please expect the site to be back up and running by September 2023. We appreciate your patience and understanding.</h3>
+<h3 style ="text-align: center; font-weight: normal;">matsurinoyama.github.ioは開発中でございます！2023年9月までにこのサイトを再開する予定でございます。ご理解とご協力をお願いいたします。<br>matsurinoyama.github.io is still under development! Please expect the site to be back up and running by September 2023. We appreciate your patience and understanding.</h3>
 <p style ="text-align: center;">Copyright (c) 2023 Azhan Rizan / 莉山礼司</p>
