@@ -1,6 +1,6 @@
 <script>
-    import Carousel from './Carousel.svelte';
-    let pageTitle = '茉莉の山'
+    import Carousel from "./Carousel.svelte";
+    let pageTitle = "茉莉の山";
 </script>
 
 <div class="headerTitle">

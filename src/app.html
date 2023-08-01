@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width" />
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    <meta name="viewport" content="width=device-width" />
+    %sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover">
+    <div style="display: contents">%sveltekit.body%</div>
+</body>
+
 </html>
 
 <style>
     * {
-    box-sizing: border-box;
+        box-sizing: border-box;
 
-    margin: 0;
-    border: 0;
-    padding: 0;
+        margin: 0;
+        border: 0;
+        padding: 0;
     }
-    
+
     :root {
         --mRED: #d92837;
         --mYELLOW: #ffff66;
@@ -31,17 +34,17 @@
         text-decoration: none;
         color: var(--mYELLOW);
     }
-	
-	body {
+
+    body {
         background-color: var(--mRED);
-		margin: 64px;
+        margin: 64px;
     }
 
     header {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        
+
         border: white 1px;
         border-style: solid none none;
         padding-top: 32px;
@@ -52,7 +55,7 @@
         flex-direction: column;
         justify-content: space-between;
 
-		height: 64px;
+        height: 64px;
         padding: 0px 64px 0px 0px;
     }
 
@@ -63,8 +66,8 @@
     footer {
         display: flex;
         flex-direction: row;
-        justify-content:space-between;
-        
+        justify-content: space-between;
+
         border: white 1px;
         border-style: solid none none;
         padding-top: 16px;

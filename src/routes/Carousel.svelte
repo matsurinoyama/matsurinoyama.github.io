@@ -32,7 +32,7 @@
     // Shuffle the array on component load
     $: shuffledImages = shuffleArray(images);
     // Duplicate the shuffled array to repeat the order
-    $: repeatedImages = [...shuffledImages, ...shuffledImages];
+    $: loopImages = [...shuffledImages, ...shuffledImages];
 
     let totalNum = images.length * 2;
     let totalWidth = 0;
@@ -46,7 +46,7 @@
     });
 
     function calc_totalWidth() {
-        const carouselTrack = document.querySelector(".carousel-track");
+        const carouselTrack = document.querySelector(".carouselTrack");
         const loadedImages = carouselTrack.querySelectorAll("img");
 
         totalWidth = Array.from(loadedImages).reduce(
@@ -56,19 +56,19 @@
     }
 </script>
 
-<div class="carousel-container">
+<div class="carouselContainer">
     <div
-        class="carousel-track"
+        class="carouselTrack"
         style={`--total-width: ${totalWidth}px; --total-num: ${totalNum};`}
     >
-        {#each repeatedImages as image, index}
+        {#each loopImages as image, index}
             <img src={image} alt={`test-${index + 1}`} />
         {/each}
     </div>
 </div>
 
 <style>
-    .carousel-container {
+    .carouselContainer {
         width: 100vw;
         transform: translateX(-64px);
         mix-blend-mode: exclusion;
@@ -77,12 +77,12 @@
         position: relative;
     }
 
-    .carousel-track {
+    .carouselTrack {
         display: flex;
-        animation: carouselSlide calc(0.5s * var(--total-num)) linear infinite;
+        animation: carouselAnim calc(5s * var(--total-num)) linear infinite;
     }
 
-    .carousel-track img {
+    .carouselTrack img {
         margin: 32px 8px;
         width: auto;
         height: 512px;
@@ -91,7 +91,7 @@
         border-style: solid;
     }
 
-    @keyframes carouselSlide {
+    @keyframes carouselAnim {
         0% {
             transform: translateX(-8px);
         }
@@ -99,7 +99,7 @@
             transform: translateX(
                 calc(
                     var(--total-width) / 2 * -1 - 64px -
-                        calc(8px * var(--total-num) - 20px)
+                        calc(8px * var(--total-num) - 16px)
                 )
             );
         }
