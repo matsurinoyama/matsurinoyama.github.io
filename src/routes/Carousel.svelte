@@ -19,15 +19,17 @@
     // --Total Number & Width of Images--
     let totalNum = images.length * 2;
     let totalWidth = 0;
+    let carouselTrack_ID;
     // Calculate the total width of all images
     function calc_totalWidth() {
-        const carouselTrack = document.querySelector(".carouselTrack");
-        const loadedImages = carouselTrack.querySelectorAll("img");
+        if (carouselTrack_ID) {
+            const loadedImages = carouselTrack_ID.querySelectorAll("img");
 
-        totalWidth = Array.from(loadedImages).reduce(
-            (acc, img) => acc + img.width,
-            0
-        );
+            totalWidth = Array.from(loadedImages).reduce(
+                (acc, img) => acc + img.width,
+                0
+            );
+        }
     }
     // Calculate initial total width on component load
     onMount(() => {
@@ -38,8 +40,9 @@
         calc_totalWidth();
     });
 
-    // --Carousel Animation Direction--
+    // --Carousel Animation Options--
     export let carouselAnim_Direction = "";
+    export let carouselAnim_Duration = 5;
     let carouselAnim_Key1 = "";
     let carouselAnim_Key2 = "";
     // Change carousel animation direction depending on the user input
@@ -61,40 +64,41 @@
 <div class="carouselContainer">
     <div
         class="carouselTrack"
-        style={`--total-width: ${totalWidth}px; --total-num: ${totalNum}; --anim-key1: ${carouselAnim_Key1}; --anim-key2: ${carouselAnim_Key2};`}
+        bind:this={carouselTrack_ID}
+        style={`--total-width: ${totalWidth}px; --total-num: ${totalNum}; --anim-time: ${carouselAnim_Duration}s; --anim-key1: ${carouselAnim_Key1}; --anim-key2: ${carouselAnim_Key2};`}
     >
         {#each loopImages as image, index}
-        <div class="imageBackground">
-            <img src={image} alt={`test-${index + 1}`} />
-        </div>
+            <div class="imageContainer">
+                <img src={image} alt={`test-${index + 1}`} />
+            </div>
         {/each}
     </div>
 </div>
 
 <style>
-    
     .carouselContainer {
         width: 100vw;
         transform: translateX(-64px);
-        
+
         overflow: hidden;
         position: relative;
     }
 
     .carouselTrack {
         display: flex;
-        animation: carouselAnim calc(5s * var(--total-num)) linear infinite;
+        animation: carouselAnim calc(var(--anim-time) * var(--total-num)) linear
+            infinite;
     }
 
-    .imageBackground {
+    .imageContainer {
         background-color: var(--mRED);
         border-radius: 32px;
-        margin: 32px 8px;
+        margin: 0px 8px;
         border: 1px solid white;
         height: calc(50vh + 2px);
     }
 
-    .imageBackground img {
+    .imageContainer img {
         mix-blend-mode: exclusion;
         filter: grayscale(15%) contrast(130%);
         width: auto;

@@ -41,13 +41,18 @@
     }
 
     header {
+        position: absolute;
+        top: 64px;
+        left: 64px;
+        right: 64px;
+        z-index: 1000; /* Set a high z-index value to make sure it overlays other content */
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-
         border: white 1px;
         border-style: solid none none;
         padding-top: 32px;
+        z-index: 555;
     }
 
     .headerLinks {
@@ -61,7 +66,9 @@
 
     .headerTitle {
         position: absolute;
-        top: 96px;
+        top: 64px;
+        padding-top: 32px;
+        z-index: 555;
     }
 
     footer {
