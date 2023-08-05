@@ -53,11 +53,11 @@
     ) {
         carouselAnim_Key2 = "translateX(-8px);";
         carouselAnim_Key1 =
-            "translateX(calc(var(--total-width) / 2 * -1 - 64px - calc(8px * var(--total-num) - 16px)));";
+            "translateX(calc(var(--total-width) / 2  * -1 - calc(9px * var(--total-num))));";
     } else {
         carouselAnim_Key1 = "translateX(-8px);";
         carouselAnim_Key2 =
-            "translateX(calc(var(--total-width) / 2 * -1 - 64px - calc(8px * var(--total-num) - 16px)));";
+            "translateX(calc(var(--total-width) / 2  * -1 - calc(9px * var(--total-num))));";
     }
 </script>
 
@@ -79,7 +79,6 @@
     .carouselContainer {
         width: 100vw;
         transform: translateX(-64px);
-
         overflow: hidden;
         position: relative;
     }
@@ -90,20 +89,55 @@
             infinite;
     }
 
-    .imageContainer {
+    .imageContainer::before {
+        content: "";
         background-color: var(--mRED);
         border-radius: 32px;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+    }
+
+    .imageContainer:hover::before {
+        opacity: 0;
+    }
+
+    .imageContainer {
+        background-color: none;
+        border-radius: 32px;
         margin: 0px 8px;
-        border: 1px solid white;
-        height: calc(50vh + 2px);
+        height: 50vh;
+        position: relative;
     }
 
     .imageContainer img {
         mix-blend-mode: exclusion;
-        filter: grayscale(15%) contrast(130%);
         width: auto;
         height: 50vh;
         border-radius: 32px;
+    }
+
+    .imageContainer::after {
+        content: "";
+        background-color: rgba(255, 255, 255, 0);
+        border-radius: 32px;
+        border: 1px solid white;
+        height: calc(50vh - 2px);
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        transition: filter 1s, border 0.5s ease;
+    }
+
+    .imageContainer:hover::after {
+        border: 1px solid rgba(255, 255, 255, 0);
     }
 
     @keyframes carouselAnim {

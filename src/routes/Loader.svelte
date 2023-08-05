@@ -1,4 +1,3 @@
-<!-- LoadingSpinner.svelte -->
 <div class="loaderContainer">
     <!-- Add your loading GIF or animation here -->
     <!-- For example: -->

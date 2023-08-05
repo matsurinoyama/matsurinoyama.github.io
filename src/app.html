@@ -15,6 +15,7 @@
 </html>
 
 <style>
+
     * {
         box-sizing: border-box;
 
@@ -33,6 +34,12 @@
     a {
         text-decoration: none;
         color: var(--mYELLOW);
+        transition: 0.5s ease;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: var(--mGREEN);
     }
 
     body {
@@ -62,6 +69,11 @@
 
         height: 64px;
         padding: 0px 64px 0px 0px;
+    }
+
+    .headerLinks h5:hover {
+        text-decoration: underline;
+        color: var(--mYELLOW);
     }
 
     .headerTitle {
@@ -106,60 +118,74 @@
     }
 
     .footerLinks p {
-        transform: translateY(-3px);
+        margin-top: -1%;
     }
 
+    /* Import Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@200;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap');
+    
     h1 {
-        font-family: 'Shippori Mincho Extrabold';
+        font-family: 'Shippori Mincho', serif;
         font-size: 192px;
+        font-weight: 800;
         line-height: 192px;
         color: var(--mYELLOW);
+        transition: 0.5s ease;
 
         writing-mode: vertical-rl;
     }
 
     h2 {
-        font-family: 'Shippori Mincho';
+        font-family: 'Shippori Mincho', serif;
         font-size: 96px;
+        font-weight: 800;
         line-height: 96px;
         color: var(--mYELLOW);
+        transition: 0.5s ease;
 
         writing-mode: vertical-rl;
     }
 
     h3 {
-        font-family: 'Shippori Mincho';
+        font-family: 'Shippori Mincho', serif;
         font-size: 64px;
+        font-weight: 600;
         line-height: 64px;
         color: var(--mYELLOW);
+        transition: 0.5s ease;
     }
 
     h4 {
-        font-family: 'Shippori Mincho';
+        font-family: 'Shippori Mincho', serif;
         font-size: 48px;
+        font-weight: 600;
         line-height: 48px;
         color: var(--mYELLOW);
+        transition: 0.5s ease;
     }
 
     h5 {
-        font-family: 'M PLUS 1 Code';
+        font-family: 'M PLUS 1 Code', sans-serif;
         font-size: 24px;
-        font-weight: 700;
+        font-weight: 600;
         color: white;
+        transition: 0.5s ease;
     }
 
     h6 {
-        font-family: 'M PLUS 1 Code';
+        font-family: 'M PLUS 1 Code', sans-serif;
         font-size: 12px;
         font-weight: 400;
         color: white;
-        transform: translateY(-3px);
+        transition: 0.5s ease;
+        margin-top: -1%;
     }
 
     p {
-        font-family: 'M PLUS 1 Code';
+        font-family: 'M PLUS 1 Code', sans-serif;
         font-size: 16px;
         font-weight: 400;
         color: white;
+        transition: 0.5s ease;
     }
 </style>
