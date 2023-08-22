@@ -26,10 +26,7 @@
         </video>
     </div>
     <audio id="bgMusic" autoplay>
-        <source src="static/rasasayang.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="introFX" autoplay>
-        <source src="static/celebrationfx.mp3" type="audio/mpeg">
+        <source src="static/celebrationfx_combined.mp3" type="audio/mpeg">
     </audio>
     <div class="introConfetti" id="introConfetti_ID" style="display: none;"></div>
     <h5>To my wonderful girlfriend & best friend,</h5>
@@ -73,7 +70,6 @@
         const introVideo_BG = document.getElementById("introVideo_BG")
         const introVideo = document.getElementById("introVideo");
         const bgMusic = document.getElementById("bgMusic");
-        const introFX = document.getElementById("introFX");
         const introConfetti = document.getElementById("introConfetti_ID");
         let introVideo_Ended = false;
 
@@ -103,19 +99,18 @@
             // Add a delay
             setTimeout(() => {
                 introVideo_BG.style.opacity = '0';
-                introFX.play();
                 introConfetti.style.display = 'unset';
-            }, 12000);
+            }, 12800);
             setTimeout(() => {
                 introVideo_BG.style.display = 'none';
                 introVideo.style.display = 'none';
-            }, 13000);
+            }, 13800);
             setTimeout(() => {
                 introConfetti.style.opacity = '0';
-            }, 22000);
+            }, 22800);
             setTimeout(() => {
                 introConfetti.style.display = 'none';
-            }, 25000);
+            }, 25800);
         });
     </script>
 </body>
