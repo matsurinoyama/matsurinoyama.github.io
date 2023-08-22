@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
 
+
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@200;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -15,7 +21,7 @@
         <h5>Tap / Click Anywhere 👆</h5>
     </div>
     <div class="videoContainer" id="introVideo_BG">
-        <video id="introVideo" autoplay>
+        <video id="introVideo" autoplay playsinline>
             <source src="static/malaybdaysong_edited.mp4" type="video/mp4">
         </video>
     </div>
@@ -320,9 +326,6 @@
         background-color: var(--mRED);
         margin: 64px;
     }
-
-    /* Import Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@200;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap');
 
     h1 {
         font-family: 'Shippori Mincho', serif;
