@@ -12,7 +12,7 @@
     onMount(() => {
         setTimeout(() => {
             isLoading = false;
-        }, 2000); // Change the delay time as needed
+        }, 1000); // Change the delay time as needed
     });
 
     // --Random Icon on Reload--

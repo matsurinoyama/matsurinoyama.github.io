@@ -1,5 +1,6 @@
 <script>
     import Carousel from "./Carousel.svelte";
+    import Expander from "./Expander.svelte";
     let direction1 = "left";
     let direction2 = "right";
     let images1 = [
@@ -37,16 +38,17 @@
     <div class="carouselPadding">
         <Carousel carouselAnim_Duration={time} carouselAnim_Direction={direction2} images={images2} />
     </div>
+    <Expander />
 </div>
 
 <style>
     .contentContainer {
         display: flex;
         flex-direction: column;
-        padding: 16px 0px;
+        padding: 24px 0px;
     }
 
     .carouselPadding {
-        padding: 16px 0px;
+        padding: 8px 0px;
     }
 </style>

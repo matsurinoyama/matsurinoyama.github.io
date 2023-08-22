@@ -59,6 +59,43 @@
         carouselAnim_Key2 =
             "translateX(calc(var(--total-width) / 2  * -1 - calc(9px * var(--total-num))));";
     }
+
+    // --Expand Image on Click--
+    let imageContainer_ID;
+    let isPaused = false;
+    let expandedIndex = null; // Track the index of the expanded image
+    let expandedTop = 0; // Track the top position of the expanded image
+
+    // Pauses carousel animation and toggles the expanded state
+    function toggleImageExpansion(index) {
+        isPaused = !isPaused;
+        if (isPaused) {
+            carouselTrack_ID.style.animationPlayState = "paused";
+        } else {
+            carouselTrack_ID.style.animationPlayState = "running";
+        }
+
+        // Toggle the expanded state for the clicked image
+        if (expandedIndex === index) {
+            expandedIndex = null;
+        } else {
+            expandedIndex = index;
+        }
+    }
+
+    function handleKey(event, index) {
+        if (event.key === "Enter" || event.key === " ") {
+            toggleImageExpansion(index);
+        }
+    }
+
+    // Calculate the top position for the expanded image
+    $: {
+        if (expandedIndex !== null) {
+            const clickedImage = imageContainer_ID.getBoundingClientRect();
+            expandedTop = window.scrollY + clickedImage.top;
+        }
+    }
 </script>
 
 <div class="carouselContainer">
@@ -68,7 +105,13 @@
         style={`--total-width: ${totalWidth}px; --total-num: ${totalNum}; --anim-time: ${carouselAnim_Duration}s; --anim-key1: ${carouselAnim_Key1}; --anim-key2: ${carouselAnim_Key2};`}
     >
         {#each loopImages as image, index}
-            <div class="imageContainer">
+            <div
+                class="imageContainer {expandedIndex === index ? 'expanded' : ''}"
+                bind:this={imageContainer_ID}
+                on:click={() => toggleImageExpansion(index)}
+                on:keydown={(event) => handleKey(event, index)}
+                style={`--top-position: ${expandedTop}px;`}
+                role="button" tabindex="0">
                 <img src={image} alt={`test-${index + 1}`} />
             </div>
         {/each}
@@ -76,9 +119,33 @@
 </div>
 
 <style>
-    .carouselContainer {
+    .imageContainer.expanded, .imageContainer.expanded img {
         width: 100vw;
-        transform: translateX(-64px);
+        height: 100vh;
+        position: fixed;
+        top: var(--top-position);
+        left: 0;
+        margin: 0;
+        z-index: 777;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .imageContainer.expanded::before, .imageContainer.expanded::after {
+        position: fixed;
+        top: var(--top-position);
+        left: 0;
+        margin: 0;
+        z-index: 777;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .carouselContainer {
+        width: calc(100% + 128px);
+        margin-left: -64px;
         overflow: hidden;
         position: relative;
     }
@@ -87,57 +154,67 @@
         display: flex;
         animation: carouselAnim calc(var(--anim-time) * var(--total-num)) linear
             infinite;
+        animation-play-state: running;
     }
 
     .imageContainer::before {
         content: "";
-        background-color: var(--mRED);
-        border-radius: 32px;
+        background: url("noise.png");
         height: 100%;
+        border-radius: 8px;
         position: absolute;
         left: 0;
         bottom: 0;
         top: 0;
         right: 0;
         opacity: 1;
-        transition: opacity 0.5s ease;
+        transition: border-radius 0.5s ease-out, opacity 0.7s ease-out;
     }
 
     .imageContainer:hover::before {
+        border-radius: 0px;
         opacity: 0;
     }
 
     .imageContainer {
         background-color: none;
-        border-radius: 32px;
         margin: 0px 8px;
         height: 50vh;
+        max-width: calc(100vw - 128px);
         position: relative;
     }
 
     .imageContainer img {
         mix-blend-mode: exclusion;
-        width: auto;
+        filter: grayscale(30%) contrast(130%) brightness(115%);
+        object-fit: cover;
+        max-width: calc(100vw - 128px);
         height: 50vh;
-        border-radius: 32px;
+        border-radius: 8px;
+        transition: 0.5s ease-out;
+    }
+
+    .imageContainer:hover img {
+        filter: grayscale(0%) contrast(100%) brightness(100%);
+        border-radius: 0px;
     }
 
     .imageContainer::after {
         content: "";
-        background-color: rgba(255, 255, 255, 0);
-        border-radius: 32px;
         border: 1px solid white;
+        border-radius: 8px;
         height: calc(50vh - 2px);
         position: absolute;
         left: 0;
         bottom: 0;
         top: 0;
         right: 0;
-        transition: filter 1s, border 0.5s ease;
+        transition: 0.5s ease-out;
     }
 
     .imageContainer:hover::after {
         border: 1px solid rgba(255, 255, 255, 0);
+        border-radius: 0px;
     }
 
     @keyframes carouselAnim {

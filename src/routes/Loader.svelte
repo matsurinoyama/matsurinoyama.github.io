@@ -1,6 +1,4 @@
 <div class="loaderContainer">
-    <!-- Add your loading GIF or animation here -->
-    <!-- For example: -->
     <img src="icon_5-red.png" alt="Loading..." height="128px" />
 </div>
 

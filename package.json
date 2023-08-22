@@ -21,6 +21,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@tabler/icons-svelte": "^2.29.0"
+		"@tabler/icons-svelte": "^2.29.0",
+		"gsap": "^3.12.2"
 	}
 }

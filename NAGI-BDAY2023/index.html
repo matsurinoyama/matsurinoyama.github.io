@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <div class="loaderContainer" id="playButton">
+        <h5>Tap / Click Anywhere 👆</h5>
+    </div>
+    <div class="videoContainer" id="introVideo_BG">
+        <video id="introVideo" autoplay>
+            <source src="static/malaybdaysong_edited.mp4" type="video/mp4">
+        </video>
+    </div>
+    <audio id="bgMusic" autoplay>
+        <source src="static/rasasayang.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="introFX" autoplay>
+        <source src="static/celebrationfx.mp3" type="audio/mpeg">
+    </audio>
+    <div class="introConfetti" id="introConfetti_ID" style="display: none;"></div>
+    <h5>To my wonderful girlfriend & best friend,</h5>
+    <div class="contentHeader">
+        <h3>なぎちゃん、</h3>
+        <h3>
+            誕生日おめでとう‼
+            <br>Happy birthday‼
+            <br>Selamat lahir jadi‼
+        </h3>
+    </div>
+
+    <div class="contentMain">
+        <div class="contentMain_Text">
+            <p>Nagichan is now 22 years old. You're the same age as me now! Though, I am more おじおじ than you w.
+                I'm really glad that you were born, you are the light and purpose of my life... I don't know what
+                life would be without you. Even though just one and a half years ago, you were a complete stranger to
+                me, I sometimes feel like we have known each other for much more longer than that ;-;.
+                Sorry I have been very busy this past week, I didn't think this mural thing would take so much
+                of my time (._.). And I'm sorry that I can't celebrate your birthday physically with you today...
+                but when you come here this September, I will treat you for a birthday dinner together, ok? 🍰🍣🍕🥰
+                <br><br>
+                I love you, and <a href="https://youtu.be/CGsmf_g9kho" target="_blank">I'll be happy just to have known
+                    you ❤</a>
+                <br><br>
+                <br><br>
+                Your loving,
+                <br><br>
+            </p>
+            <img src="static/signature.svg" alt="signature" style="height: 8%; filter: invert(100%); margin: 0% -1.5%;">
+        </div>
+        <div class="artUtan">
+            <img src="static/utan.png" alt="utan" class="layers" id="layer1">
+            <img src="static/birthday_party_hat.png" alt="sunglass" class="layers" id="layer2">
+            <img src="static/birthday_party_sunglass.png" alt="sunglass" class="layers" id="layer3">
+        </div>
+    </div>
+
+    <script>
+        const playButton = document.getElementById("playButton");
+        const introVideo_BG = document.getElementById("introVideo_BG")
+        const introVideo = document.getElementById("introVideo");
+        const bgMusic = document.getElementById("bgMusic");
+        const introFX = document.getElementById("introFX");
+        const introConfetti = document.getElementById("introConfetti_ID");
+        let introVideo_Ended = false;
+
+        document.addEventListener("click", () => {
+            if (!introVideo_Ended) {
+                playButton.style.opacity = '0';
+                introVideo.play();
+                introVideo_Ended = true;
+            }
+        });
+
+        document.addEventListener("keydown", () => {
+            if (!introVideo_Ended) {
+                playButton.style.opacity = '0';
+                introVideo.play();
+                introVideo_Ended = true;
+            }
+        });
+
+        introVideo.addEventListener('ended', () => {
+            introVideo.style.opacity = '0';
+            playButton.style.display = 'none';
+            bgMusic.play();
+        });
+
+        bgMusic.addEventListener('play', () => {
+            // Add a delay
+            setTimeout(() => {
+                introVideo_BG.style.opacity = '0';
+                introFX.play();
+                introConfetti.style.display = 'unset';
+            }, 12000);
+            setTimeout(() => {
+                introVideo_BG.style.display = 'none';
+                introVideo.style.display = 'none';
+            }, 13000);
+            setTimeout(() => {
+                introConfetti.style.opacity = '0';
+            }, 22000);
+            setTimeout(() => {
+                introConfetti.style.display = 'none';
+            }, 25000);
+        });
+    </script>
+</body>
+
+</html>
+
+<style>
+    .loaderContainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 1;
+        transition: opacity 0.5s ease-in;
+        z-index: 200;
+    }
+
+    .videoContainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 1;
+        transition: opacity 1s ease-out;
+        z-index: 150;
+
+    }
+
+    .videoContainer video {
+        height: 100%;
+        width: 100%;
+        opacity: 1;
+        object-fit: contain;
+        transition: opacity 0.5s ease-out;
+    }
+
+    .introConfetti {
+        position: fixed;
+        background-image: url(static/birthday_party_confetti.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        opacity: 1;
+        pointer-events: none;
+        transition: opacity 3s ease-out;
+        z-index: 100;
+    }
+
+    .contentHeader {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        margin: 32px 0px;
+        +
+    }
+
+    .contentHeader h3 {
+        margin: 0px 0px 32px 0px;
+    }
+
+    .contentMain {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: space-between;
+        margin: 64px 0px;
+
+    }
+
+    .contentMain_Text {
+        width: 50%;
+        overflow: none;
+    }
+
+    .artUtan {
+        position: relative;
+        height: 50vh;
+        width: 50%;
+        margin: 64px;
+        overflow: hidden;
+        animation: utanAnim 1s steps(3) infinite;
+    }
+
+    .layers {
+        position: absolute;
+        top: 32px;
+        right: 64px;
+
+    }
+
+    #layer1 {
+        height: 90%;
+        animation: utanAnim_Body 1s steps(3) infinite alternate;
+    }
+
+    #layer2 {
+        height: 90%;
+        animation: utanAnim_Hat 1s steps(3) infinite alternate;
+    }
+
+    #layer3 {
+        height: 90%;
+        animation: utanAnim_Sunglass 1s steps(3) infinite alternate;
+    }
+
+    @keyframes utanAnim {
+        0% {
+            transform: translateY(5vh);
+        }
+
+        50% {
+            transform: translateY(0vh);
+        }
+
+        100% {
+            transform: translateY(-5vh);
+        }
+    }
+
+    @keyframes utanAnim_Body {
+        0% {
+            transform: rotate(15deg);
+        }
+
+        50% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(-30deg);
+        }
+    }
+
+    @keyframes utanAnim_Hat {
+        0% {
+            transform: rotate(30deg) translateY(-15%);
+        }
+
+        50% {
+            transform: rotate(0deg) translateY(5%);
+        }
+
+        100% {
+            transform: rotate(-60deg) translateY(-10%);
+        }
+    }
+
+    @keyframes utanAnim_Sunglass {
+        0% {
+            transform: rotate(25deg);
+        }
+
+        50% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(-35deg);
+        }
+    }
+
+    * {
+        box-sizing: border-box;
+
+        margin: 0;
+        border: 0;
+        padding: 0;
+    }
+
+    :root {
+        --mRED: #d92837;
+        --mYELLOW: #ffff66;
+        --mGREEN: #21df80;
+        --mBLACK: #3a1427;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--mYELLOW);
+        transition: 0.5s ease-out;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: var(--mGREEN);
+    }
+
+    body {
+        background-color: var(--mRED);
+        margin: 64px;
+    }
+
+    /* Import Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@200;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap');
+
+    h1 {
+        font-family: 'Shippori Mincho', serif;
+        font-size: 192px;
+        font-weight: 800;
+        line-height: 192px;
+        color: var(--mYELLOW);
+        transition: 0.5s ease-out;
+
+        writing-mode: vertical-rl;
+    }
+
+    h2 {
+        font-family: 'Shippori Mincho', serif;
+        font-size: 96px;
+        font-weight: 800;
+        line-height: 96px;
+        color: var(--mYELLOW);
+        transition: 0.5s ease-out;
+
+        writing-mode: vertical-rl;
+    }
+
+    h3 {
+        font-family: 'Shippori Mincho', serif;
+        font-size: 64px;
+        font-weight: 600;
+        line-height: 64px;
+        color: var(--mYELLOW);
+        transition: 0.5s ease-out;
+    }
+
+    h4 {
+        font-family: 'Shippori Mincho', serif;
+        font-size: 48px;
+        font-weight: 600;
+        line-height: 48px;
+        color: var(--mYELLOW);
+        transition: 0.5s ease-out;
+    }
+
+    h5 {
+        font-family: 'M PLUS 1 Code', sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        color: white;
+        transition: 0.5s ease-out;
+    }
+
+    h6 {
+        font-family: 'M PLUS 1 Code', sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        color: white;
+        transition: 0.5s ease-out;
+        margin-top: -1%;
+    }
+
+    p {
+        font-family: 'M PLUS 1 Code', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        color: white;
+        transition: 0.5s ease-out;
+    }
+
+    @media screen and (max-width: 1280px) {
+        .contentHeader {
+            flex-direction: column;
+        }
+    }
+
+    @media screen and (max-width: 854px) {
+        .contentHeader {
+            margin: 32px 0px;
+        }
+
+        .contentHeader h3 {
+            margin: 0px 0px 16px 0px;
+        }
+
+        .contentMain {
+            margin: 32px 0px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contentMain_Text {
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contentMain_Text img {
+            width: 25%;
+            max-width: 96px;
+        }
+
+        .artUtan {
+            height: 50vh;
+            width: 100%;
+            margin: -32px 32px;
+        }
+
+        .layers {
+            position: absolute;
+            top: 32px;
+            right: 64px;
+
+        }
+
+        #layer1,
+        #layer2,
+        #layer3 {
+            height: 80%;
+        }
+
+        body {
+            margin: 32px;
+        }
+
+        h1 {
+            font-size: 64px;
+            line-height: 64px;
+        }
+
+        h2 {
+            font-size: 48px;
+            line-height: 48px;
+        }
+
+        h3 {
+            font-size: 32px;
+            line-height: 32px;
+        }
+
+        h4 {
+            font-size: 24px;
+            line-height: 24px;
+        }
+
+        h5 {
+            font-size: 16px;
+        }
+
+        h6 {
+            font-size: 8px;
+        }
+
+        p {
+            font-size: 12px;
+        }
+
+    }
+</style>

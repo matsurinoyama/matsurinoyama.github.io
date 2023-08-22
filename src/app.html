@@ -15,7 +15,6 @@
 </html>
 
 <style>
-
     * {
         box-sizing: border-box;
 
@@ -34,7 +33,7 @@
     a {
         text-decoration: none;
         color: var(--mYELLOW);
-        transition: 0.5s ease;
+        transition: 0.5s ease-out;
     }
 
     a:hover {
@@ -52,7 +51,6 @@
         top: 64px;
         left: 64px;
         right: 64px;
-        z-index: 1000; /* Set a high z-index value to make sure it overlays other content */
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
@@ -71,7 +69,8 @@
         padding: 0px 64px 0px 0px;
     }
 
-    .headerLinks h5:hover {
+    .headerLinks h5:hover,
+    .footerLinks p:hover {
         text-decoration: underline;
         color: var(--mYELLOW);
     }
@@ -116,21 +115,21 @@
     .footerLinks a {
         padding-left: 16px;
     }
-
+    
     .footerLinks p {
         margin-top: -1%;
     }
 
     /* Import Fonts */
     @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@200;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap');
-    
+
     h1 {
         font-family: 'Shippori Mincho', serif;
         font-size: 192px;
         font-weight: 800;
         line-height: 192px;
         color: var(--mYELLOW);
-        transition: 0.5s ease;
+        transition: 0.5s ease-out;
 
         writing-mode: vertical-rl;
     }
@@ -141,7 +140,7 @@
         font-weight: 800;
         line-height: 96px;
         color: var(--mYELLOW);
-        transition: 0.5s ease;
+        transition: 0.5s ease-out;
 
         writing-mode: vertical-rl;
     }
@@ -152,7 +151,7 @@
         font-weight: 600;
         line-height: 64px;
         color: var(--mYELLOW);
-        transition: 0.5s ease;
+        transition: 0.5s ease-out;
     }
 
     h4 {
@@ -161,7 +160,7 @@
         font-weight: 600;
         line-height: 48px;
         color: var(--mYELLOW);
-        transition: 0.5s ease;
+        transition: 0.5s ease-out;
     }
 
     h5 {
@@ -169,7 +168,7 @@
         font-size: 24px;
         font-weight: 600;
         color: white;
-        transition: 0.5s ease;
+        transition: 0.5s ease-out;
     }
 
     h6 {
@@ -177,7 +176,7 @@
         font-size: 12px;
         font-weight: 400;
         color: white;
-        transition: 0.5s ease;
+        transition: 0.5s ease-out;
         margin-top: -1%;
     }
 
@@ -186,6 +185,6 @@
         font-size: 16px;
         font-weight: 400;
         color: white;
-        transition: 0.5s ease;
+        transition: 0.5s ease-out;
     }
 </style>
