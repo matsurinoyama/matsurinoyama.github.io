@@ -1,6 +1,5 @@
 <script>
     import Carousel from "./Carousel.svelte";
-    import Expander from "./Expander.svelte";
     let direction1 = "left";
     let direction2 = "right";
     let images1 = [
@@ -33,12 +32,20 @@
 
 <div class="contentContainer">
     <div class="carouselPadding">
-        <Carousel carouselAnim_Duration={time} carouselAnim_Direction={direction1} images={images1} />
+        <Carousel
+        carouselAnim_Duration={time}
+        carouselAnim_Direction={direction1}
+        images={images2}
+    />
     </div>
     <div class="carouselPadding">
-        <Carousel carouselAnim_Duration={time} carouselAnim_Direction={direction2} images={images2} />
+        <Carousel
+        carouselAnim_Duration={time}
+        carouselAnim_Direction={direction2}
+        images={images1}
+    />
     </div>
-    <Expander />
+
 </div>
 
 <style>
