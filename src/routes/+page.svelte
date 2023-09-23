@@ -1,51 +1,60 @@
 <script>
     import Carousel from "./Carousel.svelte";
+    let headerTitle_ID;
     let direction1 = "left";
     let direction2 = "right";
     let images1 = [
-        "test/image_01.jpg",
-        "test/image_02.png",
-        "test/image_03.jpg",
-        "test/image_04.jpg",
-        "test/image_05.png",
-        "test/image_06.jpg",
-        "test/image_07.jpg",
-        "test/image_08.jpg",
+        { src: "/test/image_01.jpg", url: "/works" },
+        { src: "/test/image_02.png", url: "/works" },
+        { src: "/test/image_03.jpg", url: "/works" },
+        { src: "/test/image_04.jpg", url: "/works" },
+        { src: "/test/image_05.png", url: "/works" },
+        { src: "/test/image_06.jpg", url: "/works" },
+        { src: "/test/image_07.jpg", url: "/works" },
+        { src: "/test/image_08.jpg", url: "/works" },
     ];
+
     let images2 = [
-        "test/image_09.jpg",
-        "test/image_10.jpg",
-        "test/image_11.jpg",
-        "test/image_12.png",
-        "test/image_13.png",
-        "test/image_14.jpg",
-        "test/image_15.jpg",
-        "test/image_16.jpg",
+        { src: "/test/image_09.jpg", url: "/works" },
+        { src: "/test/image_10.jpg", url: "/works" },
+        { src: "/test/image_11.jpg", url: "/works" },
+        { src: "/test/image_12.png", url: "/works" },
+        { src: "/test/image_13.png", url: "/works" },
+        { src: "/test/image_14.jpg", url: "/works" },
+        { src: "/test/image_15.jpg", url: "/works" },
+        { src: "/test/image_16.jpg", url: "/works" },
     ];
     let time = 5;
     let pageTitle = "茉莉の山";
+
+    // --Hide Header Title--
+    function handleKey() {
+        document.querySelector("header").style.opacity = "0";
+        headerTitle_ID.style.opacity = "0";
+    }
 </script>
 
-<div class="headerTitle">
+<div class="headerTitle" bind:this={headerTitle_ID}>
     <h2 style="letter-spacing: 32px;">{@html pageTitle}</h2>
 </div>
 
 <div class="contentContainer">
     <div class="carouselPadding">
         <Carousel
-        carouselAnim_Duration={time}
-        carouselAnim_Direction={direction1}
-        images={images2}
-    />
+            carouselAnim_Duration={time}
+            carouselAnim_Direction={direction1}
+            images={images1}
+            on:removeHeader={handleKey}
+        />
     </div>
     <div class="carouselPadding">
         <Carousel
-        carouselAnim_Duration={time}
-        carouselAnim_Direction={direction2}
-        images={images1}
-    />
+            carouselAnim_Duration={time}
+            carouselAnim_Direction={direction2}
+            images={images2}
+            on:removeHeader={handleKey}
+        />
     </div>
-
 </div>
 
 <style>

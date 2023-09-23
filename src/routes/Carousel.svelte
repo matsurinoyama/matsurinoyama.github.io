@@ -1,10 +1,11 @@
 <script>
-    import { onMount, afterUpdate } from "svelte";
+    import { onMount, afterUpdate, createEventDispatcher } from "svelte";
     import Carousel_Image from "./Carousel_Image.svelte";
+    const dispatch = createEventDispatcher();
     let carouselTrack_ID;
     let totalWidth = 0;
     let totalNum = 0;
-    export let images = [""];
+    export let images = [{}];
 
     // --Randomise Image Order--
     // Shuffle the array randomly
@@ -81,14 +82,9 @@
     }
 
     // --Pause Carousel on Click--
-    let isPaused = false;
     function handleKey() {
-        isPaused = !isPaused;
-        if (isPaused) {
-            carouselTrack_ID.style.animationPlayState = "paused";
-        } else {
-            carouselTrack_ID.style.animationPlayState = "running";
-        }
+        dispatch("removeHeader");
+        carouselTrack_ID.style.animationPlayState = "paused";
     }
 </script>
 
@@ -100,8 +96,9 @@
     >
         {#each loopImages as image, index}
             <Carousel_Image
-                imageSrc={image}
+                imageSrc={image.src}
                 imageAlt={`test-${index + 1}`}
+                imageUrl={image.url}
                 on:pauseCarousel={handleKey}
             />
         {/each}

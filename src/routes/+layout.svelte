@@ -18,11 +18,11 @@
     // --Random Icon on Reload--
     // Icon speed variations
     const icon = [
-        "icon_10-white.png",
-        "icon_15-white.png",
-        "icon_20-white.png",
-        "icon_25-white.png",
-        "icon_30-white.png",
+        "/icon_10-white.png",
+        "/icon_15-white.png",
+        "/icon_20-white.png",
+        "/icon_25-white.png",
+        "/icon_30-white.png",
     ];
     // Set a default image to avoid undefined source before the first mount
     let rand_iconSpeed = icon[3];
@@ -44,12 +44,12 @@
 
 <header>
     <div class="headerLinks">
-        <a href="/about" target="_self"><h5>About</h5></a>
-        <a href="/resume" target="_self"><h5>Resume</h5></a>
+        <a href="/about" target="_self"><h5>自己紹介</h5></a>
+        <a href="/resume" target="_self"><h5>履歴書</h5></a>
     </div>
     <div class="headerLinks">
-        <a href="/works" target="_self"><h5>Works</h5></a>
-        <a href="/contact" target="_self"><h5>Contact</h5></a>
+        <a href="/works" target="_self"><h5>作品集</h5></a>
+        <a href="/contact" target="_self"><h5>お問い合わせ</h5></a>
     </div>
     <a href="/" target="_self"><img src={rand_iconSpeed} alt="Home" height="64px" /></a>
 </header>
@@ -58,7 +58,7 @@
 
 <footer>
     <div class="footerNotice">
-        <img src="icon_1-yellow.png" alt="Icon" height="32px" />
+        <img src="/icon_1-yellow.png" alt="Icon" height="32px" />
         <div class="footerNotice_Text">
             <h6>
                 Copyright (c) {currentYear} Azhan Rizan / 莉山礼司. All code written

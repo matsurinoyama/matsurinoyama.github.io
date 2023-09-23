@@ -1,8 +1,6 @@
 <script>
   import { onMount, afterUpdate, createEventDispatcher } from "svelte";
-
   const dispatch = createEventDispatcher();
-
   let imageContainer_Pos;
   let imageContainer_Height;
   let imageContainer_Width;
@@ -11,6 +9,7 @@
   let image = {};
   export let imageSrc = "";
   export let imageAlt = "";
+  export let imageUrl = "/works";
 
   // Get the image width based on the set height
   function getImageWidth() {
@@ -25,19 +24,31 @@
     }
   }
 
+  function disableScroll() {
+    // Get the current scroll position
+    const posY_Scroll = window.scrollY;
+    // Add styles to disable scrolling
+    document.body.style.overflow = "hidden";
+    document.body.style.top = `-${posY_Scroll}px`;
+  }
+
   // Expand the selected image
   function toggleExpand() {
-    dispatch("pauseCarousel");
-    setTimeout(() => {
-      imageContainer_Pos = imageContainer_ID.getBoundingClientRect();
+    if (!isExpanded) {
+      dispatch("pauseCarousel");
+      setTimeout(() => {
+        imageContainer_Pos = imageContainer_ID.getBoundingClientRect();
 
-      image = {
-        posX: `${imageContainer_Pos.x}px`,
-        posY: `${imageContainer_Pos.y}px`,
-      };
-      
-      isExpanded = !isExpanded;
-    }, 100);
+        image = {
+          posX: `${imageContainer_Pos.x}px`,
+          posY: `${imageContainer_Pos.y}px`,
+        };
+
+        isExpanded = true;
+        disableScroll();
+      }, 50);
+      window.location.href = `${imageUrl}`;
+    }
   }
 
   function handleKey(event) {
@@ -103,14 +114,16 @@
 
   .isExpanded {
     position: relative;
-    margin: 0;
-    transform: translateY(calc(var(--pos-y) * -1)) translateX(calc(var(--pos-x) * -1));
+    margin-bottom: 100vh;
+    transform: translateY(calc(var(--pos-y) * -1))
+      translateX(calc(var(--pos-x) * -1));
     width: 100vw;
     max-width: none;
     height: 100vh;
     border-radius: 0px;
     outline: 0px solid rgba(255, 255, 255, 0);
-    z-index: 555;
+    cursor: progress;
+    z-index: 100;
   }
 
   .isExpanded img {
@@ -119,5 +132,6 @@
     width: 100%;
     mix-blend-mode: normal;
     filter: grayscale(0%) contrast(100%) brightness(100%);
+    z-index: 100;
   }
 </style>
