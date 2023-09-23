@@ -1,11 +1,12 @@
 <script>
+    import { onMount } from "svelte";
     import Carousel from "./Carousel.svelte";
     let headerTitle_ID;
     let direction1 = "left";
     let direction2 = "right";
     let images1 = [
-        { src: "/test/image_01.jpg", url: "/works" },
-        { src: "/test/image_02.png", url: "/works" },
+        { src: "/test/image_01.jpg", url: "/works/one" },
+        { src: "/test/image_02.png", url: "/works/two" },
         { src: "/test/image_03.jpg", url: "/works" },
         { src: "/test/image_04.jpg", url: "/works" },
         { src: "/test/image_05.png", url: "/works" },
@@ -26,6 +27,13 @@
     ];
     let time = 5;
     let pageTitle = "茉莉の山";
+
+    onMount(() => {
+        setTimeout(() => {
+            document.querySelector("header").style.opacity = "1";
+            headerTitle_ID.style.opacity = "1";
+        }, 1000); // Change the delay time as needed
+    });
 
     // --Hide Header Title--
     function handleKey() {

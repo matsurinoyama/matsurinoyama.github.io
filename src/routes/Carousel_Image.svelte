@@ -72,7 +72,7 @@
   role="button"
   tabindex="0"
 >
-  <img src={imageSrc} alt={imageAlt} style="height: 100%; object-fit: cover;" />
+  <img src={imageSrc} alt={imageAlt} />
 </div>
 
 <style>
@@ -101,6 +101,7 @@
   .imageContainer img {
     height: 100%;
     width: 100%;
+    object-fit: cover;
     border-radius: 8px;
     mix-blend-mode: exclusion;
     filter: grayscale(30%) contrast(130%) brightness(115%);
