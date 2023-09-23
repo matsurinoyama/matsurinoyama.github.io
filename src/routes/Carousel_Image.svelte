@@ -77,62 +77,62 @@
 
 <style>
   .imageContainer {
+    outline: 1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
-    margin: 0px calc(8px + 1px);
-    height: var(--img-height);
     width: var(--img-width);
     max-width: calc(100vw - 128px);
-    background-color: var(--mRED);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    outline: 1px solid white;
-    border-radius: 8px;
+    height: var(--img-height);
+    margin: 0px calc(8px + 1px);
     transition: all 0.5s ease-in-out;
+    background-color: var(--mRED);
+    cursor: pointer;
+    border-radius: 8px;
   }
 
   .imageContainer:hover {
+    outline: 0px solid rgba(255, 255, 255, 0);
     background-color: black;
     border-radius: 0px;
-    outline: 0px solid rgba(255, 255, 255, 0);
   }
 
   .imageContainer img {
-    height: 100%;
-    width: 100%;
     object-fit: cover;
-    border-radius: 8px;
     mix-blend-mode: exclusion;
     filter: grayscale(30%) contrast(130%) brightness(115%);
+    width: 100%;
+    height: 100%;
     transition: all 0.5s ease-in-out;
+    border-radius: 8px;
   }
 
   .imageContainer img:hover {
-    border-radius: 0px;
     filter: grayscale(0%) contrast(100%) brightness(100%);
+    border-radius: 0px;
   }
 
   .isExpanded {
+    outline: 0px solid rgba(255, 255, 255, 0);
     position: relative;
-    margin-bottom: 100vh;
+    z-index: 100;
     transform: translateY(calc(var(--pos-y) * -1))
       translateX(calc(var(--pos-x) * -1));
     width: 100vw;
     max-width: none;
     height: 100vh;
-    border-radius: 0px;
-    outline: 0px solid rgba(255, 255, 255, 0);
+    margin-bottom: 100vh;
     cursor: progress;
-    z-index: 100;
+    border-radius: 0px;
   }
 
   .isExpanded img {
-    border-radius: 0;
-    height: 100%;
-    width: 100%;
     mix-blend-mode: normal;
     filter: grayscale(0%) contrast(100%) brightness(100%);
     z-index: 100;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
   }
 </style>

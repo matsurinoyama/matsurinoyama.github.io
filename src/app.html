@@ -1,194 +1,190 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%sveltekit.assets%/favicon.png" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@200;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
     %sveltekit.head%
-</head>
+  </head>
 
-<body data-sveltekit-preload-data="hover">
+  <body data-sveltekit-preload-data="hover">
     <div style="display: contents">%sveltekit.body%</div>
-</body>
-
+  </body>
 </html>
 
 <style>
-    * {
-        box-sizing: border-box;
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
 
-        margin: 0;
-        border: 0;
-        padding: 0;
-    }
+  :root {
+    --mRED: #d92837;
+    --mYELLOW: #ffff66;
+    --mGREEN: #21df80;
+    --mBLACK: #3a1427;
+  }
 
-    :root {
-        --mRED: #d92837;
-        --mYELLOW: #ffff66;
-        --mGREEN: #21df80;
-        --mBLACK: #3a1427;
-    }
+  a {
+    transition: 0.5s ease-out;
+    color: var(--mYELLOW);
+    text-decoration: none;
+  }
 
-    a {
-        text-decoration: none;
-        color: var(--mYELLOW);
-        transition: 0.5s ease-out;
-    }
+  a:hover {
+    color: var(--mGREEN);
+    text-decoration: underline;
+  }
 
-    a:hover {
-        text-decoration: underline;
-        color: var(--mGREEN);
-    }
+  body {
+    margin: 64px;
+    background-color: var(--mRED);
+  }
 
-    body {
-        background-color: var(--mRED);
-        margin: 64px;
-    }
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: absolute;
+    z-index: 50;
+    top: 64px;
+    left: 64px;
+    right: 64px;
+    opacity: 0;
+    padding-top: 32px;
+    transition: opacity 1s ease-out;
+    border: white 1px;
+    border-style: solid none none;
+  }
 
-    header {
-        position: absolute;
-        top: 64px;
-        left: 64px;
-        right: 64px;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        border: white 1px;
-        border-style: solid none none;
-        padding-top: 32px;
-        z-index: 50;
-        opacity: 0;
-        transition: opacity 1s ease-out;
-    }
+  .headerLinks {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0px 64px 0px 0px;
+  }
 
-    .headerLinks {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+  .headerLinks h5:hover,
+  .footerLinks p:hover {
+    color: var(--mYELLOW);
+    text-decoration: underline;
+  }
 
-        height: 64px;
-        padding: 0px 64px 0px 0px;
-    }
+  .headerTitle {
+    position: absolute;
+    z-index: 50;
+    top: 64px;
+    opacity: 0;
+    padding-top: 32px;
+    transition: opacity 1s ease-out;
+  }
 
-    .headerLinks h5:hover,
-    .footerLinks p:hover {
-        text-decoration: underline;
-        color: var(--mYELLOW);
-    }
+  footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 16px;
+    border: white 1px;
+    border-style: solid none none;
+  }
 
-    .headerTitle {
-        position: absolute;
-        top: 64px;
-        padding-top: 32px;
-        z-index: 50;
-        opacity: 0;
-        transition: opacity 1s ease-out;
-    }
+  .footerNotice {
+    display: flex;
+    flex-direction: row;
+    padding-right: 32px;
+  }
 
-    footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+  .footerNotice_Text {
+    max-width: 384px;
+    padding-left: 16px;
+  }
 
-        border: white 1px;
-        border-style: solid none none;
-        padding-top: 16px;
-    }
+  .footerLinks {
+    display: flex;
+    flex-direction: row;
+    padding-left: 16px;
+  }
 
-    .footerNotice {
-        display: flex;
-        flex-direction: row;
+  .footerLinks a {
+    padding-left: 16px;
+  }
 
-        padding-right: 32px;
-    }
+  .footerLinks p {
+    margin-top: -1%;
+  }
 
-    .footerNotice_Text {
-        padding-left: 16px;
+  /* Import Fonts */
+  @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@200;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap");
 
-        max-width: 384px;
-    }
+  h1 {
+    writing-mode: vertical-rl;
+    transition: all 0.5s ease-out;
+    font-size: 192px;
+    font-family: "Shippori Mincho", serif;
+    font-weight: 800;
+    line-height: 192px;
+    color: var(--mYELLOW);
+  }
 
-    .footerLinks {
-        display: flex;
-        flex-direction: row;
+  h2 {
+    writing-mode: vertical-rl;
+    transition: all 0.5s ease-out;
+    font-size: 96px;
+    font-family: "Shippori Mincho", serif;
+    font-weight: 800;
+    line-height: 96px;
+    color: var(--mYELLOW);
+  }
 
-        padding-left: 16px;
-    }
+  h3 {
+    transition: all 0.5s ease-out;
+    font-size: 64px;
+    font-family: "Shippori Mincho", serif;
+    font-weight: 600;
+    line-height: 64px;
+    color: var(--mYELLOW);
+  }
 
-    .footerLinks a {
-        padding-left: 16px;
-    }
+  h4 {
+    transition: all 0.5s ease-out;
+    font-size: 48px;
+    font-family: "Shippori Mincho", serif;
+    font-weight: 600;
+    line-height: 48px;
+    color: var(--mYELLOW);
+  }
 
-    .footerLinks p {
-        margin-top: -1%;
-    }
+  h5 {
+    transition: all 0.5s ease-out;
+    font-size: 24px;
+    font-family: "M PLUS 1 Code", sans-serif;
+    font-weight: 600;
+    color: white;
+  }
 
-    /* Import Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@200;400;600&family=Shippori+Mincho:wght@400;600;800&display=swap');
+  h6 {
+    margin-top: -1%;
+    transition: all 0.5s ease-out;
+    font-size: 12px;
+    font-family: "M PLUS 1 Code", sans-serif;
+    font-weight: 400;
+    color: white;
+  }
 
-    h1 {
-        font-family: 'Shippori Mincho', serif;
-        font-size: 192px;
-        font-weight: 800;
-        line-height: 192px;
-        color: var(--mYELLOW);
-        transition: all 0.5s ease-out;
-
-        writing-mode: vertical-rl;
-    }
-
-    h2 {
-        font-family: 'Shippori Mincho', serif;
-        font-size: 96px;
-        font-weight: 800;
-        line-height: 96px;
-        color: var(--mYELLOW);
-        transition: all 0.5s ease-out;
-
-        writing-mode: vertical-rl;
-    }
-
-    h3 {
-        font-family: 'Shippori Mincho', serif;
-        font-size: 64px;
-        font-weight: 600;
-        line-height: 64px;
-        color: var(--mYELLOW);
-        transition: all 0.5s ease-out;
-    }
-
-    h4 {
-        font-family: 'Shippori Mincho', serif;
-        font-size: 48px;
-        font-weight: 600;
-        line-height: 48px;
-        color: var(--mYELLOW);
-        transition: all 0.5s ease-out;
-    }
-
-    h5 {
-        font-family: 'M PLUS 1 Code', sans-serif;
-        font-size: 24px;
-        font-weight: 600;
-        color: white;
-        transition: all 0.5s ease-out;
-    }
-
-    h6 {
-        font-family: 'M PLUS 1 Code', sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        color: white;
-        transition: all 0.5s ease-out;
-        margin-top: -1%;
-    }
-
-    p {
-        font-family: 'M PLUS 1 Code', sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        color: white;
-        transition: all 0.5s ease-out;
-    }
+  p {
+    transition: all 0.5s ease-out;
+    font-size: 16px;
+    font-family: "M PLUS 1 Code", sans-serif;
+    font-weight: 400;
+    color: white;
+  }
 </style>
