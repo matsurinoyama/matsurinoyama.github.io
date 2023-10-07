@@ -5,25 +5,89 @@
   let direction1 = "left";
   let direction2 = "right";
   let images1 = [
-    { src: "/test/image_01.jpg", url: "/works/one" },
-    { src: "/test/image_02.png", url: "/works/two" },
-    { src: "/test/image_03.jpg", url: "/works" },
-    { src: "/test/image_04.jpg", url: "/works" },
-    { src: "/test/image_05.png", url: "/works" },
-    { src: "/test/image_06.jpg", url: "/works" },
-    { src: "/test/image_07.jpg", url: "/works" },
-    { src: "/test/image_08.jpg", url: "/works" },
+    {
+      src: "/test/image_01.jpg",
+      src_dith: "/test/image_01d.png",
+      url: "/works/one",
+    },
+    {
+      src: "/test/image_02.png",
+      src_dith: "/test/image_02d.png",
+      url: "/works/two",
+    },
+    {
+      src: "/test/image_03.jpg",
+      src_dith: "/test/image_03d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_04.jpg",
+      src_dith: "/test/image_04d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_05.png",
+      src_dith: "/test/image_05d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_06.jpg",
+      src_dith: "/test/image_06d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_07.jpg",
+      src_dith: "/test/image_07d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_08.jpg",
+      src_dith: "/test/image_08d.png",
+      url: "/works",
+    },
   ];
 
   let images2 = [
-    { src: "/test/image_09.jpg", url: "/works" },
-    { src: "/test/image_10.jpg", url: "/works" },
-    { src: "/test/image_11.jpg", url: "/works" },
-    { src: "/test/image_12.png", url: "/works" },
-    { src: "/test/image_13.png", url: "/works" },
-    { src: "/test/image_14.jpg", url: "/works" },
-    { src: "/test/image_15.jpg", url: "/works" },
-    { src: "/test/image_16.jpg", url: "/works" },
+    {
+      src: "/test/image_09.jpg",
+      src_dith: "/test/image_09d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_10.jpg",
+      src_dith: "/test/image_10d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_11.jpg",
+      src_dith: "/test/image_11d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_12.png",
+      src_dith: "/test/image_12d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_13.png",
+      src_dith: "/test/image_13d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_14.jpg",
+      src_dith: "/test/image_14d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_15.jpg",
+      src_dith: "/test/image_15d.png",
+      url: "/works",
+    },
+    {
+      src: "/test/image_16.jpg",
+      src_dith: "/test/image_16d.png",
+      url: "/works",
+    },
   ];
   let time = 5;
   let pageTitle = "茉莉の山";
@@ -70,6 +134,7 @@
     display: flex;
     flex-direction: column;
     padding: 24px 0px;
+    margin-top: -64px;
   }
 
   .carouselPadding {

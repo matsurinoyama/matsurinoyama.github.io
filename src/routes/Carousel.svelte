@@ -97,6 +97,7 @@
     {#each loopImages as image, index}
       <Carousel_Image
         imageSrc={image.src}
+        imageSrc_Dither={image.src_dith}
         imageAlt={`test-${index + 1}`}
         imageUrl={image.url}
         on:pauseCarousel={handleKey}
@@ -110,14 +111,14 @@
     display: flex;
     flex-direction: row;
     position: relative;
-    overflow-x: clip;
     width: calc(100% + 128px);
     margin-left: -64px;
   }
 
   .carouselTrack {
     display: flex;
-    animation: carouselAnim calc(var(--anim-time) * var(--total-num)) linear;
+    animation: carouselAnim calc(var(--anim-time) * var(--total-num)) linear
+      infinite;
     animation-play-state: running;
   }
 

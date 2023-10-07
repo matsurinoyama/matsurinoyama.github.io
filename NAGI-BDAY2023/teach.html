@@ -1,0 +1,66 @@
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  h1 {
+    font-family: "Fuzzy Bubbles", cursive;
+    font-size: 64px;
+  }
+  body {
+    background-color: pink;
+    color: #f666e0;
+  }
+  .container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    flex-direction: row;
+  }
+  .login {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    flex-direction: row;
+  }
+  .title {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    flex-direction: column;
+  }
+</style>
+
+<div class="container">
+  <div class="title">
+    <h1>敬語集</h1>
+    <h3>Post 一覧</h3>
+    <%= link_to "新規Postへ", new_post_path %> <%= page_entries_info @posts %>
+    <%= paginate @posts %>
+    <div class="post-container">
+      <% @posts.each do |t| %>
+      <div class="post">
+        <%= t.contents %> <%= t.title %>
+        <a href="<%= t.url %>">詳細へ</a>
+        <% if user_signed_in? %> <% if current_user.already_liked?(t) %> <%=
+        button_to post_like_path(id: t.id, post_id: t.id), method: :delete do %>
+        <i class="fas fa-heart"></i><%= t.likes.count %> <% end %> <% else %>
+        <%= button_to post_likes_path(id: t.id, post_id: t.id), method: :post do
+        %> <i class="far fa-heart"></i><%= t.likes.count %> <% end %> <% end %>
+        <% else %> <i class="far fa-heart"></i><%= t.likes.count %> <% end %>
+        <%= t.created_at %> <%#= link_to "詳細へ", post_path(t.id) %> <%=
+        link_to "編集する", edit_post_path(t.id) %> <%= button_to "削除する",
+        post_path(t.id), method: :delete %>
+      </div>
+      <% end %> <%= button_to 'ログアウト', destroy_user_session_path, method:
+      :delete %>
+    </div>
+  </div>
+  <div class="login">
+    <h3>投稿を検索</h3>
+    <%= form_tag({controller:"posts",action:"index"}, method: :get) do %> <%=
+    text_field_tag :search %> <%= submit_tag '検索する' %> <% end %>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<body>
+  <div class="utanContainer">
+    <div class="linkContainer">
+      <div class="loginContainer1">
+        <p>login</p>
+      </div>
+
+      <div class="loginContainer2">
+        <p>sign up</p>
+      </div>
+    </div>
+    <img src="static/utan2.png" alt="" />
+  </div>
+</body>
+
+<style>
+  * {
+    box-sizing: border-box;
+
+    margin: 0;
+    border: 0;
+    padding: 0;
+  }
+
+  body {
+    margin: 64px;
+  }
+
+  .utanContainer {
+    position: relative;
+    background-color: brown;
+    margin-left: -64px;
+    height: 512px;
+    width: 100vw;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+  }
+
+  .utanContainer img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .loginContainer1 {
+    position: relative;
+    margin-top: 114px;
+    margin-left: 42px;
+    margin-right: 185px;
+    background-color: aqua;
+    height: 64px;
+    width: 128px;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+  }
+
+  .loginContainer2 {
+    position: relative;
+    margin-top: 92px;
+    background-color: aqua;
+    height: 64px;
+    width: 128px;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+  }
+
+  .linkContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+  }
+</style>

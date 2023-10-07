@@ -8,6 +8,7 @@
   let isExpanded = false;
   let image = {};
   export let imageSrc = "";
+  export let imageSrc_Dither = "";
   export let imageAlt = "";
   export let imageUrl = "/works";
 
@@ -72,7 +73,12 @@
   role="button"
   tabindex="0"
 >
-  <img src={imageSrc} alt={imageAlt} />
+  <div class="imageContainer_Base">
+    <img src={imageSrc} alt={imageAlt} />
+  </div>
+  <div class="imageContainer_Overlay">
+    <img src={imageSrc_Dither} alt={imageAlt} />
+  </div>
 </div>
 
 <style>
@@ -92,25 +98,53 @@
     border-radius: 8px;
   }
 
+  .imageContainer_Base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+    transition: all 0.5s ease-in-out;
+    mix-blend-mode: exclusion;
+  }
+
+  .imageContainer_Base:hover {
+    opacity: 1;
+    mix-blend-mode: normal;
+  }
+
+  .imageContainer_Overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.25;
+    transition: all 0.75s steps(3, end);
+    mix-blend-mode: screen;
+  }
+
+  .imageContainer_Overlay img {
+    image-rendering: pixelated;
+  }
+
+  .imageContainer_Overlay:hover {
+    opacity: 0;
+  }
   .imageContainer:hover {
     outline: 0px solid rgba(255, 255, 255, 0);
     background-color: black;
-    border-radius: 0px;
   }
 
   .imageContainer img {
     object-fit: cover;
-    mix-blend-mode: exclusion;
-    filter: grayscale(30%) contrast(130%) brightness(115%);
+    /*mix-blend-mode: exclusion;
+    filter: grayscale(30%) contrast(130%) brightness(115%);*/
     width: 100%;
     height: 100%;
     transition: all 0.5s ease-in-out;
     border-radius: 8px;
-  }
-
-  .imageContainer img:hover {
-    filter: grayscale(0%) contrast(100%) brightness(100%);
-    border-radius: 0px;
   }
 
   .isExpanded {
@@ -128,6 +162,7 @@
   }
 
   .isExpanded img {
+    object-fit: cover;
     mix-blend-mode: normal;
     filter: grayscale(0%) contrast(100%) brightness(100%);
     z-index: 100;

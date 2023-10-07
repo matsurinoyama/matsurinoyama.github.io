@@ -82,6 +82,6 @@
     <a href="https://linkedin.com/in/matsurinoyama"
       ><IconBrandLinkedin size={16} stroke={1.5} color={"#ffffff"} /></a
     >
-    <a href="mailto:matsurinoyama@pm.me"><p>matsurinoyama@pm.me</p></a>
+    <a href="mailto:matsurinoyama@proton.me"><p>matsurinoyama@proton.me</p></a>
   </div>
 </footer>

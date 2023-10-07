@@ -1,19 +1,21 @@
 <script>
   import { onMount } from "svelte";
   export let data;
-  let headerTitle_ID;
+  let headerWork_ID;
 
   onMount(() => {
     setTimeout(() => {
       document.querySelector("header").style.opacity = "1";
-      headerTitle_ID.style.opacity = "1";
+      headerWork_ID.style.opacity = "1";
     }, 1000); // Change the delay time as needed
   });
 </script>
 
-<div class="headerTitle" bind:this={headerTitle_ID}>
-  <h2 style="letter-spacing: 32px;">{data.work.title}</h2>
+<div class="headerWork" bind:this={headerWork_ID}>
+  <h3 style="letter-spacing: 32px;">{data.work.title}</h3>
+  <h5>{data.work.description}</h5>
 </div>
+
 <div class="contentContainer">
   <img src={data.work.content} alt="image_01.jpg" />
 </div>
@@ -21,7 +23,7 @@
 <style>
   .contentContainer {
     position: relative;
-    width: calc(100% + 128px);
+    width: 100vw;
     height: 100vh;
     margin-top: -64px;
     margin-left: -64px;
@@ -29,7 +31,16 @@
 
   .contentContainer img {
     object-fit: cover;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .headerWork {
+    position: absolute;
+    z-index: 50;
+    top: 64px;
+    opacity: 0;
+    padding-top: 32px;
+    transition: opacity 1s ease-out;
   }
 </style>
