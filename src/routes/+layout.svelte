@@ -74,13 +74,13 @@
   </div>
   <div class="footerLinks">
     <a href="https://twitter.com/matsurinoyama"
-      ><IconBrandTwitter size={16} stroke={1.5} color={"#ffffff"} /></a
+      ><IconBrandTwitter size={18} stroke={1.5} /></a
     >
     <a href="https://instagram.com/matsurinoyama"
-      ><IconBrandInstagram size={16} stroke={1.5} color={"#ffffff"} /></a
+      ><IconBrandInstagram size={18} stroke={1.5} /></a
     >
     <a href="https://linkedin.com/in/matsurinoyama"
-      ><IconBrandLinkedin size={16} stroke={1.5} color={"#ffffff"} /></a
+      ><IconBrandLinkedin size={18} stroke={1.5} /></a
     >
     <a href="mailto:matsurinoyama@proton.me"><p>matsurinoyama@proton.me</p></a>
   </div>

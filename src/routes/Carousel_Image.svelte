@@ -83,7 +83,6 @@
 
 <style>
   .imageContainer {
-    outline: 1px solid white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,14 +93,30 @@
     margin: 0px calc(8px + 1px);
     transition: all 0.5s ease-in-out;
     background-color: var(--mRED);
+    filter: contrast(85%) brightness(115%) saturate(130%);
     cursor: pointer;
     border-radius: 8px;
+  }
+
+  .imageContainer img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s ease-in-out;
+    border-radius: 8px;
+  }
+
+  .imageContainer:hover {
+    background-color: black;
+    filter: contrast(100%) brightness(100%) saturate(100%);
   }
 
   .imageContainer_Base {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     height: 100%;
     width: 100%;
     opacity: 1;
@@ -109,15 +124,12 @@
     mix-blend-mode: exclusion;
   }
 
-  .imageContainer_Base:hover {
-    opacity: 1;
-    mix-blend-mode: normal;
-  }
-
   .imageContainer_Overlay {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     height: 100%;
     width: 100%;
     opacity: 0.25;
@@ -132,23 +144,8 @@
   .imageContainer_Overlay:hover {
     opacity: 0;
   }
-  .imageContainer:hover {
-    outline: 0px solid rgba(255, 255, 255, 0);
-    background-color: black;
-  }
-
-  .imageContainer img {
-    object-fit: cover;
-    /*mix-blend-mode: exclusion;
-    filter: grayscale(30%) contrast(130%) brightness(115%);*/
-    width: 100%;
-    height: 100%;
-    transition: all 0.5s ease-in-out;
-    border-radius: 8px;
-  }
 
   .isExpanded {
-    outline: 0px solid rgba(255, 255, 255, 0);
     position: relative;
     z-index: 100;
     transform: translateY(calc(var(--pos-y) * -1))
@@ -158,7 +155,7 @@
     height: 100vh;
     margin-bottom: 100vh;
     cursor: progress;
-    border-radius: 0px;
+    border-radius: 0;
   }
 
   .isExpanded img {

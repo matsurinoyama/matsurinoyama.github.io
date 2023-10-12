@@ -97,7 +97,7 @@
     {#each loopImages as image, index}
       <Carousel_Image
         imageSrc={image.src}
-        imageSrc_Dither={image.src_dith}
+        imageSrc_Dither={image.src_dither}
         imageAlt={`test-${index + 1}`}
         imageUrl={image.url}
         on:pauseCarousel={handleKey}

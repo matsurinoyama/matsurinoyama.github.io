@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import Carousel from "./Carousel.svelte";
+  import Carousel from "../../Carousel.svelte";
   let headerTitle_ID;
   let direction1 = "left";
   let direction2 = "right";
@@ -90,7 +90,7 @@
     },
   ];
   let time = 5;
-  let pageTitle = "茉莉の山";
+  let pageTitle = "2021年度作品集";
 
   onMount(() => {
     setTimeout(() => {
@@ -107,7 +107,7 @@
 </script>
 
 <div class="headerTitle" bind:this={headerTitle_ID}>
-  <h2 style="letter-spacing: 32px;">{@html pageTitle}</h2>
+  <h3 style="letter-spacing: 32px;">{@html pageTitle}</h3>
 </div>
 
 <div class="contentContainer">
