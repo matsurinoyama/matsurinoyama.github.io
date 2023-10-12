@@ -84,57 +84,57 @@
 <style>
   .imageContainer {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
-    position: relative;
+    filter: contrast(85%) brightness(115%) saturate(130%);
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+    margin: 0px calc(8px + 1px);
+    border-radius: 8px;
+    background-color: var(--mRED);
     width: var(--img-width);
     max-width: calc(100vw - 128px);
     height: var(--img-height);
-    margin: 0px calc(8px + 1px);
-    transition: all 0.5s ease-in-out;
-    background-color: var(--mRED);
-    filter: contrast(85%) brightness(115%) saturate(130%);
-    cursor: pointer;
-    border-radius: 8px;
   }
 
   .imageContainer img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
     transition: all 0.5s ease-in-out;
     border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .imageContainer:hover {
-    background-color: black;
     filter: contrast(100%) brightness(100%) saturate(100%);
+    background-color: black;
   }
 
   .imageContainer_Base {
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
-    height: 100%;
-    width: 100%;
+    left: 0;
     opacity: 1;
-    transition: all 0.5s ease-in-out;
     mix-blend-mode: exclusion;
+    transition: all 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
   }
 
   .imageContainer_Overlay {
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
-    height: 100%;
-    width: 100%;
+    left: 0;
     opacity: 0.25;
-    transition: all 0.75s steps(3, end);
     mix-blend-mode: screen;
+    transition: all 0.75s steps(3, end);
+    width: 100%;
+    height: 100%;
   }
 
   .imageContainer_Overlay img {
@@ -147,24 +147,24 @@
 
   .isExpanded {
     position: relative;
-    z-index: 100;
     transform: translateY(calc(var(--pos-y) * -1))
       translateX(calc(var(--pos-x) * -1));
+    z-index: 100;
+    cursor: progress;
+    margin-bottom: 100vh;
+    border-radius: 0;
     width: 100vw;
     max-width: none;
     height: 100vh;
-    margin-bottom: 100vh;
-    cursor: progress;
-    border-radius: 0;
   }
 
   .isExpanded img {
-    object-fit: cover;
+    z-index: 100;
     mix-blend-mode: normal;
     filter: grayscale(0%) contrast(100%) brightness(100%);
-    z-index: 100;
+    border-radius: 0;
     width: 100%;
     height: 100%;
-    border-radius: 0;
+    object-fit: cover;
   }
 </style>

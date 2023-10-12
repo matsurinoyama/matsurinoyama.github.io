@@ -11,7 +11,8 @@ export const works = [
     slug: "H&R",
     title: "Hit & Run",
     production: "2021年、Dipapansembilan Studio",
-    scope: "使用道具・ソフト: Blender、ペンタブ<br>制作範囲: スカルプト、コンセプトアート",
+    scope:
+      "使用道具・ソフト: Blender、ペンタブ<br>制作範囲: スカルプト、コンセプトアート",
     content: "/test/image_02.png",
   },
 

@@ -109,10 +109,10 @@
 <style>
   .carouselContainer {
     display: flex;
-    flex-direction: row;
     position: relative;
-    width: calc(100% + 128px);
+    flex-direction: row;
     margin-left: -64px;
+    width: calc(100% + 128px);
   }
 
   .carouselTrack {

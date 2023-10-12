@@ -4,18 +4,18 @@
 
 <style>
   .loaderContainer {
+    display: flex;
     position: fixed;
     top: 0;
-    left: 0;
-    bottom: 0;
     right: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
+    bottom: 0;
+    left: 0;
     justify-content: center;
     align-items: center;
-    background-color: var(--mYELLOW);
-    mix-blend-mode: exclusion;
     z-index: 999;
+    mix-blend-mode: exclusion;
+    background-color: var(--mYELLOW);
+    width: 100vw;
+    height: 100vh;
   }
 </style>
