@@ -17,19 +17,29 @@
 
   // --Random Icon on Reload--
   // Icon speed variations
-  const icon = [
+  const iconSrc = [
     "/icon_10-white.png",
     "/icon_15-white.png",
     "/icon_20-white.png",
     "/icon_25-white.png",
     "/icon_30-white.png",
   ];
+  // Icons on hover
+  const iconAlt = [
+    "/icon_10-yellow.png",
+    "/icon_15-yellow.png",
+    "/icon_20-yellow.png",
+    "/icon_25-yellow.png",
+    "/icon_30-yellow.png",
+  ];
   // Set a default image to avoid undefined source before the first mount
-  let rand_iconSpeed = icon[3];
+  let randSpeed_iconSrc = iconSrc[1];
+  let randSpeed_iconAlt = iconAlt[1];
   // Function to select a random image
   function selectRand_iconSpeed() {
-    const randIndex = Math.floor(Math.random() * icon.length);
-    rand_iconSpeed = icon[randIndex];
+    const randIndex = Math.floor(Math.random() * iconSrc.length);
+    randSpeed_iconSrc = iconSrc[randIndex];
+    randSpeed_iconAlt = iconAlt[randIndex];
   }
   // Call the function on component mount to set the initial image
   onMount(selectRand_iconSpeed);
@@ -51,9 +61,16 @@
     <a href="/works" target="_self"><h5>作品集</h5></a>
     <a href="/contact" target="_self"><h5>お問い合わせ</h5></a>
   </div>
-  <a href="/" target="_self"
-    ><img src={rand_iconSpeed} alt="Home" height="64px" /></a
-  >
+  <a href="/" target="_self">
+    <div class="headerIcon">
+      <div class="headerIcon_Alt">
+        <img src={randSpeed_iconAlt} alt="Home" />
+      </div>
+      <div class="headerIcon_Src">
+        <img src={randSpeed_iconSrc} alt="Home" />
+      </div>
+    </div>
+  </a>
 </header>
 
 <slot />

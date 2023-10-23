@@ -20,7 +20,9 @@
 </html>
 
 <style>
-  * {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
     margin: 0;
     border: 0;
@@ -46,9 +48,9 @@
   }
 
   body {
-    margin: 64px;
     background-color: var(--mRED);
-    max-width: 100vw;
+    width: 100vw;
+    max-width: 100%;
     overflow-x: hidden;
   }
 
@@ -66,6 +68,41 @@
     border: white 1px;
     border-style: solid none none;
     padding-top: 32px;
+  }
+
+  .headerIcon {
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+
+  .headerIcon img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .headerIcon_Src {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    width: 100%;
+    height: 100%;
+  }
+
+  .headerIcon_Src:hover {
+    opacity: 0;
+  }
+
+  .headerIcon_Alt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    width: 100%;
+    height: 100%;
   }
 
   .headerLinks {
@@ -89,13 +126,14 @@
     opacity: 0;
     z-index: 50;
     transition: opacity 1s ease-out;
-    padding-top: 32px;
+    margin: 32px 64px;
   }
 
   footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin: 32px 64px 64px;
     border: white 1px;
     border-style: solid none none;
     padding-top: 16px;

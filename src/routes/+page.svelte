@@ -133,11 +133,10 @@
   .contentContainer {
     display: flex;
     flex-direction: column;
-    margin-top: -64px;
-    padding: 24px 0px;
+    padding-top: 16px;
   }
 
   .carouselPadding {
-    padding: 8px 0px;
+    padding: 16px 0px 0px;
   }
 </style>
