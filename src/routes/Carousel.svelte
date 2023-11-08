@@ -98,7 +98,7 @@
       <Carousel_Image
         imageSrc={image.src}
         imageSrc_Dither={image.src_dither}
-        imageAlt={`test-${index + 1}`}
+        imageAlt={`workThumb_${index + 1}`}
         imageUrl={image.url}
         on:pauseCarousel={handleKey}
       />

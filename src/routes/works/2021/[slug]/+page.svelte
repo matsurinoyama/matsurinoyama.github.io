@@ -1,31 +1,31 @@
 <script>
-  import { IconArrowDownLeft } from "@tabler/icons-svelte";
+  import { IconArrowDownLeft, IconQuestionMark } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
   export let data;
-  let headerWork_ID;
-  let contentContainer_mainTitle_ID;
+  let headerTitle_ID;
+  let contentContainer_headerOverlay_ID;
 
   onMount(() => {
     setTimeout(() => {
       document.querySelector("header").style.opacity = "1";
-      headerWork_ID.style.opacity = "1";
-      contentContainer_mainTitle_ID.style.opacity = "1";
+      headerTitle_ID.style.opacity = "1";
+      contentContainer_headerOverlay_ID.style.opacity = "1";
     }, 1000); // Change the delay time as needed
   });
 </script>
 
-<div class="headerTitle" bind:this={headerWork_ID}>
-  <a href="../2021"
-    ><IconArrowDownLeft size={32} stroke={1.5} />
-    <h5>2021年度作品集に戻る</h5></a
-  >
+<div class="headerTitle" bind:this={headerTitle_ID}>
+  <a href="../2021">
+    <IconArrowDownLeft size={32} stroke={1.5} />
+    <h5>2021年度作品集に戻る</h5>
+  </a>
 </div>
 
-<div class="contentContainer_Main">
-  <img src={data.work.content} alt="image_01.jpg" />
+<div class="contentContainer_Header">
+  <img src={data.work.thumbnail} alt="image_01.jpg" />
   <div
-    class="contentContainer_mainOverlay"
-    bind:this={contentContainer_mainTitle_ID}
+    class="contentContainer_headerOverlay"
+    bind:this={contentContainer_headerOverlay_ID}
   >
     <div class="overlayText">
       <h3>{data.work.title}</h3>
@@ -37,28 +37,77 @@
   </div>
 </div>
 
+{#each data.work.content as content, index}
+  {#if index === 0}
+    <!-- Render the first content without the surrounding div -->
+    <div class="contentContainer_Body" id="wSeparator">
+      {@html content.html}
+    </div>
+  {/if}
+
+  {#if index > 0 && index < data.work.content.length - 1}
+    <!-- Render the middle content with the surrounding div -->
+    <div class="contentContainer_Body">
+      {@html content.html}
+    </div>
+  {/if}
+
+  {#if index === data.work.content.length - 1}
+    <!-- Render the last content without the surrounding div -->
+    <div class="contentContainer_Body">
+      {@html content.html}
+      <div class="contentContainer_Footer">
+        <div class="mediaContainer_Bottom">
+          <h6>スカルプト用のイラスト参考</h6>
+          <img src="/test/image_02-5.jpg" alt="" />
+        </div>
+        <p>
+          かっこうもうちのかっこう狸めを気持ちにつかれるやり直したた。またそう生意気ましでしという眼らします。いいかげんございましのますはたところが扉の愉快あたりのうちにはよろよろばかただて、それじゃ先生を出られるんたで。
+        </p>
+        <div class="linkContainer">
+          <a href="../2021">
+            <IconArrowDownLeft size={32} stroke={1.5} />
+            <h5>2021年度作品集に戻る</h5>
+          </a>
+          <a href="../2021">
+            <IconQuestionMark size={32} stroke={1.5} />
+            <h5>ランダムに作品を見る</h5>
+          </a>
+        </div>
+      </div>
+    </div>
+  {/if}
+{/each}
+
 <style>
-  .contentContainer_Main {
+  .headerTitle a,
+  .linkContainer a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 8px;
+    color: white;
+  }
+
+  .headerTitle a:hover,
+  .headerTitle h5:hover,
+  .linkContainer a:hover,
+  .linkContainer h5:hover {
+    color: var(--mYELLOW);
+  }
+  .contentContainer_Header {
+    display: flex;
     position: relative;
     width: 100%;
   }
 
-  .contentContainer_Main img {
+  .contentContainer_Header img {
     width: 100%;
     height: 100vh;
     object-fit: cover;
   }
 
-  .gradientSmall {
-    position: absolute;
-    top: calc(100% - 64px);
-    left: 0;
-    background: url(/gradient_128.svg) repeat-x;
-    width: 100vw;
-    height: 64px;
-  }
-
-  .contentContainer_mainOverlay {
+  .contentContainer_headerOverlay {
     display: flex;
     position: absolute;
     top: 0;
@@ -66,7 +115,7 @@
     align-items: flex-end;
     opacity: 0;
     transition: opacity 1s ease-out;
-    background: bottom url(/gradient_256.svg) repeat-x;
+    background: bottom url(/gradient_256-B.svg) repeat-x;
     background-size: auto 128px;
     padding: 64px;
     width: 100%;
@@ -86,16 +135,5 @@
 
   .overlayText_Subtitle p {
     margin-top: 16px;
-  }
-
-  .headerTitle a {
-    display: flex;
-    flex-direction: row;
-    color: white;
-  }
-
-  .headerTitle a:hover,
-  .headerTitle h5:hover {
-    color: var(--mYELLOW);
   }
 </style>
