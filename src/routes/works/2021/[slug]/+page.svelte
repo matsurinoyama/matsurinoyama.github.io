@@ -15,14 +15,14 @@
 </script>
 
 <div class="headerTitle" bind:this={headerTitle_ID}>
-  <a href="../2021">
+  <a href="./">
     <IconArrowDownLeft size={32} stroke={1.5} />
-    <h5>2021年度作品集に戻る</h5>
+    <h5>{data.work.collection}</h5>
   </a>
 </div>
 
 <div class="contentContainer_Header">
-  <img src={data.work.thumbnail} alt="image_01.jpg" />
+  <img src={data.work.thumbnail} alt={data.work.thumbnail_alt} />
   <div
     class="contentContainer_headerOverlay"
     bind:this={contentContainer_headerOverlay_ID}
@@ -58,18 +58,16 @@
       {@html content.html}
       <div class="contentContainer_Footer">
         <div class="mediaContainer_Bottom">
-          <h6>スカルプト用のイラスト参考</h6>
-          <img src="/test/image_02-5.jpg" alt="" />
+          <h6>{@html data.work.finalimg_sub}</h6>
+          <img src={data.work.finalimg} alt={data.work.finalimg_alt} />
         </div>
-        <p>
-          かっこうもうちのかっこう狸めを気持ちにつかれるやり直したた。またそう生意気ましでしという眼らします。いいかげんございましのますはたところが扉の愉快あたりのうちにはよろよろばかただて、それじゃ先生を出られるんたで。
-        </p>
+        <p>{data.work.finaltxt}</p>
         <div class="linkContainer">
-          <a href="../2021">
+          <a href="./">
             <IconArrowDownLeft size={32} stroke={1.5} />
-            <h5>2021年度作品集に戻る</h5>
+            <h5>{data.work.collection}</h5>
           </a>
-          <a href="../2021">
+          <a href="./">
             <IconQuestionMark size={32} stroke={1.5} />
             <h5>ランダムに作品を見る</h5>
           </a>
