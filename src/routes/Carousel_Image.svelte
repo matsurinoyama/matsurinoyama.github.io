@@ -90,7 +90,8 @@
     filter: contrast(85%) brightness(115%) saturate(130%);
     transition: all 0.5s ease-in-out;
     cursor: pointer;
-    margin: 0px calc(8px + 1px);
+    margin-top: 16px;
+    margin-left: 16px;
     border-radius: 8px;
     background-color: var(--mRED);
     width: var(--img-width);

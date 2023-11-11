@@ -16,7 +16,7 @@ export const works = [
         </p>
         <div class="mediaContainer_Left">
           <h6>スカルプトの側面</h6>
-          <img src="/test/image_02-1.png" alt="" />
+          <img src="/2021/H&R/render_02.png" alt="render_02.png" />
         </div>
         `,
       },

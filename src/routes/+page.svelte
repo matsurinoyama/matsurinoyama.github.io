@@ -11,8 +11,8 @@
       url: "/works/one",
     },
     {
-      src: "/test/image_02.png",
-      src_dither: "/test/image_02d.png",
+      src: "/2021/H&R/render_01.png",
+      src_dither: "/2021/H&R/dither.png",
       url: "/works/2021/H&R",
     },
     {
@@ -111,22 +111,19 @@
 </div>
 
 <div class="contentContainer">
-  <div class="carouselPadding">
-    <Carousel
-      carouselAnim_Duration={time}
-      carouselAnim_Direction={direction1}
-      images={images1}
-      on:removeHeader={handleKey}
-    />
-  </div>
-  <div class="carouselPadding">
-    <Carousel
-      carouselAnim_Duration={time}
-      carouselAnim_Direction={direction2}
-      images={images2}
-      on:removeHeader={handleKey}
-    />
-  </div>
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction1}
+    images={images1}
+    on:removeHeader={handleKey}
+  />
+
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction2}
+    images={images2}
+    on:removeHeader={handleKey}
+  />
 </div>
 
 <style>
@@ -134,9 +131,5 @@
     display: flex;
     flex-direction: column;
     padding-top: 16px;
-  }
-
-  .carouselPadding {
-    padding: 16px 0px 0px;
   }
 </style>

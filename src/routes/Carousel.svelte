@@ -75,10 +75,10 @@
     carouselAnim_Direction === "RIGHT"
   ) {
     carouselAnim_Key2 = "translateX(0px);";
-    carouselAnim_Key1 = "translateX(calc(var(--total-width)));";
+    carouselAnim_Key1 = "translateX(calc(var(--total-length)));";
   } else {
     carouselAnim_Key1 = "translateX(0px);";
-    carouselAnim_Key2 = "translateX(calc(var(--total-width)));";
+    carouselAnim_Key2 = "translateX(calc(var(--total-length)));";
   }
 
   // --Pause Carousel on Click--
@@ -92,7 +92,7 @@
   <div
     class="carouselTrack"
     bind:this={carouselTrack_ID}
-    style={`--total-width: -${totalWidth}px; --total-num: ${totalNum}; --anim-time: ${carouselAnim_Duration}s; --anim-key1: ${carouselAnim_Key1}; --anim-key2: ${carouselAnim_Key2};`}
+    style={`--total-length: -${totalWidth}px; --total-num: ${totalNum}; --anim-time: ${carouselAnim_Duration}s; --anim-key1: ${carouselAnim_Key1}; --anim-key2: ${carouselAnim_Key2};`}
   >
     {#each loopImages as image, index}
       <Carousel_Image
@@ -111,7 +111,6 @@
     display: flex;
     position: relative;
     flex-direction: row;
-    margin-left: -64px;
     width: calc(100% + 128px);
   }
 

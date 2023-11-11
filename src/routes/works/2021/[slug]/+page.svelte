@@ -1,6 +1,7 @@
 <script>
   import { IconArrowDownLeft, IconQuestionMark } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
+  import Slideshow from "../../../Slideshow.svelte";
   export let data;
   let headerTitle_ID;
   let contentContainer_headerOverlay_ID;

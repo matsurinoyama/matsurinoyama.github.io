@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import Carousel from "../Carousel.svelte";
+  import Carousel from "../VerticalCarousel.svelte";
   let headerTitle_ID;
   let direction1 = "left";
   let direction2 = "right";
@@ -11,8 +11,8 @@
       url: "/works/one",
     },
     {
-      src: "/test/image_02.png",
-      src_dither: "/test/image_02d.png",
+      src: "/2021/H&R/render_01.png",
+      src_dither: "/2021/H&R/dither.png",
       url: "/works/2021/H&R",
     },
     {
