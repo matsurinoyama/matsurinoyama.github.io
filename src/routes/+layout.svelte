@@ -80,8 +80,9 @@
     <img src="/icon_1-yellow.png" alt="Icon" height="32px" />
     <div class="footerNotice_Text">
       <h6>
-        Copyright (c) {currentYear} Azhan Rizan / 莉山礼司. All code written for
-        this website are licensed under the MIT License. Read the
+        Copyright (c) 2023 - {currentYear} Muhammad Azhan Bin Fadzlan Rizan (AKA:
+        Azhan Rizan, Reiji Rizan, matsurinoyama). All code written for this website
+        are licensed under the MIT License. Read the
         <a
           href="https://github.com/matsurinoyama/matsurinoyama.github.io/blob/master/LICENSE.md"
           >license</a
