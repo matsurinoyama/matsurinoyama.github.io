@@ -82,7 +82,7 @@
       <h6>
         Copyright (c) 2023 - {currentYear} Muhammad Azhan Bin Fadzlan Rizan (AKA:
         Azhan Rizan, Reiji Rizan, matsurinoyama). All code written for this website
-        are licensed under the MIT License. Read the
+        are licensed under the European Union Public License 1.2. Read the
         <a
           href="https://github.com/matsurinoyama/matsurinoyama.github.io/blob/master/LICENSE.md"
           >license</a
