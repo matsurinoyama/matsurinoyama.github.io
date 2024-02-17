@@ -4,7 +4,8 @@
   import Slideshow from "../../../Slideshow.svelte";
   export let data;
   let headerTitle_ID;
-  let contentContainer_headerOverlay_ID;
+  let contentContainer_headerOverlay_ID1;
+  let contentContainer_headerOverlay_ID2;
 
   function disableScroll() {
     // Get the current scroll position
@@ -25,7 +26,8 @@
     setTimeout(() => {
       document.querySelector("header").style.opacity = "1";
       headerTitle_ID.style.opacity = "1";
-      contentContainer_headerOverlay_ID.style.opacity = "1";
+      contentContainer_headerOverlay_ID1.style.opacity = "1";
+      contentContainer_headerOverlay_ID2.style.opacity = "0.5";
       setTimeout(() => {
         enableScroll();
       }, 1000);
@@ -43,8 +45,8 @@
 <div class="contentContainer_Header">
   <img src={data.work.thumbnail} alt={data.work.thumbnail_alt} />
   <div
-    class="contentContainer_headerOverlay"
-    bind:this={contentContainer_headerOverlay_ID}
+    class="contentContainer_headerOverlay_Bottom"
+    bind:this={contentContainer_headerOverlay_ID1}
   >
     <div class="overlayText">
       <h3>{data.work.title}</h3>
@@ -54,6 +56,10 @@
       </div>
     </div>
   </div>
+  <div
+    class="contentContainer_headerOverlay_Top"
+    bind:this={contentContainer_headerOverlay_ID2}
+  ></div>
 </div>
 
 {#each data.work.content as content, index}
@@ -124,19 +130,33 @@
     object-fit: cover;
   }
 
-  .contentContainer_headerOverlay {
+  .contentContainer_headerOverlay_Bottom {
     display: flex;
     position: absolute;
     top: 0;
+    right: 0;
+    bottom: 0;
     left: 0;
     align-items: flex-end;
     opacity: 0;
     transition: opacity 1s ease-out;
-    background: bottom url(/gradient_256-B.svg) repeat-x;
-    background-size: auto 128px;
+    background: bottom url(/gradient_512-B.svg) repeat-x;
+    background-size: auto 224px;
     padding: 64px;
-    width: 100%;
-    height: 100vh;
+  }
+
+  .contentContainer_headerOverlay_Top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    mix-blend-mode: exclusion;
+    transition: opacity 1s ease-out;
+    background: top url(/gradient_512-T.svg) repeat-x;
+    background-size: auto 224px;
+    pointer-events: none;
   }
 
   .overlayText {

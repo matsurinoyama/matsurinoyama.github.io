@@ -6,9 +6,9 @@
   let direction2 = "right";
   let images1 = [
     {
-      src: "/test/image_01.jpg",
-      src_dither: "/test/image_01d.png",
-      url: "/works/one",
+      src: "/2020/WWSA/drawing_01.jpg",
+      src_dither: "/2020/WWSA/dither.png",
+      url: "/works/2021/WWSA",
     },
     {
       src: "/2021/H&R/render_01.png",
@@ -41,8 +41,8 @@
       url: "/works",
     },
     {
-      src: "/test/image_08.jpg",
-      src_dither: "/test/image_08d.png",
+      src: "/test/image_01.jpg",
+      src_dither: "/test/image_01d.png",
       url: "/works",
     },
   ];
