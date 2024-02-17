@@ -6,11 +6,29 @@
   let headerTitle_ID;
   let contentContainer_headerOverlay_ID;
 
+  function disableScroll() {
+    // Get the current scroll position
+    const posY_Scroll = window.scrollY;
+    // Add styles to disable scrolling
+    document.body.style.overflow = "hidden";
+    document.body.style.top = `-${posY_Scroll}px`;
+  }
+
+  function enableScroll() {
+    // Add styles to enable scrolling
+    document.body.style.overflow = "";
+    document.body.style.top = "";
+  }
+
   onMount(() => {
+    disableScroll();
     setTimeout(() => {
       document.querySelector("header").style.opacity = "1";
       headerTitle_ID.style.opacity = "1";
       contentContainer_headerOverlay_ID.style.opacity = "1";
+      setTimeout(() => {
+        enableScroll();
+      }, 1000);
     }, 1000); // Change the delay time as needed
   });
 </script>

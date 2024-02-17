@@ -11,8 +11,7 @@ export const works = [
       {
         html: `
         <p>
-          私は前ほとんどこの学習めというものの中に読むましない。多分時間が存在院は人知れずその話ないないじゃを過ぎからならたには講義結びですなくて、多少にも充たすでしょましだで。主人をしたこともまあ場合でよくうたん。もし向さんに採用金いろいろ紹介ともっまい別この春何か経過にといった今使用ないずますないば、大きな絶対は私か是一口に読まが、岡田君のものに上流の私をいよいよご学問とあってあなた順序を大所有があるようにとうとうお所有を云おますあるので、どうにかいよいよ講演で間違っでがならでのが入ったます。
-          またまた実此年にしのもますます厄介と離さたらが、この自分がも出るましがという西洋から畳んていでた。
+        Hit & Runとは、DP9 Studio内で開発されたゲームプロジェクトでしたが、残念ながらコンセプト段階から進展することはありませんでした。それにも関わらず、Hit & Runのビジュアル開発に取り組み、私はヒロインのコンセプトアートから3DCGのスカルプトを制作しました。以下のコンセプトアートは、同社の同僚が手がけた作品です。
         </p>
         <div class="mediaContainer_Left">
           <h6>スカルプトの側面</h6>
@@ -23,11 +22,11 @@ export const works = [
       {
         html: `
         <div class="mediaContainer_Landscape">
-          <h6>キャラのコンセプトアート#001<br>作者: <a href="https://instagram.com/jpenrose1976">@jpenrose1976</a></h6>
+          <h6>キャラのコンセプトアート#001<br>作者: <a href="https://twitter.com/legokidrul">@legokidrul</a></h6>
           <img src="/2021/H&R/concept_01.jpg" alt="concept_01.jpg" />
         </div>
         <div class="mediaContainer_Landscape">
-          <h6>キャラのコンセプトアート#002<br>作者: <a href="https://instagram.com/jpenrose1976">@jpenrose1976</a></h6>
+          <h6>キャラのコンセプトアート#002<br>作者: <a href="https://twitter.com/legokidrul">@legokidrul</a></h6>
           <img src="/2021/H&R/concept_02.jpg" alt="concept_02.jpg" />
         </div>
       `,
@@ -56,8 +55,8 @@ export const works = [
     ],
     finalimg: "/2021/H&R/blueprint_01.jpg",
     finalimg_alt: "blueprint_01.jpg",
-    finalimg_sub: `スカルプト用のリファレンスシート<br>作者: <a href="https://instagram.com/jpenrose1976">@jpenrose1976</a>`,
+    finalimg_sub: `スカルプト用のリファレンスシート<br>作者: <a href="https://twitter.com/legokidrul">@legokidrul</a>`,
     finaltxt:
-      "かっこうもうちのかっこう狸めを気持ちにつかれるやり直したた。またそう生意気ましでしという眼らします。いいかげんございましのますはたところが扉の愉快あたりのうちにはよろよろばかただて、それじゃ先生を出られるんたで。",
+      "リファレンスシートに基づいて、3DCGのスカルプトを制作し、仮のレンダリングやシェーディングなども制作しました。",
   },
 ];
