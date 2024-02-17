@@ -64,7 +64,8 @@ export const works = [
     collection: "2020年度作品集に戻る",
     title: "Warna-Warni Shah Alam",
     production: "2020年、Dipapansembilan Studio",
-    scope: "使用道具・ソフト: Blender、ペンタブ<br>制作範囲: スカルプト",
+    scope:
+      "使用道具・ソフト: Illustrator、外装用上塗り塗料、ブームリフト<br>制作範囲: デザイン、塗料の塗り",
     thumbnail: "/2020/WWSA/drawing_01.jpg",
     thumbnail_alt: "drawing_01.jpg",
     content: [
