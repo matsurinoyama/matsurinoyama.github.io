@@ -78,38 +78,25 @@ export const works = [
           <h6>デザインの計画</h6>
           <img src="/2020/WWSA/drawing_02.jpg" alt="drawing_02.jpg" />
         </div>
-        <div class="mediaContainer_Landscape">
-          <h6>デザイン計画の根拠</h6>
-          <img src="/2020/WWSA/rationale_01.png" alt="rationale_01.png" />
-        </div>
         `,
       },
       {
         html: `
         <div class="mediaContainer_Landscape">
-          <h6>キャラのコンセプトアート#001<br>作者: <a href="https://twitter.com/legokidrul">@legokidrul</a></h6>
-          <img src="/2021/H&R/concept_01.jpg" alt="concept_01.jpg" />
+          <h6>BEFORE</h6>
+          <img src="/2020/WWSA/before_01.webp" alt="before_01.webp" />
+        </div>
+        <div class="mediaContainer_Landscape">
+          <h6>AFTER</h6>
+          <img src="/2020/WWSA/after_01.webp" alt="after_01.webp" />
         </div>
       `,
       },
       {
         html: `
         <div class="mediaContainer_Portrait">
-          <h6>3DCGのスカルプト</h6>
-            <iframe
-              title="Hit & Run Sculpt Test"
-              frameborder="0"
-              allowfullscreen
-              mozallowfullscreen="true"
-              webkitallowfullscreen="true"
-              allow="autoplay; fullscreen; xr-spatial-tracking"
-              xr-spatial-tracking
-              execution-while-out-of-viewport
-              execution-while-not-rendered
-              web-share
-              src="https://sketchfab.com/models/46e2e2df293d4997a49bbd78c206e6af/embed?autostart=1&camera=0"
-            >
-            </iframe>
+          <h6>デザイン計画の根拠</h6>
+          <img src="/2020/WWSA/rationale_01.webp" alt="rationale_01.webp" />
         </div>
       `,
       },
