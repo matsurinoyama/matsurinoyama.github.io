@@ -84,7 +84,7 @@
         Azhan Rizan, Reiji Rizan, matsurinoyama). All code written for this website
         is licensed under the EUPL. Read the
         <a
-          href="https://raw.githubusercontent.com/matsurinoyama/matsurinoyama.github.io/master/LICENSE.md"
+          href="https://github.com/matsurinoyama/matsurinoyama.github.io/blob/master/LICENSE.md"
           >license</a
         > for more details.
       </h6>
