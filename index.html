@@ -122,14 +122,14 @@
         gap: 5vh;
         padding: 10vh;
       }
-      .contentIcon {
+      .contentIcon_Container {
         display: flex;
         width: 10vh;
-        height: 10vh;
+        height: auto;
       }
-      .contentIcon img {
-        width: auto;
-        height: 100%;
+      .contentIcon_Container img {
+        width: 10vh;
+        height: auto;
       }
       .contentText {
         display: flex;
@@ -170,6 +170,14 @@
       }
 
       @media screen and (max-width: 1000px) {
+        .contentIcon_Container {
+          width: auto;
+          height: 10vh;
+        }
+        .contentIcon_Container img {
+          width: auto;
+          height: 10vh;
+        }
         .contentLinks {
           justify-content: space-between;
           gap: 0vh;
@@ -182,6 +190,10 @@
       @media screen and (max-width: 800px) {
         h4 {
           writing-mode: vertical-rl;
+        }
+        .contentIcon_Container {
+          justify-content: flex-end;
+          width: 100%;
         }
         .contentLinks_Container {
           flex-direction: row;
@@ -200,10 +212,6 @@
         .content {
           padding: 5vh;
         }
-        .contentIcon {
-          justify-content: flex-end;
-          width: 100%;
-        }
         .contentText {
           max-width: 100vw;
         }
@@ -218,17 +226,45 @@
   </head>
   <body>
     <div class="content">
-      <div class="contentIcon">
-        <img src="static/icon_10-yellow.png" alt="icon_10-yellow.png" />
+      <div class="contentIcon_Container">
+        <picture>
+          <source media="(max-width: 1000px)" srcset="static/temp-h.svg" />
+          <source media="(min-width: 500px)" srcset="static/temp-v.svg" />
+          <img src="static/temp-v.svg" alt="temp.svg" />
+        </picture>
       </div>
       <div class="contentText">
         <p>
-          いらっしゃいませ！残念ながら「茉莉の山」は開発中なので、2024年7月までこのサイトを再開する予定です。その間に、私のSNS（たまに作品を投稿します）や履歴書・連絡先等を以下に掲載しておきます。ご理解とご協力をお願いいたします。
+          いらっしゃいませ！残念ながら「茉莉の山」は開発中なので、
+          <script>
+            document.write(
+              new Date().getMonth() +
+                3 +
+                "月までこのサイトを再開する予定です。その間に、私のSNS（たまに作品を投稿します）や履歴書・連絡先等を以下に掲載しておきます。ご理解とご協力をお願いいたします。",
+            );
+          </script>
         </p>
         <p>
           Welcome! Unfortunately as "matsurinoyama" is still under development,
-          please expect the website to be back up and running by July 2024. In
-          the meantime, please find below my social media links (I sometimes
+          please expect the website to be back up and running by
+          <script>
+            const month = [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
+            document.write(month[new Date().getMonth() + 2] + ".");
+          </script>
+          In the meantime, please find below my social media links (I sometimes
           post my works here!) and resume/contact information. I appreciate your
           patience and understanding.
         </p>

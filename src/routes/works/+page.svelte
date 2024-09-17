@@ -1,14 +1,15 @@
 <script>
   import { onMount } from "svelte";
-  import Carousel from "../VerticalCarousel.svelte";
+  import Carousel from "../Carousel.svelte";
   let headerTitle_ID;
+  let workYear_ID;
   let direction1 = "left";
   let direction2 = "right";
   let images1 = [
     {
-      src: "/test/image_01.jpg",
-      src_dither: "/test/image_01d.png",
-      url: "/works/one",
+      src: "/2020/WWSA/drawing_01.jpg",
+      src_dither: "/2020/WWSA/dither.png",
+      url: "/works/2021/WWSA",
     },
     {
       src: "/2021/H&R/render_01.png",
@@ -41,8 +42,8 @@
       url: "/works",
     },
     {
-      src: "/test/image_08.jpg",
-      src_dither: "/test/image_08d.png",
+      src: "/test/image_01.jpg",
+      src_dither: "/test/image_01d.png",
       url: "/works",
     },
   ];
@@ -96,6 +97,7 @@
     setTimeout(() => {
       document.querySelector("header").style.opacity = "1";
       headerTitle_ID.style.opacity = "1";
+      workYear_ID.style.opacity = "1";
     }, 1000); // Change the delay time as needed
   });
 
@@ -103,6 +105,7 @@
   function handleKey() {
     document.querySelector("header").style.opacity = "0";
     headerTitle_ID.style.opacity = "0";
+    workYear_ID.style.opacity = "0";
   }
 </script>
 
@@ -111,21 +114,75 @@
 </div>
 
 <div class="contentContainer">
-  <div class="carouselPadding">
-    <Carousel
-      carouselAnim_Duration={time}
-      carouselAnim_Direction={direction1}
-      images={images1}
-      on:removeHeader={handleKey}
-    />
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction1}
+    images={images1}
+    on:removeHeader={handleKey}
+  />
+  <div class="yearContainer_R" bind:this={workYear_ID}>
+    <h3>２０２４年度</h3>
   </div>
-  <div class="carouselPadding">
-    <Carousel
-      carouselAnim_Duration={time}
-      carouselAnim_Direction={direction2}
-      images={images2}
-      on:removeHeader={handleKey}
-    />
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction2}
+    images={images2}
+    on:removeHeader={handleKey}
+  />
+  <div class="yearContainer_L" bind:this={workYear_ID}>
+    <h3>２０２３年度</h3>
+  </div>
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction1}
+    images={images1}
+    on:removeHeader={handleKey}
+  />
+  <div class="yearContainer_R"><h3>２０２２年度</h3></div>
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction2}
+    images={images2}
+    on:removeHeader={handleKey}
+  />
+  <div class="yearContainer_L" bind:this={workYear_ID}>
+    <h3>２０２１年度</h3>
+  </div>
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction1}
+    images={images1}
+    on:removeHeader={handleKey}
+  />
+  <div class="yearContainer_R" bind:this={workYear_ID}>
+    <h3>２０２０年度</h3>
+  </div>
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction2}
+    images={images2}
+    on:removeHeader={handleKey}
+  />
+  <div class="yearContainer_L" bind:this={workYear_ID}>
+    <h3>２０１９年度</h3>
+  </div>
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction1}
+    images={images1}
+    on:removeHeader={handleKey}
+  />
+  <div class="yearContainer_R" bind:this={workYear_ID}>
+    <h3>２０１８年度</h3>
+  </div>
+  <Carousel
+    carouselAnim_Duration={time}
+    carouselAnim_Direction={direction2}
+    images={images2}
+    on:removeHeader={handleKey}
+  />
+  <div class="yearContainer_L" bind:this={workYear_ID}>
+    <h3>２０１７年度</h3>
   </div>
 </div>
 
@@ -136,7 +193,23 @@
     padding-top: 16px;
   }
 
-  .carouselPadding {
-    padding: 16px 0px 0px;
+  .yearContainer_R {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    z-index: 10;
+    mix-blend-mode: exclusion;
+    margin: -96px 64px 32px;
+    pointer-events: none;
+  }
+
+  .yearContainer_L {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    z-index: 10;
+    mix-blend-mode: exclusion;
+    margin: -96px 64px 32px;
+    pointer-events: none;
   }
 </style>
