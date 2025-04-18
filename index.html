@@ -46,7 +46,6 @@
 
       body {
         display: flex;
-        justify-content: center;
         align-items: center;
         background-color: var(--mRED);
         width: 100vw;
@@ -119,172 +118,274 @@
       }
       .content {
         display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         gap: 5vh;
-        padding: 10vh;
+        padding: 5vh;
+        width: 100%;
+        min-height: 100vh;
       }
-      .contentIcon_Container {
+      .heading_Container {
         display: flex;
-        width: 10vh;
+        flex-direction: column;
+        gap: 5vh;
+        width: 20vh;
         height: auto;
       }
-      .contentIcon_Container img {
-        width: 10vh;
+      .heading_Container img {
+        width: 100%;
         height: auto;
+        min-height: 10vw;
       }
-      .contentText {
+      .headingMenu_Container {
+        display: flex;
+        align-items: end;
+        width: 100%;
+        height: 100%;
+      }
+      .headingMenu {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5vh;
+      }
+      .contentContact_Container {
         display: flex;
         flex-direction: column;
         gap: 1vh;
         max-width: 800px;
       }
-      .contentLinks_Container {
-        display: flex;
-        flex-direction: column;
-        padding-top: 2vh;
-      }
-      .contentLinks {
-        display: flex;
-        flex-direction: row;
-        gap: 0vh 5vh;
-
-        width: 75%;
-      }
       .contentContact {
         display: flex;
         flex-direction: column;
         gap: 2vh 0vh;
-        padding-top: 5vh;
+      }
+
+      .slide_Container {
+        position: absolute;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .slide {
+        position: absolute;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        background-position: center;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+      }
+
+      .slide.active {
+        opacity: 1;
+      }
+
+      .slideText {
+        position: absolute;
+        bottom: 5vh;
+        left: 5vh;
+        z-index: 1;
+      }
+
+      /* Optional navigation slideNavs */
+      .slideNav_Container {
+        display: flex;
+        position: fixed;
+        bottom: 5vh;
+        justify-content: center;
+        gap: 2.5vh;
+        z-index: 2;
+        width: 100%;
+      }
+
+      .slideNav {
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        width: 8px;
+        height: 8px;
+      }
+
+      .slideNav.active {
+        background-color: rgba(255, 255, 255, 1);
       }
 
       @media screen and (max-width: 1200px) {
-        .contentLinks {
-          width: 100%;
+        .heading_Container {
+          gap: 2.5vh;
+          width: 15vh;
         }
-        h4 {
-          font-size: 36px;
-          line-height: 36px;
-        }
-        .contentContact {
-          padding-top: 2vh;
+        h3 {
+          font-size: 48px;
+          line-height: 48px;
         }
       }
 
       @media screen and (max-width: 1000px) {
-        .contentIcon_Container {
-          width: auto;
-          height: 10vh;
-        }
-        .contentIcon_Container img {
-          width: auto;
-          height: 10vh;
-        }
-        .contentLinks {
-          justify-content: space-between;
-          gap: 0vh;
-        }
         .content {
-          flex-direction: column;
-        }
-      }
-
-      @media screen and (max-width: 800px) {
-        h4 {
-          writing-mode: vertical-rl;
-        }
-        .contentIcon_Container {
+          flex-direction: column-reverse;
           justify-content: flex-end;
-          width: 100%;
+          padding: 2.5vh;
         }
-        .contentLinks_Container {
-          flex-direction: row;
-          padding-top: 5vh;
+        .heading_Container {
+          flex-direction: row-reverse;
+          width: auto;
+          min-height: 10vh;
         }
-        .contentLinks {
-          flex-direction: column;
-          justify-content: flex-start;
-          gap: 2vh;
+        .heading_Container img {
+          width: auto;
+          min-height: 10vh;
+        }
+        .headingMenu_Container {
+          align-items: start;
+          padding: 0;
         }
         .contentContact {
           flex-direction: row;
+          align-items: start;
+          gap: 0vh 2vh;
+        }
+        .slideText {
+          bottom: 2.5vh;
+          left: 2.5vh;
+        }
+        .slideNav {
+          opacity: 0;
+          cursor: none;
+        }
+        h3 {
+          writing-mode: vertical-rl;
         }
       }
       @media screen and (max-width: 500px) {
         .content {
-          padding: 5vh;
+          padding: 1vh;
         }
-        .contentText {
+        .contentContact_Container {
           max-width: 100vw;
         }
-        .contentLinks {
-          gap: 4vh;
+        .headingMenu {
+          gap: 5vh;
         }
         .contentContact {
-          gap: 2vh;
+          gap: 0vh 1vh;
+        }
+        .slideText {
+          bottom: 1vh;
+          left: 1vh;
         }
       }
     </style>
   </head>
   <body>
+    <div class="slide_Container">
+      <div
+        class="slide"
+        style="background-image: url(static/2020/WWSA/after_02.jpg)"
+      >
+        <div class="slideText"><p>Warna-Warni Shah Alam, 2020</p></div>
+      </div>
+      <div
+        class="slide"
+        style="background-image: url(static/2023/PAWD/PAM1.jpg)"
+      >
+        <div class="slideText"><p>PAM Awards 2023, 2023</p></div>
+      </div>
+      <div
+        class="slide"
+        style="background-image: url(static/2024/001/preview.gif)"
+      >
+        <div class="slideText"><p>untitled video experiment, 2024</p></div>
+      </div>
+      <div
+        class="slide"
+        style="background-image: url(static/2025/SMG/bathroom.jpg)"
+      >
+        <div class="slideText">
+          <p>Mamorigami No Me, 2025</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slideNav_Container"></div>
+
+    <script>
+      // Slideshow functionality
+      const slides = document.querySelectorAll(".slide");
+      const slideNavsContainer = document.querySelector(".slideNav_Container");
+      let currentIndex = 0;
+
+      // Create navigation slideNavs
+      slides.forEach((_, index) => {
+        const slideNav = document.createElement("div");
+        slideNav.classList.add("slideNav");
+        if (index === 0) slideNav.classList.add("active");
+        slideNav.addEventListener("click", () => goToSlide(index));
+        slideNavsContainer.appendChild(slideNav);
+      });
+
+      const slideNavs = document.querySelectorAll(".slideNav");
+
+      function updateSlides() {
+        slides.forEach((slide, index) => {
+          slide.classList.toggle("active", index === currentIndex);
+        });
+        slideNavs.forEach((slideNav, index) => {
+          slideNav.classList.toggle("active", index === currentIndex);
+        });
+      }
+
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlides();
+      }
+
+      function goToSlide(index) {
+        currentIndex = index;
+        updateSlides();
+      }
+
+      // Start the slideshow
+      updateSlides();
+      setInterval(nextSlide, 10000);
+
+      // Optional: Handle window resize
+      window.addEventListener("resize", () => {
+        slides.forEach((slide) => {
+          // Force redraw to maintain aspect ratio
+          slide.style.backgroundImage = slide.style.backgroundImage;
+        });
+      });
+    </script>
     <div class="content">
-      <div class="contentIcon_Container">
+      <div class="contentContact_Container">
+        <div class="contentContact">
+          <h3>
+            <a href="mailto:hello@03080.jp">hello@03080.jp</a>
+          </h3>
+          <h3>
+            <a href="tel:+817089993485">+81 70 8999 3485</a>
+          </h3>
+        </div>
+      </div>
+      <div class="heading_Container">
         <picture>
           <source media="(max-width: 1000px)" srcset="static/temp-h.svg" />
           <source media="(min-width: 500px)" srcset="static/temp-v.svg" />
           <img src="static/temp-v.svg" alt="temp.svg" />
         </picture>
-      </div>
-      <div class="contentText">
         <p>
-          <script>
-            let futureMonthIndex = (new Date().getMonth() + 2) % 12;
-            document.write(
-              "いらっしゃいませ！残念ながら「茉莉の山」は開発中なので、" +
-                (futureMonthIndex + 1) +
-                "月までこのサイトを再開する予定です。その間に、私のSNS（たまに作品を投稿します）や履歴書・連絡先等を以下に掲載しておきます。ご理解とご協力をお願いいたします。",
-            );
-          </script>
+          Multimedia Creative based in Kyoto and Shah Alam. Currently studying
+          at Kyoto Seika University. Please note that the website is still being
+          worked on as on right now 🏗️
         </p>
-        <p>
-          Welcome! Unfortunately as "matsurinoyama" is still under development,
-          please expect the website to be back up and running by
-          <script>
-            const month = [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
-            ];
-            document.write(month[futureMonthIndex] + ".");
-          </script>
-          In the meantime, please find below my social media links (I sometimes
-          post my works here!) and resume/contact information. I appreciate your
-          patience and understanding.
-        </p>
-        <div class="contentLinks_Container">
-          <div class="contentLinks">
-            <h5><a href="https://instagram.com/03080.jp">Instagram</a></h5>
-            <h5><a href="https://youtube.com/@matsurinoyama">YouTube</a></h5>
-            <h5><a href="https://bsky.app/profile/03080.jp">Bluesky</a></h5>
-            <h5 style="white-space: nowrap">
-              <a href="static/resume/日本語.pdf">履歴書</a>
-            </h5>
-            <h5><a href="static/resume/English.pdf">Resume</a></h5>
-          </div>
-          <div class="contentContact">
-            <h4>
-              <a href="mailto:hello@03080.jp">hello@03080.jp</a>
-            </h4>
-            <h4>
-              <a href="tel:+817089993485">+81 70 8999 3485</a>
-            </h4>
+        <div class="headingMenu_Container">
+          <div class="headingMenu">
+            <h5><a href="https://www.instagram.com/03080.jp">Works</a></h5>
+            <h5><a href="static/resume/English.pdf">Résumé</a></h5>
+            <h5><a href="jp/index.html">JP</a></h5>
           </div>
         </div>
       </div>
