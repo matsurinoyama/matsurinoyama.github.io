@@ -130,9 +130,13 @@
         flex-direction: column;
         gap: 5vh;
         width: 20vh;
-        height: auto;
       }
-      .heading_Container img {
+      .headingIcon_Container {
+        display: flex;
+        flex-direction: column;
+        gap: 5vh;
+      }
+      .headingIcon_Container img {
         width: 100%;
         height: auto;
         min-height: 10vw;
@@ -162,6 +166,8 @@
 
       .slide_Container {
         position: absolute;
+        top: 0;
+        left: 0;
         z-index: -1;
         width: 100vw;
         height: 100vh;
@@ -214,9 +220,13 @@
 
       @media screen and (max-width: 1200px) {
         .heading_Container {
-          gap: 2.5vh;
+          gap: 5vh;
           width: 15vh;
         }
+        .headingIcon_Container {
+          gap: 2.5vh;
+        }
+
         h3 {
           font-size: 48px;
           line-height: 48px;
@@ -232,11 +242,13 @@
         .heading_Container {
           flex-direction: row-reverse;
           width: auto;
-          min-height: 10vh;
         }
-        .heading_Container img {
+        .headingIcon_Container {
+          align-items: end;
+        }
+        .headingIcon_Container img {
           width: auto;
-          min-height: 10vh;
+          height: 15vh;
         }
         .headingMenu_Container {
           align-items: start;
@@ -268,6 +280,11 @@
         }
         .headingMenu {
           gap: 5vh;
+        }
+        .headingIcon_Container img {
+          width: auto;
+          height: 10vh;
+          min-height: 10vw;
         }
         .contentContact {
           gap: 0vh 1vh;
@@ -371,16 +388,18 @@
         </div>
       </div>
       <div class="heading_Container">
-        <picture>
-          <source media="(max-width: 1000px)" srcset="static/temp-h.svg" />
-          <source media="(min-width: 500px)" srcset="static/temp-v.svg" />
-          <img src="static/temp-v.svg" alt="temp.svg" />
-        </picture>
-        <p>
-          Multimedia Creative based in Kyoto and Shah Alam. Currently studying
-          at Kyoto Seika University. Please note that the website is still being
-          worked on as on right now 🏗️
-        </p>
+        <div class="headingIcon_Container">
+          <picture>
+            <source media="(max-width: 1000px)" srcset="static/temp-h.svg" />
+            <source media="(min-width: 500px)" srcset="static/temp-v.svg" />
+            <img src="static/temp-v.svg" alt="temp.svg" />
+          </picture>
+          <p>
+            Multimedia Creative based in Kyoto and Shah Alam. Currently studying
+            at Kyoto Seika University. Please note that the website is still
+            being worked on as on right now 🏗️
+          </p>
+        </div>
         <div class="headingMenu_Container">
           <div class="headingMenu">
             <h5><a href="https://www.instagram.com/03080.jp">Works</a></h5>
