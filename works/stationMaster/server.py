@@ -1,10 +1,12 @@
 import os
 import time
+import io
+import zipfile
 import cv2
 import mediapipe as mp
 import numpy as np
 from pathlib import Path
-from flask import Flask, request, send_from_directory, jsonify, abort
+from flask import Flask, request, send_from_directory, send_file, jsonify, abort
 
 
 ROOT_DIR = Path(__file__).resolve().parent
@@ -177,6 +179,39 @@ def get_upload(filename: str):
 @app.get("/faces/<path:filename>")
 def get_face(filename: str):
     return send_from_directory(FACES_DIR, filename)
+
+
+@app.get('/faces')
+def list_faces():
+    """Return a JSON list of aligned face filenames and their public URLs."""
+    try:
+        files = sorted([p.name for p in FACES_DIR.iterdir() if p.is_file()])
+        base = request.url_root.rstrip('/')
+        items = [{
+            'filename': name,
+            'url': f"{base}/faces/{name}"
+        } for name in files]
+        return jsonify(items)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@app.get('/faces/download_all')
+def download_all_faces():
+    """Return a ZIP archive containing all aligned face files."""
+    try:
+        files = [p for p in FACES_DIR.iterdir() if p.is_file()]
+        if not files:
+            return jsonify({'status': 'error', 'message': 'No face files found'}), 404
+
+        mem = io.BytesIO()
+        with zipfile.ZipFile(mem, mode='w', compression=zipfile.ZIP_DEFLATED) as zf:
+            for p in files:
+                zf.write(p, arcname=p.name)
+        mem.seek(0)
+        return send_file(mem, mimetype='application/zip', as_attachment=True, download_name='faces.zip')
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
 if __name__ == "__main__":

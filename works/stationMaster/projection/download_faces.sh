@@ -1,0 +1,1 @@
+export SSL_CERT_FILE="$(python3 -c 'import certifi; print(certifi.where())')"; while true; do before=$(find data -type f -exec shasum {} \; 2>/dev/null | shasum); python3 download_faces.py; after=$(find data -type f -exec shasum {} \; 2>/dev/null | shasum); if [ "$before" != "$after" ]; then echo "$(date): new/changed files detected"; fi; sleep 10; done
