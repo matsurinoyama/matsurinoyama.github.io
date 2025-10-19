@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>matsurinoyama / works / stationMaster</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>みんなの駅長</h1>
+      <p class="subtitle">
+        ここから写真をアップロードして、京都・木野駅で開催される「みんなの駅長」に参加しよう！
+        アップロードされた写真は、「未来のえいでん」展が終了するまで作品の中で登場します。
+      </p>
+    </header>
+
+    <main class="container">
+      <!-- Step 1: Choose method -->
+      <section id="step-choice" class="step active">
+        <h2>Choose how to add your photo</h2>
+        <div class="choice-buttons">
+          <button id="chooseUpload" class="choice-btn">
+            <span class="icon">📁</span>
+            <span class="text">Upload existing photo</span>
+          </button>
+          <button id="chooseCamera" class="choice-btn">
+            <span class="icon">📷</span>
+            <span class="text">Take new photo</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Step 2: Upload existing photo -->
+      <section id="step-upload" class="step">
+        <h2>Upload existing photo</h2>
+        <div class="upload-area">
+          <input type="file" accept="image/*" id="fileInput" name="image" />
+          <div class="upload-hint">
+            Click to select a photo from your device
+          </div>
+        </div>
+        <div class="step-controls">
+          <button id="backFromUpload" class="btn-secondary">Back</button>
+        </div>
+      </section>
+
+      <!-- Step 2: Camera capture -->
+      <section id="step-camera" class="step">
+        <h2>Take a photo</h2>
+        <div class="camera">
+          <div class="video-wrap">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="overlay" aria-hidden="true"></canvas>
+            <div class="guidance" id="guidanceText">
+              Center your face in the oval and capture when ready
+            </div>
+          </div>
+          <div class="controls">
+            <button id="captureBtn" disabled>Capture</button>
+            <button id="stopCameraBtn" disabled>Stop</button>
+          </div>
+        </div>
+        <div class="step-controls">
+          <button id="backFromCamera" class="btn-secondary">Back</button>
+        </div>
+      </section>
+
+      <!-- Step 3: Preview and confirm -->
+      <section id="step-preview" class="step">
+        <h2>Preview your photo</h2>
+        <div id="preview" class="preview-large"></div>
+        <div class="preview-controls">
+          <button id="confirmUpload" class="btn-primary">
+            Confirm & Upload
+          </button>
+          <button id="retryPhoto" class="btn-secondary">Try again</button>
+        </div>
+        <div class="hint">
+          Tips: Face forward, keep eyes open, neutral expression, remove
+          hats/glasses if possible.
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
