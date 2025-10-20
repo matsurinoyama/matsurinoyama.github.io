@@ -7,7 +7,7 @@ int rows = 7;
 PVector[][] points;
 int draggedI = -1, draggedJ = -1;
 float dragThreshold = 10;
-boolean editMode = true;
+boolean editMode = false;
 boolean dragAllMode = false;
 PVector dragAllOffset = new PVector(0, 0);
 
