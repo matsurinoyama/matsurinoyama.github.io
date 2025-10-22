@@ -27,4 +27,4 @@ EXPOSE 8000
 
 # Use a shell command so the $PORT environment variable (provided by Heroku) is expanded.
 # If PORT is not set, fall back to 8000 for local testing.
-CMD ["sh", "-c", "gunicorn server:app --bind 0.0.0.0:${PORT:-8000} --workers 1 --threads 2 --max-requests 200 --max-requests-jitter 50 --timeout 120"]
+CMD ["sh", "-c", "gunicorn server:app --bind 0.0.0.0:${PORT:-8000} --workers 1 --threads 4 --max-requests 200 --max-requests-jitter 50 --timeout 120"]

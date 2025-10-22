@@ -2,6 +2,7 @@
 <html lang="jp">
   <head>
     <meta charset="utf-8" />
+    <link rel="icon" href="favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>みんなの駅長</title>
     <link rel="stylesheet" href="styles.css" />
@@ -18,36 +19,36 @@
     <main class="container">
       <!-- Step 1: Choose method -->
       <section id="step-choice" class="step active">
-        <h2>Choose how to add your photo</h2>
+        <h2>写真を投稿する方法</h2>
         <div class="choice-buttons">
           <button id="chooseUpload" class="choice-btn">
             <span class="icon">📁</span>
-            <span class="text">Upload existing photo</span>
+            <span class="text">既存の写真をアップロードする</span>
           </button>
           <button id="chooseCamera" class="choice-btn">
             <span class="icon">📷</span>
-            <span class="text">Take new photo</span>
+            <span class="text">新しい写真を撮影する</span>
           </button>
         </div>
       </section>
 
       <!-- Step 2: Upload existing photo -->
       <section id="step-upload" class="step">
-        <h2>Upload existing photo</h2>
+        <h2>既存の写真をアップロードする</h2>
         <div class="upload-area">
           <input type="file" accept="image/*" id="fileInput" name="image" />
           <div class="upload-hint">
-            Click to select a photo from your device
+            デバイスから写真を選択してください
           </div>
         </div>
         <div class="step-controls">
-          <button id="backFromUpload" class="btn-secondary">Back</button>
+          <button id="backFromUpload" class="btn-secondary">戻る</button>
         </div>
       </section>
 
       <!-- Step 2: Camera capture -->
       <section id="step-camera" class="step">
-        <h2>Take a photo</h2>
+        <h2>新しい写真を撮影する</h2>
         <div class="camera">
           <div class="video-wrap">
             <video id="video" autoplay playsinline></video>
@@ -57,28 +58,27 @@
             </div>
           </div>
           <div class="controls">
-            <button id="captureBtn" disabled>Capture</button>
-            <button id="stopCameraBtn" disabled>Stop</button>
+            <button id="captureBtn" disabled>撮影</button>
+            <button id="stopCameraBtn" disabled>中止</button>
           </div>
         </div>
         <div class="step-controls">
-          <button id="backFromCamera" class="btn-secondary">Back</button>
+          <button id="backFromCamera" class="btn-secondary">戻る</button>
         </div>
       </section>
 
       <!-- Step 3: Preview and confirm -->
       <section id="step-preview" class="step">
-        <h2>Preview your photo</h2>
+        <h2>投稿する写真のプレビュー</h2>
         <div id="preview" class="preview-large"></div>
         <div class="preview-controls">
           <button id="confirmUpload" class="btn-primary">
-            Confirm & Upload
+            確認してアップロードする
           </button>
-          <button id="retryPhoto" class="btn-secondary">Try again</button>
+          <button id="retryPhoto" class="btn-secondary">もう一度やり直す</button>
         </div>
         <div class="hint">
-          Tips: Face forward, keep eyes open, neutral expression, remove
-          hats/glasses if possible.
+            撮影のコツ：正面を向き、目を開け、表情は中立に。可能であれば帽子や眼鏡を外してください。
         </div>
       </section>
     </main>
