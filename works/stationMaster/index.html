@@ -54,34 +54,40 @@
             <video id="video" autoplay playsinline></video>
             <canvas id="overlay" aria-hidden="true"></canvas>
             <div class="guidance" id="guidanceText">
-              Center your face in the oval and capture when ready
+                丸の中に顔を合わせ、準備ができたら撮影してください。
             </div>
           </div>
           <div class="controls">
             <button id="captureBtn" disabled>撮影</button>
-            <button id="stopCameraBtn" disabled>中止</button>
+            <button id="backFromCamera" class="btn-secondary" disabled>戻る</button>
           </div>
-        </div>
-        <div class="step-controls">
-          <button id="backFromCamera" class="btn-secondary">戻る</button>
         </div>
       </section>
 
       <!-- Step 3: Preview and confirm -->
       <section id="step-preview" class="step">
         <h2>投稿する写真のプレビュー</h2>
+        <div class="hint">
+            撮影のコツ：正面を向き、目を開け、表情は中立に。<br>可能であれば帽子や眼鏡を外してください。
+        </div>
         <div id="preview" class="preview-large"></div>
         <div class="preview-controls">
           <button id="confirmUpload" class="btn-primary">
             確認してアップロードする
           </button>
-          <button id="retryPhoto" class="btn-secondary">もう一度やり直す</button>
+          <button id="retryPhoto" class="btn-secondary">やり直す</button>
         </div>
         <div class="hint">
-            撮影のコツ：正面を向き、目を開け、表情は中立に。可能であれば帽子や眼鏡を外してください。
+            アップロードすることにより、<a href="privacy.html" class="privacy-link">プライバシーポリシー</a>に同意したものとみなされます。
         </div>
       </section>
     </main>
+
+    <footer class="app-footer">
+      <p>
+        © 2025 <a href="https://03080.jp" class="privacy-link">03080.jp</a> 「みんなの駅長」における個人情報の取り扱いについては<a href="privacy.html" class="privacy-link">プライバシーポリシー</a>をご覧ください。
+      </p>
+    </footer>
 
     <script src="app.js"></script>
   </body>

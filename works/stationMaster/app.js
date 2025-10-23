@@ -19,8 +19,6 @@ const chooseCamera = document.getElementById("chooseCamera");
 const backFromUpload = document.getElementById("backFromUpload");
 
 // Camera elements
-const startCameraBtn = document.getElementById("startCameraBtn");
-const stopCameraBtn = document.getElementById("stopCameraBtn");
 const captureBtn = document.getElementById("captureBtn");
 const backFromCamera = document.getElementById("backFromCamera");
 
@@ -69,10 +67,10 @@ chooseCamera.addEventListener("click", async () => {
     });
     video.srcObject = mediaStream;
     enable(captureBtn, true);
-    enable(stopCameraBtn, true);
+    enable(backFromCamera, true);
     startOverlayLoop();
   } catch (err) {
-    alert("Camera access denied or unavailable");
+    alert("カメラのアクセスが拒否されたまたは利用できません。");
   }
 });
 
@@ -100,12 +98,6 @@ backFromCamera.addEventListener("click", () => {
   clearPhotoData();
 });
 
-// Camera starts automatically when choosing camera option, so this is no longer needed
-
-stopCameraBtn.addEventListener("click", () => {
-  stopCamera();
-});
-
 function stopCamera() {
   if (animationId) cancelAnimationFrame(animationId);
   if (overlay) {
@@ -117,7 +109,7 @@ function stopCamera() {
     mediaStream = null;
   }
   enable(captureBtn, false);
-  enable(stopCameraBtn, false);
+  enable(backFromCamera, false);
 }
 
 captureBtn.addEventListener("click", () => {
@@ -162,25 +154,37 @@ confirmUpload.addEventListener("click", async () => {
     const res = await fetch("/upload", { method: "POST", body: formData });
     if (res.ok) {
       const data = await res.json();
-      alert(data.message || "Photo uploaded successfully!");
+      alert(data.message || "写真が正常にアップロードされました！");
       // Reset to start
       clearPhotoData();
       fileInput.value = "";
       showStep("step-choice");
     } else {
       const error = await res.text();
-      alert(`Upload failed: ${error}`);
+      alert(`アップロードエラー： ${error}`);
     }
   } catch (err) {
-    alert("Upload failed: " + err.message);
+    alert("アップロードエラー：" + err.message);
   }
 });
 
-retryPhoto.addEventListener("click", () => {
+retryPhoto.addEventListener("click", async () => {
   if (currentMethod === "upload") {
     showStep("step-upload");
   } else {
     showStep("step-camera");
+    // Restart camera when retrying
+    try {
+      mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+      });
+      video.srcObject = mediaStream;
+      enable(captureBtn, true);
+      enable(backFromCamera, true);
+      startOverlayLoop();
+    } catch (err) {
+      alert("カメラのアクセスが拒否されたまたは利用できません。");
+    }
   }
 });
 
@@ -223,7 +227,7 @@ function startOverlayLoop() {
     ctx.restore();
 
     guidanceText.textContent =
-      "Center your face in the oval and capture when ready";
+      "丸の中に顔を合わせ、準備ができたら撮影してください。";
   }
   draw();
 }
