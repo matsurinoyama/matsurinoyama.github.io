@@ -269,12 +269,3 @@ Language detection priority:
 ✅ Clean URL structure (`/jp/` and `/en/`)
 ✅ Language switcher on each page
 ✅ Server responses match page language
-
-## Migration Notes
-
-### Old Files (can be removed after testing)
-- `index.html` (root) → replaced by `index_redirect.html`
-- `index_en.html` → moved to `en/index.html`
-
-### Static Resources
-CSS, JavaScript, and uploaded files remain in the root directory and are referenced with relative paths (`../`).
