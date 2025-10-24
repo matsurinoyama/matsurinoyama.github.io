@@ -1,6 +1,7 @@
 /* Basic reset */
 * {
   box-sizing: border-box;
+  font-family: "M PLUS Rounded 1c", sans-serif;
 }
 html, body {
   height: 100%;
@@ -9,8 +10,6 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
   color: #111;
   background: #fafafa;
 }
@@ -36,7 +35,7 @@ body {
 .container {
   flex: 1 0 auto;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   margin: 24px auto;
   padding: 0 16px;
 }
@@ -261,5 +260,99 @@ button[disabled] {
   text-decoration: none;
 }
 .privacy-link:hover {
+  text-decoration: underline;
+}
+
+/* Language selector (root page) */
+body.language-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.language-selector {
+  text-align: center;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.language-selector h1 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+}
+.language-selector p {
+  color: #666;
+  margin: 0 0 30px 0;
+}
+.language-selector .buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.language-selector a {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.btn-ja {
+  background: #0ea5e9;
+  color: white;
+}
+.btn-ja:hover {
+  background: #0284c7;
+}
+.btn-en {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+.btn-en:hover {
+  background: #e5e7eb;
+}
+.loading {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Privacy page */
+.privacy-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  line-height: 1.8;
+}
+.privacy-content h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+.privacy-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+.privacy-content p {
+  margin-bottom: 1rem;
+}
+.privacy-content ul {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+.privacy-content li {
+  margin-bottom: 0.5rem;
+}
+.back-link {
+  display: inline-block;
+  margin: 2rem 0;
+  color: #0ea5e9;
+  text-decoration: none;
+}
+.back-link:hover {
   text-decoration: underline;
 }

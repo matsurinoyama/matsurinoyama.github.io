@@ -4,69 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Everyone's Stationmaster / みんなの駅長</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background: #fafafa;
-            color: #333;
-        }
-        .language-selector {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        h1 {
-            margin: 0 0 10px 0;
-            font-size: 24px;
-        }
-        p {
-            color: #666;
-            margin: 0 0 30px 0;
-        }
-        .buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: center;
-        }
-        a {
-            display: inline-block;
-            padding: 12px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .btn-ja {
-            background: #0ea5e9;
-            color: white;
-        }
-        .btn-ja:hover {
-            background: #0284c7;
-        }
-        .btn-en {
-            background: #f3f4f6;
-            color: #374151;
-            border: 1px solid #d1d5db;
-        }
-        .btn-en:hover {
-            background: #e5e7eb;
-        }
-        .loading {
-            color: #666;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="language-page">
     <div class="language-selector" id="selector">
         <h1>みんなの駅長 / Everyone's Stationmaster</h1>
         <p>言語を選択してください / Please select your language</p>
