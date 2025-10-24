@@ -202,3 +202,79 @@ heroku ps:autoscale:enable web --min=1 --max=5 --app your-app-name
 Which to choose?
 - If you hit R14 (memory quota exceeded) for single requests, scaling OUT won’t fix it — you need to scale UP (bigger dyno) or reduce memory usage.
 - If memory is now stable but you need more throughput, scale OUT with more web dynos.
+
+
+
+# Language-Specific Directory Structure
+
+## Overview
+The application now supports Japanese and English versions in separate directories with automatic language detection.
+
+## Directory Structure
+
+```
+works/stationMaster/
+├── index_redirect.html     # Root page with auto language detection
+├── app.js                  # Shared JavaScript (language-aware)
+├── styles.css              # Shared styles
+├── server.py              # Flask backend (language-aware)
+├── jp/                    # Japanese version
+│   ├── index.html         # Japanese upload page
+│   └── privacy.html       # Japanese privacy policy
+└── en/                    # English version
+    ├── index.html         # English upload page
+    └── privacy_en.html    # English privacy policy
+```
+
+## URL Structure
+
+- **Root**: `eiden.03080.jp/` → Auto-detects language and redirects
+- **Japanese**: `eiden.03080.jp/jp/` → Japanese interface
+- **English**: `eiden.03080.jp/en/` → English interface
+
+## Language Detection
+
+### Root Page (index_redirect.html)
+1. Detects browser language using `navigator.language`
+2. If Japanese (`ja`), redirects to `/jp/`
+3. Otherwise, redirects to `/en/`
+4. Shows manual language selector with 1.5s delay before auto-redirect
+
+### Backend (server.py)
+Language detection priority:
+1. Checks URL path (`/jp/` or `/en/`)
+2. Checks referer header for `index_en.html` or language paths
+3. Falls back to `Accept-Language` header
+4. Default: Japanese
+
+### Frontend (app.js)
+- Reads `data-lang` attribute from `<body>` tag
+- Loads appropriate message strings (ja or en)
+- All alerts and UI text use language-specific messages
+
+## Server Routes
+
+```python
+@app.get("/")              # Serves index_redirect.html (auto-detect)
+@app.get("/jp/")           # Serves jp/index.html
+@app.get("/en/")           # Serves en/index.html
+@app.post("/upload")       # Upload endpoint (language-aware responses)
+```
+
+## Features
+
+✅ Automatic language detection based on browser settings
+✅ Manual language selection available
+✅ All error messages in appropriate language
+✅ Clean URL structure (`/jp/` and `/en/`)
+✅ Language switcher on each page
+✅ Server responses match page language
+
+## Migration Notes
+
+### Old Files (can be removed after testing)
+- `index.html` (root) → replaced by `index_redirect.html`
+- `index_en.html` → moved to `en/index.html`
+
+### Static Resources
+CSS, JavaScript, and uploaded files remain in the root directory and are referenced with relative paths (`../`).

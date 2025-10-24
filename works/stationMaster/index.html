@@ -1,92 +1,115 @@
-<!doctype html>
-<html lang="jp">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>みんなの駅長</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="app-header">
-      <h1>みんなの駅長</h1>
-      <p class="subtitle">
-        ここから写真をアップロードして、京都・木野駅で開催される「みんなの駅長」に参加しよう！
-        アップロードされた写真は、「未来のえいでん」展が終了するまで作品の中で登場します。
-      </p>
-    </header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everyone's Stationmaster / みんなの駅長</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #fafafa;
+            color: #333;
+        }
+        .language-selector {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        p {
+            color: #666;
+            margin: 0 0 30px 0;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+        a {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-ja {
+            background: #0ea5e9;
+            color: white;
+        }
+        .btn-ja:hover {
+            background: #0284c7;
+        }
+        .btn-en {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        .btn-en:hover {
+            background: #e5e7eb;
+        }
+        .loading {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector" id="selector">
+        <h1>みんなの駅長 / Everyone's Stationmaster</h1>
+        <p>言語を選択してください / Please select your language</p>
+        <div class="buttons">
+            <a href="jp/" class="btn-ja">日本語</a>
+            <a href="en/" class="btn-en">English</a>
+        </div>
+    </div>
 
-    <main class="container">
-      <!-- Step 1: Choose method -->
-      <section id="step-choice" class="step active">
-        <h2>写真を投稿する方法</h2>
-        <div class="choice-buttons">
-          <button id="chooseUpload" class="choice-btn">
-            <span class="icon">📁</span>
-            <span class="text">既存の写真をアップロードする</span>
-          </button>
-          <button id="chooseCamera" class="choice-btn">
-            <span class="icon">📷</span>
-            <span class="text">新しい写真を撮影する</span>
-          </button>
-        </div>
-      </section>
+    <script>
+        // Detect user's preferred language from browser settings
+        function detectLanguage() {
+            const userLang = navigator.language || navigator.userLanguage;
+            // Check if Japanese is preferred
+            if (userLang.startsWith('ja')) {
+                return 'ja';
+            }
+            // Default to English for all other languages
+            return 'en';
+        }
 
-      <!-- Step 2: Upload existing photo -->
-      <section id="step-upload" class="step">
-        <h2>既存の写真をアップロードする</h2>
-        <div class="upload-area">
-          <input type="file" accept="image/*" id="fileInput" name="image" />
-          <div class="upload-hint">
-            デバイスから写真を選択してください
-          </div>
-        </div>
-        <div class="step-controls">
-          <button id="backFromUpload" class="btn-secondary">戻る</button>
-        </div>
-      </section>
+        // Auto-redirect based on browser language (with 1.5 second delay to allow manual selection)
+        const preferredLang = detectLanguage();
+        const selector = document.getElementById('selector');
+        
+        // Show loading message
+        const loadingMsg = document.createElement('p');
+        loadingMsg.className = 'loading';
+        loadingMsg.textContent = preferredLang === 'ja' 
+            ? '日本語版に自動で移動します...' 
+            : 'Redirecting to English version...';
+        loadingMsg.style.marginTop = '20px';
+        loadingMsg.style.fontSize = '14px';
+        selector.appendChild(loadingMsg);
 
-      <!-- Step 2: Camera capture -->
-      <section id="step-camera" class="step">
-        <h2>新しい写真を撮影する</h2>
-        <div class="camera">
-          <div class="video-wrap">
-            <video id="video" autoplay playsinline></video>
-            <canvas id="overlay" aria-hidden="true"></canvas>
-            <div class="guidance" id="guidanceText">
-                丸の中に顔を合わせ、準備ができたら撮影してください。
-            </div>
-          </div>
-          <div class="controls">
-            <button id="captureBtn" disabled>撮影</button>
-            <button id="backFromCamera" class="btn-secondary" disabled>戻る</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Step 3: Preview and confirm -->
-      <section id="step-preview" class="step">
-        <h2>投稿する写真のプレビュー</h2>
-        <div class="hint">
-            撮影のコツ：正面を向き、目を開け、表情は中立に。<br>可能であれば帽子や眼鏡を外してください。
-        </div>
-        <div id="preview" class="preview-large"></div>
-        <div class="preview-controls">
-          <button id="confirmUpload" class="btn-primary">
-            確認してアップロードする
-          </button>
-          <button id="retryPhoto" class="btn-secondary">やり直す</button>
-        </div>
-        <div class="hint">
-            アップロードすることにより、<a href="privacy.html" class="privacy-link">プライバシーポリシー</a>に同意したものとみなされます。
-        </div>
-      </section>
-    </main>
-    <footer class="app-footer">
-      <p>
-        「みんなの駅長」における個人情報の取り扱いについては<br><a href="privacy.html" class="privacy-link">プライバシーポリシー</a>をご覧ください。<br>© 2025 <a href="https://03080.jp" class="privacy-link">03080.jp</a>
-      </p>
-    </footer>
-    <script src="app.js"></script>
-  </body>
+        // Redirect after delay
+        setTimeout(() => {
+            if (preferredLang === 'ja') {
+                window.location.href = 'jp/';
+            } else {
+                window.location.href = 'en/';
+            }
+        }, 1500);
+    </script>
+</body>
 </html>

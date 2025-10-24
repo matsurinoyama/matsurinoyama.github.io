@@ -39,23 +39,38 @@ def get_landmarks(img):
     points = np.array([(int(lm.x * w), int(lm.y * h)) for lm in landmarks], dtype=np.float32)
     return points
 
-def align_face_to_reference(input_img_path, reference_img_path, output_path):
+def align_face_to_reference(input_img_path, reference_img_path, output_path, lang='ja'):
     """Align input face to reference using similarity (no shear),
     fallback to full affine only if needed."""
+    
+    error_messages = {
+        'ja': {
+            'load_failed': '画像を読み込めませんでした',
+            'no_face': '顔が検出されませんでした',
+            'alignment_failed': '位置調整に失敗しました'
+        },
+        'en': {
+            'load_failed': 'Could not load images',
+            'no_face': 'Face not detected in one of the images',
+            'alignment_failed': 'Alignment failed'
+        }
+    }
+    msg = error_messages[lang]
+    
     try:
         # Load images
         input_img = cv2.imread(str(input_img_path))
         reference_img = cv2.imread(str(reference_img_path))
         
         if input_img is None or reference_img is None:
-            return False, "Could not load images"
+            return False, msg['load_failed']
         
         # Get landmarks
         input_landmarks = get_landmarks(input_img)
         ref_landmarks = get_landmarks(reference_img)
         
         if input_landmarks is None or ref_landmarks is None:
-            return False, "Face not detected in one of the images"
+            return False, msg['no_face']
         
         # Choose 3 key points: left eye, right eye, nose tip
         ref_pts = np.array([
@@ -98,7 +113,7 @@ def align_face_to_reference(input_img_path, reference_img_path, output_path):
         return True, "Face aligned successfully"
         
     except Exception as e:
-        return False, f"Alignment failed: {str(e)}"
+        return False, f"{msg['alignment_failed']}: {str(e)}"
 
 app = Flask(
     __name__,
@@ -111,17 +126,58 @@ app = Flask(
 def root():
     return send_from_directory(ROOT_DIR, "index.html")
 
+@app.get("/jp/")
+def japanese_page():
+    return send_from_directory(ROOT_DIR / "jp", "index.html")
+
+@app.get("/en/")
+def english_page():
+    return send_from_directory(ROOT_DIR / "en", "index.html")
+
 
 @app.post("/upload")
 def upload():
+    # Detect language from Accept-Language header or referer
+    lang = 'ja'
+    referer = request.headers.get('Referer', '')
+    if '/en/' in referer:
+        lang = 'en'
+    elif '/jp/' in referer:
+        lang = 'ja'
+    else:
+        # Fallback to Accept-Language header
+        accept_lang = request.headers.get('Accept-Language', '')
+        if accept_lang and not accept_lang.startswith('ja'):
+            lang = 'en'
+    
+    messages = {
+        'ja': {
+            'no_image': '画像ファイルが見つかりません',
+            'empty_filename': 'ファイル名が空です',
+            'upload_failed': 'アップロードに失敗しました',
+            'face_aligned': '写真がアップロードされ、顔の位置が調整されました',
+            'alignment_failed': '写真はアップロードされましたが、顔の位置調整に失敗しました',
+            'upload_success': '写真が正常にアップロードされました'
+        },
+        'en': {
+            'no_image': 'No image file found',
+            'empty_filename': 'Empty filename',
+            'upload_failed': 'Upload failed',
+            'face_aligned': 'Photo uploaded and face aligned successfully',
+            'alignment_failed': 'Photo uploaded but face alignment failed',
+            'upload_success': 'Photo uploaded successfully'
+        }
+    }
+    msg = messages[lang]
+    
     try:
         # Expecting multipart/form-data with field name 'image'
         if "image" not in request.files:
-            return jsonify({"status": "error", "message": "No image file part in the request"}), 400
+            return jsonify({"status": "error", "message": msg['no_image']}), 400
 
         file = request.files["image"]
         if file.filename == "":
-            return jsonify({"status": "error", "message": "Empty filename"}), 400
+            return jsonify({"status": "error", "message": msg['empty_filename']}), 400
 
         # Basic filename sanitation and unique naming
         name, ext = os.path.splitext(file.filename)
@@ -133,7 +189,7 @@ def upload():
         
         print(f"Saved uploaded file to: {save_path}")
     except Exception as e:
-        return jsonify({"status": "error", "message": f"Upload failed: {str(e)}"}), 500
+        return jsonify({"status": "error", "message": f"{msg['upload_failed']}: {str(e)}"}), 500
 
     # Try to align face if reference image exists
     reference_path = ROOT_DIR / "reference.jpg"
@@ -141,7 +197,7 @@ def upload():
         print(f"Reference image found at: {reference_path}")
         aligned_name = f"aligned_{ts}{ext}"
         aligned_path = FACES_DIR / aligned_name
-        success, message = align_face_to_reference(save_path, reference_path, aligned_path)
+        success, message = align_face_to_reference(save_path, reference_path, aligned_path, lang)
         
         if success:
             print(f"Face alignment successful: {aligned_path}")
@@ -151,7 +207,7 @@ def upload():
                 "path": f"/uploads/{safe_name}",
                 "aligned_filename": aligned_name,
                 "aligned_path": f"/faces/{aligned_name}",
-                "message": "Image uploaded and face aligned"
+                "message": msg['face_aligned']
             })
         else:
             print(f"Face alignment failed: {message}")
@@ -159,7 +215,7 @@ def upload():
                 "status": "warning",
                 "filename": safe_name,
                 "path": f"/uploads/{safe_name}",
-                "message": f"Image uploaded but alignment failed: {message}"
+                "message": f"{msg['alignment_failed']}: {message}"
             })
     else:
         print("No reference image found, skipping alignment")
@@ -167,7 +223,7 @@ def upload():
             "status": "ok",
             "filename": safe_name,
             "path": f"/uploads/{safe_name}",
-            "message": "Image uploaded (no reference for alignment)"
+            "message": msg['upload_success']
         })
 
 

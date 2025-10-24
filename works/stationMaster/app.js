@@ -26,6 +26,27 @@ const backFromCamera = document.getElementById("backFromCamera");
 const confirmUpload = document.getElementById("confirmUpload");
 const retryPhoto = document.getElementById("retryPhoto");
 
+// Language detection
+const lang = document.body.getAttribute('data-lang') || 'ja';
+
+// Messages
+const messages = {
+  ja: {
+    cameraAccessDenied: "カメラのアクセスが拒否されたまたは利用できません。",
+    uploadSuccess: "写真が正常にアップロードされました！",
+    uploadError: "アップロードエラー: ",
+    guidanceText: "丸の中に顔を合わせ、準備ができたら撮影してください。"
+  },
+  en: {
+    cameraAccessDenied: "Camera access was denied or is not available.",
+    uploadSuccess: "Photo uploaded successfully!",
+    uploadError: "Upload error: ",
+    guidanceText: "Align your face in the oval and capture when ready."
+  }
+};
+
+const msg = messages[lang];
+
 // State
 let mediaStream = null;
 let animationId = null;
@@ -70,7 +91,7 @@ chooseCamera.addEventListener("click", async () => {
     enable(backFromCamera, true);
     startOverlayLoop();
   } catch (err) {
-    alert("カメラのアクセスが拒否されたまたは利用できません。");
+    alert(msg.cameraAccessDenied);
   }
 });
 
@@ -154,17 +175,17 @@ confirmUpload.addEventListener("click", async () => {
     const res = await fetch("/upload", { method: "POST", body: formData });
     if (res.ok) {
       const data = await res.json();
-      alert(data.message || "写真が正常にアップロードされました！");
+      alert(data.message || msg.uploadSuccess);
       // Reset to start
       clearPhotoData();
       fileInput.value = "";
       showStep("step-choice");
     } else {
       const error = await res.text();
-      alert(`アップロードエラー： ${error}`);
+      alert(msg.uploadError + error);
     }
   } catch (err) {
-    alert("アップロードエラー：" + err.message);
+    alert(msg.uploadError + err.message);
   }
 });
 
@@ -183,7 +204,7 @@ retryPhoto.addEventListener("click", async () => {
       enable(backFromCamera, true);
       startOverlayLoop();
     } catch (err) {
-      alert("カメラのアクセスが拒否されたまたは利用できません。");
+      alert(msg.cameraAccessDenied);
     }
   }
 });
@@ -226,8 +247,7 @@ function startOverlayLoop() {
     ctx.stroke();
     ctx.restore();
 
-    guidanceText.textContent =
-      "丸の中に顔を合わせ、準備ができたら撮影してください。";
+    guidanceText.textContent = msg.guidanceText;
   }
   draw();
 }
