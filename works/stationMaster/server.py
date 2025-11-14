@@ -195,7 +195,24 @@ def upload():
     reference_path = ROOT_DIR / "reference.jpg"
     if reference_path.exists():
         print(f"Reference image found at: {reference_path}")
-        aligned_name = f"aligned_{ts}{ext}"
+        
+        # Find the next sequential number for aligned faces
+        existing_aligned = [
+            f for f in FACES_DIR.iterdir() 
+            if f.is_file() and f.name.lower().startswith("aligned_")
+        ]
+        max_num = 0
+        for f in existing_aligned:
+            try:
+                # Extract number from aligned_N.ext
+                num_str = f.stem.split('_')[1]  # e.g., "aligned_123" -> "123"
+                num = int(num_str)
+                max_num = max(max_num, num)
+            except (ValueError, IndexError):
+                pass  # Skip files that don't match the pattern
+        
+        next_num = max_num + 1
+        aligned_name = f"aligned_{next_num}{ext}"
         aligned_path = FACES_DIR / aligned_name
         success, message = align_face_to_reference(save_path, reference_path, aligned_path, lang)
         
