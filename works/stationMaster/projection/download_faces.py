@@ -73,6 +73,40 @@ def needs_download(session, url, dest):
     return False
 
 
+def get_next_available_number(directory):
+    """Find the next available aligned_N number in the directory."""
+    max_num = 0
+    if os.path.exists(directory):
+        for fn in os.listdir(directory):
+            if fn.lower().startswith('aligned_'):
+                try:
+                    # Extract number from aligned_N.ext
+                    base = os.path.splitext(fn)[0]
+                    num_str = base.split('_')[1]
+                    num = int(num_str)
+                    max_num = max(max_num, num)
+                except (ValueError, IndexError):
+                    continue
+    return max_num + 1
+
+
+def get_local_filename(original_fn, directory):
+    """
+    If a file with the same name exists locally, generate a new sequential name.
+    Otherwise return the original filename.
+    """
+    dest = os.path.join(directory, original_fn)
+    if not os.path.exists(dest):
+        return original_fn
+    
+    # File exists, need to generate new sequential name
+    ext = os.path.splitext(original_fn)[1]  # e.g., .jpg, .jpeg, .png
+    next_num = get_next_available_number(directory)
+    new_fn = f"aligned_{next_num}{ext}"
+    print(f"File {original_fn} already exists locally, renaming to {new_fn}")
+    return new_fn
+
+
 def main(workers=4):
     print('Querying index:', FACES_INDEX_URL)
     try:
@@ -91,8 +125,10 @@ def main(workers=4):
         url = it.get('url') if isinstance(it, dict) else None
         if not fn or not url:
             continue
-        dest = os.path.join(OUT_DIR, fn)
-        tasks.append((fn, url, dest))
+        # Check if file exists and get appropriate local filename
+        local_fn = get_local_filename(fn, OUT_DIR)
+        dest = os.path.join(OUT_DIR, local_fn)
+        tasks.append((local_fn, url, dest))
 
     # Try parallel downloads with requests if available
     try:
@@ -102,8 +138,8 @@ def main(workers=4):
         with ThreadPoolExecutor(max_workers=workers) as ex:
             futures = {}
             for fn, url, dest in tasks:
-                if needs_download(session, url, dest):
-                    futures[ex.submit(download_file_requests, session, url, dest)] = fn
+                # Always download since we've already determined the correct filename
+                futures[ex.submit(download_file_requests, session, url, dest)] = fn
             for fut in as_completed(futures):
                 fn = futures[fut]
                 try:
@@ -124,13 +160,13 @@ def main(workers=4):
     # urllib fallback (sequential)
     downloaded = 0
     for fn, url, dest in tasks:
-        if not os.path.exists(dest):
-            print('Downloading', fn)
-            try:
-                download_file_urllib(url, dest)
-                downloaded += 1
-            except Exception as e:
-                print('Failed to download', fn, e)
+        # Always download since we've already determined the correct filename
+        print('Downloading', fn)
+        try:
+            download_file_urllib(url, dest)
+            downloaded += 1
+        except Exception as e:
+            print('Failed to download', fn, e)
     print('Done. downloaded=', downloaded)
 
 
