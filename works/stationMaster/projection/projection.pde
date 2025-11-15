@@ -39,7 +39,6 @@ boolean newFileTransitioning = false; // flag to prevent normal cycling during n
 HashMap<String, PImage> textureCache = new HashMap<String, PImage>();
 // Track usage order for a simple LRU eviction policy
 ArrayDeque<String> cacheOrder = new ArrayDeque<String>(); // most-recently used at tail
-HashMap<String, Long> mtimes = new HashMap<String, Long>();
 ArrayList<String> loadQueue = new ArrayList<String>(); // absolute paths
 long lastPoll = 0;
 
@@ -222,12 +221,13 @@ void pollFolderAndQueueLoads() {
     // Reset to newest image when files change
     if (imageFiles != null && imageFiles.size() > 0) {
       String newestName = new File(imageFiles.get(0)).getName();
+      boolean newestActuallyChanged = (lastNewestName == null || !newestName.equals(lastNewestName));
       
       // Immediately transition to newest file
       PImage newestTex = getTexture(newestName);
       println("[new-file] newestTex=" + (newestTex != null ? "loaded" : "null") + ", img=" + (img != null ? "exists" : "null") + ", transitioning=" + transitioning);
       
-      if (newestTex != null) {
+      if (newestTex != null && newestActuallyChanged) {
         // If we have a current image showing, transition smoothly
         if (img != null) {
           // Cancel any ongoing transition first
@@ -249,9 +249,7 @@ void pollFolderAndQueueLoads() {
           transitioning = true;
           newFileTransitioning = true;
           println("[new-file] Transition started! transitioning=" + transitioning + ", newFileTransitioning=" + newFileTransitioning);
-          
-          // Set timer so next cycle happens AFTER transition completes + full display time
-          lastImageChange = millis() - (imageChangeInterval - transitionDuration);
+          // We will start the full display interval after the fade completes
         } else {
           // No current image, just set it directly
           img = newestTex;
@@ -260,42 +258,42 @@ void pollFolderAndQueueLoads() {
         }
         
         currentImageIndex = 0;
-      } else {
-        // Texture not loaded yet, reset to show it as soon as it loads
+      } else if (newestActuallyChanged) {
+        // Texture not loaded yet OR already displayed; queue transition once loaded
         currentImageIndex = 0;
         lastImageChange = millis();
-        println("[new-file] Queued newest (not loaded yet): " + newestName);
+        println("[new-file] Queued newest (not loaded yet or img null): " + newestName);
+      } else {
+        // Newest name unchanged: do NOT reset cycle or timer
+        println("[new-file] Newest unchanged (" + newestName + "). Keeping current index=" + currentImageIndex);
       }
       
       lastNewestName = newestName;
     }
   }
   
-  // Track file changes and queue loads
+  // Queue loads for files not yet in cache
   if (imageFiles != null && imageFiles.size() > 0) {
-    
-    // Track file changes and queue loads
     for (String abs : imageFiles) {
-      File f = new File(abs);
-      String name = f.getName();
-      long mtime = f.lastModified();
-      Long known = mtimes.get(name);
-      if (known == null || known.longValue() != mtime) {
-        mtimes.put(name, mtime);
-        synchronized (loadQueue) {
-          if (!loadQueue.contains(abs)) loadQueue.add(abs);
+      String name = new File(abs).getName();
+      synchronized (textureCache) {
+        if (!textureCache.containsKey(name)) {
+          synchronized (loadQueue) {
+            if (!loadQueue.contains(abs)) loadQueue.add(abs);
+          }
         }
       }
     }
   }
 
-  // Remove deleted files from mtimes and texture cache
+  // Remove deleted files from texture cache
   ArrayList<String> toRemove = new ArrayList<String>();
-  for (String knownName : mtimes.keySet()) {
-    if (!currentNames.contains(knownName)) toRemove.add(knownName);
+  synchronized (textureCache) {
+    for (String knownName : textureCache.keySet()) {
+      if (!currentNames.contains(knownName)) toRemove.add(knownName);
+    }
   }
   for (String n : toRemove) {
-    mtimes.remove(n);
     synchronized (textureCache) {
       textureCache.remove(n);
     }
@@ -410,6 +408,8 @@ void draw() {
       imgNext = null;
       if (pgPrev != null) { pgPrev.dispose(); pgPrev = null; }
       if (pgNext != null) { pgNext.dispose(); pgNext = null; }
+      // Mark start of full display period for the new image now
+      lastImageChange = millis();
     }
   } else {
     // Normal single texture render
