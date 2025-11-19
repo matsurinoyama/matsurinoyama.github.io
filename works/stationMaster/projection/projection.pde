@@ -1,14 +1,9 @@
 import java.util.*;
 
-// Optional: limit cache growth and scale images to reduce memory usage over long runs
-// Lowered defaults to reduce memory pressure that can cause "Target VM failed to initialize" on startup.
+// Limit cache growth to reduce memory usage over long runs
 final int MAX_CACHE_IMAGES = 120;      // cap the number of textures kept in memory (lower = safer)
-final int MAX_TEX_WIDTH = 1600;        // scale down wide images (0 = no limit)
-final int MAX_TEX_HEIGHT = 900;        // scale down tall images (0 = no limit)
 final boolean SHOW_MEM_STATS = true;   // overlay memory / loader info
-final boolean USE_FULLSCREEN = false;  // fallback to window size if fullscreen causes VM init failure
-final int WINDOW_W = 1920;
-final int WINDOW_H = 1080;
+final int PREFETCH_AHEAD = 24;         // number of upcoming images to prefetch into cache (images are 768x768)
 
 PImage img;
 int cols = 7;
@@ -53,6 +48,10 @@ PGraphics pgNext = null;
 
 void setup() {
   fullScreen(P3D);
+  pixelDensity(1); // reduce VRAM usage on high-DPI displays
+  hint(DISABLE_DEPTH_TEST); // 2D compositing only
+  hint(DISABLE_TEXTURE_MIPMAPS); // save memory on textures
+  noSmooth(); // reduce GPU cost and memory for filters
   
   // Ensure the watch folder exists
   File wd = new File(sketchPath(WATCH_DIR));
@@ -81,17 +80,6 @@ void setup() {
               continue; // skip this cycle
             }
             if (loaded != null) {
-              // Optionally scale large textures down to reduce memory usage
-              if ((MAX_TEX_WIDTH > 0 && loaded.width > MAX_TEX_WIDTH) || (MAX_TEX_HEIGHT > 0 && loaded.height > MAX_TEX_HEIGHT)) {
-                float sx = MAX_TEX_WIDTH > 0 ? (float)MAX_TEX_WIDTH / loaded.width : 1.0f;
-                float sy = MAX_TEX_HEIGHT > 0 ? (float)MAX_TEX_HEIGHT / loaded.height : 1.0f;
-                float s = min(sx, sy);
-                if (s < 1.0f) {
-                  int nw = max(1, round(loaded.width * s));
-                  int nh = max(1, round(loaded.height * s));
-                  loaded.resize(nw, nh);
-                }
-              }
               String name = new File(nextFile).getName();
               putTexture(name, loaded);
               println("[loader] loaded -> " + name + " (bytes=" + (loaded.width * loaded.height) + ")");
@@ -272,9 +260,20 @@ void pollFolderAndQueueLoads() {
     }
   }
   
-  // Queue loads for files not yet in cache
+  // Queue loads for a limited window around the current index to reduce thrashing
   if (imageFiles != null && imageFiles.size() > 0) {
-    for (String abs : imageFiles) {
+    int n = imageFiles.size();
+    int window = min(PREFETCH_AHEAD, n);
+    // Always include the newest (index 0) so it's available for immediate transitions
+    for (int k = -1; k < window; k++) {
+      int idx;
+      if (k == -1) {
+        idx = 0; // newest
+      } else {
+        idx = (currentImageIndex + k) % n;
+      }
+      if (idx < 0) idx += n;
+      String abs = imageFiles.get(idx);
       String name = new File(abs).getName();
       synchronized (textureCache) {
         if (!textureCache.containsKey(name)) {
@@ -294,9 +293,8 @@ void pollFolderAndQueueLoads() {
     }
   }
   for (String n : toRemove) {
-    synchronized (textureCache) {
-      textureCache.remove(n);
-    }
+    synchronized (textureCache) { textureCache.remove(n); }
+    synchronized (cacheOrder) { cacheOrder.remove(n); }
   }
 
   // Ensure there's a currentImageIndex when images exist
