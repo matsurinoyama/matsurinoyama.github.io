@@ -31,10 +31,9 @@ String lastNewestName = null;
 HashSet<String> lastFileSet = null; // track actual file list to detect changes
 boolean newFileTransitioning = false; // flag to prevent normal cycling during new file transition
 
-HashMap<String, PImage> textureCache = new HashMap<String, PImage>();
-// Track usage order for a simple LRU eviction policy
-ArrayDeque<String> cacheOrder = new ArrayDeque<String>(); // most-recently used at tail
-ArrayList<String> loadQueue = new ArrayList<String>(); // absolute paths
+// LinkedHashMap in access-order mode provides O(1) LRU tracking
+LinkedHashMap<String, PImage> textureCache = new LinkedHashMap<String, PImage>(16, 0.75f, true);
+ArrayDeque<String> loadQueue = new ArrayDeque<String>(); // O(1) poll() vs ArrayList's O(n) remove(0)
 long lastPoll = 0;
 
 // Crossfade / transition state
@@ -61,12 +60,12 @@ void setup() {
   pollFolderAndQueueLoads();
 
   // Start background loader thread
-  Thread loader = new Thread(new Runnable() {
+      Thread loader = new Thread(new Runnable() {
     public void run() {
       while (true) {
         String nextFile = null;
         synchronized (loadQueue) {
-          if (!loadQueue.isEmpty()) nextFile = loadQueue.remove(0);
+          if (!loadQueue.isEmpty()) nextFile = loadQueue.poll(); // O(1) operation on ArrayDeque
         }
         if (nextFile != null) {
           try {
@@ -261,9 +260,12 @@ void pollFolderAndQueueLoads() {
   }
   
   // Queue loads for a limited window around the current index to reduce thrashing
+  // Batch synchronization for better lock efficiency
   if (imageFiles != null && imageFiles.size() > 0) {
     int n = imageFiles.size();
     int window = min(PREFETCH_AHEAD, n);
+    ArrayList<String> toQueue = new ArrayList<String>();
+    
     // Always include the newest (index 0) so it's available for immediate transitions
     for (int k = -1; k < window; k++) {
       int idx;
@@ -275,26 +277,29 @@ void pollFolderAndQueueLoads() {
       if (idx < 0) idx += n;
       String abs = imageFiles.get(idx);
       String name = new File(abs).getName();
-      synchronized (textureCache) {
-        if (!textureCache.containsKey(name)) {
-          synchronized (loadQueue) {
-            if (!loadQueue.contains(abs)) loadQueue.add(abs);
-          }
+      if (!textureCache.containsKey(name) && !toQueue.contains(abs)) {
+        toQueue.add(abs);
+      }
+    }
+    // Single synchronized batch for queue
+    if (!toQueue.isEmpty()) {
+      synchronized (loadQueue) {
+        for (String abs : toQueue) {
+          if (!loadQueue.contains(abs)) loadQueue.add(abs);
         }
       }
     }
   }
 
-  // Remove deleted files from texture cache
+  // Remove deleted files from texture cache (single synchronized block)
   ArrayList<String> toRemove = new ArrayList<String>();
   synchronized (textureCache) {
     for (String knownName : textureCache.keySet()) {
       if (!currentNames.contains(knownName)) toRemove.add(knownName);
     }
-  }
-  for (String n : toRemove) {
-    synchronized (textureCache) { textureCache.remove(n); }
-    synchronized (cacheOrder) { cacheOrder.remove(n); }
+    for (String n : toRemove) {
+      textureCache.remove(n);
+    }
   }
 
   // Ensure there's a currentImageIndex when images exist
@@ -302,14 +307,10 @@ void pollFolderAndQueueLoads() {
     if (currentImageIndex < 0 || currentImageIndex >= imageFiles.size()) currentImageIndex = 0;
     // if img is null or the current image is not loaded yet, queue it
     String curName = getCurrentImageName();
-    if (curName != null) {
-      synchronized (textureCache) {
-        if (!textureCache.containsKey(curName)) {
-          String abs = imageFiles.get(currentImageIndex);
-          synchronized (loadQueue) {
-            if (!loadQueue.contains(abs)) loadQueue.add(abs);
-          }
-        }
+    if (curName != null && !textureCache.containsKey(curName)) {
+      String abs = imageFiles.get(currentImageIndex);
+      synchronized (loadQueue) {
+        if (!loadQueue.contains(abs)) loadQueue.add(abs);
       }
     }
   }
@@ -484,19 +485,11 @@ void beginTransition(PImage nextImg) {
 }
 
 // --- Cache helpers (thread-safe) ---
-void touchOrder(String name) {
-  synchronized (cacheOrder) {
-    // remove and re-add to mark as most-recently used
-    cacheOrder.remove(name);
-    cacheOrder.addLast(name);
-  }
-}
-
+// LinkedHashMap in access-order mode handles LRU automatically on get()
 PImage getTexture(String name) {
   synchronized (textureCache) {
-    PImage tex = textureCache.get(name);
-    if (tex != null) touchOrder(name);
-    return tex;
+    // get() with access-order LinkedHashMap marks as most-recently used
+    return textureCache.get(name);
   }
 }
 
@@ -504,21 +497,20 @@ void putTexture(String name, PImage tex) {
   synchronized (textureCache) {
     textureCache.put(name, tex);
   }
-  touchOrder(name);
   enforceCacheLimit();
 }
 
 void enforceCacheLimit() {
   if (MAX_CACHE_IMAGES <= 0) return;
   synchronized (textureCache) {
-    synchronized (cacheOrder) {
-      while (textureCache.size() > MAX_CACHE_IMAGES && !cacheOrder.isEmpty()) {
-        String evict = cacheOrder.pollFirst();
-        if (evict != null) {
-          PImage old = textureCache.remove(evict);
-          // Help GC by clearing reference; Processing doesn't require explicit dispose for PImage
-          old = null;
-        }
+    // LinkedHashMap in access-order mode: oldest (least-recently used) is first
+    while (textureCache.size() > MAX_CACHE_IMAGES) {
+      Iterator<Map.Entry<String, PImage>> it = textureCache.entrySet().iterator();
+      if (it.hasNext()) {
+        it.next();
+        it.remove(); // removes the least-recently used entry
+      } else {
+        break;
       }
     }
   }
@@ -527,27 +519,14 @@ void enforceCacheLimit() {
 // Aggressively trim cache (used after OutOfMemoryError) retaining only most recent third
 void emergencyCacheTrim() {
   synchronized (textureCache) {
-    synchronized (cacheOrder) {
-      int keep = cacheOrder.size() / 3; // keep newest third
-      ArrayDeque<String> reversed = new ArrayDeque<String>();
-      // copy to list to preserve order
-      for (String name : cacheOrder) reversed.addLast(name);
-      // determine survivors (tail elements)
-      HashSet<String> survivors = new HashSet<String>();
-      int skip = reversed.size() - keep;
-      int idx = 0;
-      for (String name : reversed) {
-        if (idx++ >= skip) survivors.add(name);
-      }
-      // evict non-survivors
-      Iterator<String> it = cacheOrder.iterator();
-      while (it.hasNext()) {
-        String n = it.next();
-        if (!survivors.contains(n)) {
-          it.remove();
-          textureCache.remove(n);
-        }
-      }
+    int keep = textureCache.size() / 3; // keep newest third
+    int toRemove = textureCache.size() - keep;
+    Iterator<Map.Entry<String, PImage>> it = textureCache.entrySet().iterator();
+    // LinkedHashMap in access-order mode: oldest entries are first
+    // Remove the oldest (least-recently used) entries
+    for (int i = 0; i < toRemove && it.hasNext(); i++) {
+      it.next();
+      it.remove();
     }
   }
   println("[cache] Emergency trim complete. Remaining textures: " + textureCache.size());
