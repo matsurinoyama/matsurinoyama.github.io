@@ -44,6 +44,8 @@ PImage imgPrev = null;
 PImage imgNext = null;
 PGraphics pgPrev = null;
 PGraphics pgNext = null;
+int pgTransitionCount = 0; // track how many transitions we've done
+final int PG_RECREATE_INTERVAL = 50; // recreate PGraphics every N transitions to prevent GPU corruption
 
 void setup() {
   fullScreen(P3D);
@@ -103,7 +105,11 @@ void setup() {
               String currentName = getCurrentImageName();
               if (currentName != null && currentName.equals(name)) {
                 PImage cur = getTexture(name);
-                if (cur != null) img = cur;
+                if (cur != null && cur.width > 0 && cur.height > 0) {
+                  img = cur;
+                } else {
+                  println("[WARN] Retrieved invalid texture for current image: " + name);
+                }
               }
             }
           } catch (Exception e) {
@@ -346,8 +352,8 @@ void draw() {
     int nextNum = extractNumber(nextName);
     println("[cycle] Moving from index " + currentImageIndex + " to " + nextIndex + " (" + nextName + ", num=" + nextNum + ")");
     PImage nextTex = getTexture(nextName);
-    if (nextTex != null) {
-      // start transition only when we actually have the texture
+    if (nextTex != null && nextTex.width > 0 && nextTex.height > 0) {
+      // start transition only when we actually have a valid texture
       beginTransition(nextTex);
       currentImageIndex = nextIndex;
       lastImageChange = millis(); // update timer only on success
@@ -382,8 +388,17 @@ void draw() {
     t = t * t * (3 - 2 * t);
 
   // render previous and next into PGraphics
-    if (pgPrev == null) pgPrev = createGraphics(width, height, P3D);
-    if (pgNext == null) pgNext = createGraphics(width, height, P3D);
+    // Recreate PGraphics periodically to prevent GPU context degradation
+    if (pgPrev == null || pgNext == null || pgTransitionCount >= PG_RECREATE_INTERVAL) {
+      if (pgPrev != null) { pgPrev.dispose(); pgPrev = null; }
+      if (pgNext != null) { pgNext.dispose(); pgNext = null; }
+      pgPrev = createGraphics(width, height, P3D);
+      pgNext = createGraphics(width, height, P3D);
+      if (pgTransitionCount >= PG_RECREATE_INTERVAL) {
+        println("[GPU] Recreated PGraphics after " + pgTransitionCount + " transitions");
+        pgTransitionCount = 0;
+      }
+    }
 
     drawMeshTo(pgPrev, imgPrev);
     drawMeshTo(pgNext, imgNext);
@@ -407,6 +422,7 @@ void draw() {
       imgNext = null;
       if (pgPrev != null) { pgPrev.dispose(); pgPrev = null; }
       if (pgNext != null) { pgNext.dispose(); pgNext = null; }
+      pgTransitionCount++; // track transitions for periodic PGraphics recreation
       // Mark start of full display period for the new image now
       lastImageChange = millis();
     }
@@ -450,7 +466,13 @@ void drawMeshTo(PGraphics pg, PImage tex) {
   }
 
   target.beginShape(QUADS);
-  if (tex != null) target.texture(tex);
+  // Validate texture before using to prevent green screen corruption
+  if (tex != null && tex.width > 0 && tex.height > 0) {
+    target.texture(tex);
+  } else if (tex != null) {
+    println("[WARN] Invalid texture detected: width=" + tex.width + " height=" + tex.height);
+    tex = null; // don't try to render invalid texture
+  }
   for (int j = 0; j < rows - 1; j++) {
     for (int i = 0; i < cols - 1; i++) {
       float u1 = i / float(cols - 1);

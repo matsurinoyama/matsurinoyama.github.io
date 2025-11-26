@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=matsurinoyama
-ExecStart=/bin/bash /home/matsurinoyama/stationMaster/scripts/downloader_loop.sh
+ExecStart=/bin/bash /home/matsurinoyama/stationMaster/scripts/download_faces.sh
 Restart=always
 RestartSec=5
 
