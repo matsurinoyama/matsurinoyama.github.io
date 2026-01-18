@@ -9,3 +9,6 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+/works/stationMaster/.venv
+/works/stationMaster/__pycache__
+/works/stationMaster/*.pyc
