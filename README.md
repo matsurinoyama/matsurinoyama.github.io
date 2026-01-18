@@ -15,7 +15,7 @@ This website is still under construction, and therefore what you currently see m
       ▄███████████████▄▄▄▄▄████▀
     ███▀      ▀▀▀▀██████████▀
    ██           ▄██
-   █▌       ▄▄███▀   Azhan Rizan / 莉山礼司
+   █▌       ▄▄███▀   莉山 Rizan
    ███▄▄▄██████▀     hello@03080.jp
     ▀▀████▀▀
 ```
