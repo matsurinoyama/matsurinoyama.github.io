@@ -1,0 +1,200 @@
+Oct 20 13:14:35 03080 systemd[1]: Stopping stationmaster.service - StationMaster downloader + headless Processing/Java...
+Oct 20 13:14:35 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:14:35 03080 systemd[1]: Stopped stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:14:35 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:14:35 03080 bash[52953]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:14:35 03080 bash[52953]: Starting downloader loop (background)...
+Oct 20 13:14:35 03080 bash[52953]: Downloader started (pid=52958). Sleeping briefly before launching Processing...
+Oct 20 13:14:37 03080 bash[52953]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:14:37 03080 bash[52953]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:14:37 03080 bash[52953]: Processing wrapper PID=52961
+Oct 20 13:14:41 03080 bash[52953]: Processing appears to have exited (wrapper PID 52961).
+Oct 20 13:14:41 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:14:46 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 1.
+Oct 20 13:14:46 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:14:46 03080 bash[53086]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:14:46 03080 bash[53086]: Starting downloader loop (background)...
+Oct 20 13:14:46 03080 bash[53086]: Downloader started (pid=53091). Sleeping briefly before launching Processing...
+Oct 20 13:14:48 03080 bash[53086]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:14:48 03080 bash[53086]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:14:48 03080 bash[53086]: Processing wrapper PID=53094
+Oct 20 13:14:52 03080 bash[53086]: Processing appears to have exited (wrapper PID 53094).
+Oct 20 13:14:52 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:14:57 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 2.
+Oct 20 13:14:57 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:14:58 03080 bash[53226]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:14:58 03080 bash[53226]: Starting downloader loop (background)...
+Oct 20 13:14:58 03080 bash[53226]: Downloader started (pid=53231). Sleeping briefly before launching Processing...
+Oct 20 13:15:00 03080 bash[53226]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:00 03080 bash[53226]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:00 03080 bash[53226]: Processing wrapper PID=53234
+Oct 20 13:15:04 03080 bash[53226]: Processing appears to have exited (wrapper PID 53234).
+Oct 20 13:15:04 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:15:09 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 3.
+Oct 20 13:15:09 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:15:09 03080 bash[53360]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:15:09 03080 bash[53360]: Starting downloader loop (background)...
+Oct 20 13:15:09 03080 bash[53360]: Downloader started (pid=53365). Sleeping briefly before launching Processing...
+Oct 20 13:15:11 03080 bash[53360]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:11 03080 bash[53360]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:11 03080 bash[53360]: Processing wrapper PID=53368
+Oct 20 13:15:15 03080 bash[53360]: Processing appears to have exited (wrapper PID 53368).
+Oct 20 13:15:15 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:15:20 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 4.
+Oct 20 13:15:20 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:15:20 03080 bash[53498]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:15:20 03080 bash[53498]: Starting downloader loop (background)...
+Oct 20 13:15:20 03080 bash[53498]: Downloader started (pid=53503). Sleeping briefly before launching Processing...
+Oct 20 13:15:22 03080 bash[53498]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:22 03080 bash[53498]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:22 03080 bash[53498]: Processing wrapper PID=53506
+Oct 20 13:15:26 03080 bash[53498]: Processing appears to have exited (wrapper PID 53506).
+Oct 20 13:15:26 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:15:31 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 5.
+Oct 20 13:15:31 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:15:31 03080 bash[53633]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:15:31 03080 bash[53633]: Starting downloader loop (background)...
+Oct 20 13:15:31 03080 bash[53633]: Downloader started (pid=53638). Sleeping briefly before launching Processing...
+Oct 20 13:15:33 03080 bash[53633]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:33 03080 bash[53633]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:33 03080 bash[53633]: Processing wrapper PID=53641
+Oct 20 13:15:37 03080 bash[53633]: Processing appears to have exited (wrapper PID 53641).
+Oct 20 13:15:37 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:15:42 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 6.
+Oct 20 13:15:42 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:15:43 03080 bash[53768]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:15:43 03080 bash[53768]: Starting downloader loop (background)...
+Oct 20 13:15:43 03080 bash[53768]: Downloader started (pid=53773). Sleeping briefly before launching Processing...
+Oct 20 13:15:45 03080 bash[53768]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:45 03080 bash[53768]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:45 03080 bash[53768]: Processing wrapper PID=53776
+Oct 20 13:15:49 03080 bash[53768]: Processing appears to have exited (wrapper PID 53776).
+Oct 20 13:15:49 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:15:54 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 7.
+Oct 20 13:15:54 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:15:54 03080 bash[53901]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:15:54 03080 bash[53901]: Starting downloader loop (background)...
+Oct 20 13:15:54 03080 bash[53901]: Downloader started (pid=53906). Sleeping briefly before launching Processing...
+Oct 20 13:15:56 03080 bash[53901]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:56 03080 bash[53901]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:15:56 03080 bash[53901]: Processing wrapper PID=53909
+Oct 20 13:16:00 03080 bash[53901]: Processing appears to have exited (wrapper PID 53909).
+Oct 20 13:16:00 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:16:05 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 8.
+Oct 20 13:16:05 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:16:05 03080 bash[54035]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:16:05 03080 bash[54035]: Starting downloader loop (background)...
+Oct 20 13:16:05 03080 bash[54035]: Downloader started (pid=54040). Sleeping briefly before launching Processing...
+Oct 20 13:16:07 03080 bash[54035]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:07 03080 bash[54035]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:07 03080 bash[54035]: Processing wrapper PID=54044
+Oct 20 13:16:11 03080 bash[54035]: Processing appears to have exited (wrapper PID 54044).
+Oct 20 13:16:11 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:16:16 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 9.
+Oct 20 13:16:16 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:16:16 03080 bash[54169]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:16:16 03080 bash[54169]: Starting downloader loop (background)...
+Oct 20 13:16:16 03080 bash[54169]: Downloader started (pid=54174). Sleeping briefly before launching Processing...
+Oct 20 13:16:18 03080 bash[54169]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:18 03080 bash[54169]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:18 03080 bash[54169]: Processing wrapper PID=54177
+Oct 20 13:16:22 03080 bash[54169]: Processing appears to have exited (wrapper PID 54177).
+Oct 20 13:16:22 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:16:27 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 10.
+Oct 20 13:16:27 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:16:28 03080 bash[54303]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:16:28 03080 bash[54303]: Starting downloader loop (background)...
+Oct 20 13:16:28 03080 bash[54303]: Downloader started (pid=54308). Sleeping briefly before launching Processing...
+Oct 20 13:16:30 03080 bash[54303]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:30 03080 bash[54303]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:30 03080 bash[54303]: Processing wrapper PID=54311
+Oct 20 13:16:34 03080 bash[54303]: Processing appears to have exited (wrapper PID 54311).
+Oct 20 13:16:34 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:16:39 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 11.
+Oct 20 13:16:39 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:16:39 03080 bash[54437]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:16:39 03080 bash[54437]: Starting downloader loop (background)...
+Oct 20 13:16:39 03080 bash[54437]: Downloader started (pid=54442). Sleeping briefly before launching Processing...
+Oct 20 13:16:41 03080 bash[54437]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:41 03080 bash[54437]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:41 03080 bash[54437]: Processing wrapper PID=54448
+Oct 20 13:16:45 03080 bash[54437]: Processing appears to have exited (wrapper PID 54448).
+Oct 20 13:16:45 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:16:50 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 12.
+Oct 20 13:16:50 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:16:50 03080 bash[54574]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:16:50 03080 bash[54574]: Starting downloader loop (background)...
+Oct 20 13:16:50 03080 bash[54574]: Downloader started (pid=54579). Sleeping briefly before launching Processing...
+Oct 20 13:16:52 03080 bash[54574]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:52 03080 bash[54574]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:16:52 03080 bash[54574]: Processing wrapper PID=54582
+Oct 20 13:16:56 03080 bash[54574]: Processing appears to have exited (wrapper PID 54582).
+Oct 20 13:16:56 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:17:01 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 13.
+Oct 20 13:17:01 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:17:01 03080 bash[54707]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:17:01 03080 bash[54707]: Starting downloader loop (background)...
+Oct 20 13:17:01 03080 bash[54707]: Downloader started (pid=54712). Sleeping briefly before launching Processing...
+Oct 20 13:17:03 03080 bash[54707]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:03 03080 bash[54707]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:03 03080 bash[54707]: Processing wrapper PID=54719
+Oct 20 13:17:07 03080 bash[54707]: Processing appears to have exited (wrapper PID 54719).
+Oct 20 13:17:07 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:17:12 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 14.
+Oct 20 13:17:12 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:17:13 03080 bash[54849]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:17:13 03080 bash[54849]: Starting downloader loop (background)...
+Oct 20 13:17:13 03080 bash[54849]: Downloader started (pid=54854). Sleeping briefly before launching Processing...
+Oct 20 13:17:15 03080 bash[54849]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:15 03080 bash[54849]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:15 03080 bash[54849]: Processing wrapper PID=54857
+Oct 20 13:17:19 03080 bash[54849]: Processing appears to have exited (wrapper PID 54857).
+Oct 20 13:17:19 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:17:24 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 15.
+Oct 20 13:17:24 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:17:24 03080 bash[54985]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:17:24 03080 bash[54985]: Starting downloader loop (background)...
+Oct 20 13:17:24 03080 bash[54985]: Downloader started (pid=54990). Sleeping briefly before launching Processing...
+Oct 20 13:17:26 03080 bash[54985]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:26 03080 bash[54985]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:26 03080 bash[54985]: Processing wrapper PID=54993
+Oct 20 13:17:30 03080 bash[54985]: Processing appears to have exited (wrapper PID 54993).
+Oct 20 13:17:30 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:17:35 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 16.
+Oct 20 13:17:35 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:17:35 03080 bash[55119]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:17:35 03080 bash[55119]: Starting downloader loop (background)...
+Oct 20 13:17:35 03080 bash[55119]: Downloader started (pid=55124). Sleeping briefly before launching Processing...
+Oct 20 13:17:37 03080 bash[55119]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:37 03080 bash[55119]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:37 03080 bash[55119]: Processing wrapper PID=55127
+Oct 20 13:17:41 03080 bash[55119]: Processing appears to have exited (wrapper PID 55127).
+Oct 20 13:17:41 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:17:46 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 17.
+Oct 20 13:17:46 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:17:46 03080 bash[55255]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:17:46 03080 bash[55255]: Starting downloader loop (background)...
+Oct 20 13:17:46 03080 bash[55255]: Downloader started (pid=55260). Sleeping briefly before launching Processing...
+Oct 20 13:17:48 03080 bash[55255]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:48 03080 bash[55255]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:17:48 03080 bash[55255]: Processing wrapper PID=55263
+Oct 20 13:17:52 03080 bash[55255]: Processing appears to have exited (wrapper PID 55263).
+Oct 20 13:17:52 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:17:57 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 18.
+Oct 20 13:17:57 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:17:58 03080 bash[55390]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:17:58 03080 bash[55390]: Starting downloader loop (background)...
+Oct 20 13:17:58 03080 bash[55390]: Downloader started (pid=55395). Sleeping briefly before launching Processing...
+Oct 20 13:18:00 03080 bash[55390]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:18:00 03080 bash[55390]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:18:00 03080 bash[55390]: Processing wrapper PID=55398
+Oct 20 13:18:04 03080 bash[55390]: Processing appears to have exited (wrapper PID 55398).
+Oct 20 13:18:04 03080 systemd[1]: stationmaster.service: Deactivated successfully.
+Oct 20 13:18:09 03080 systemd[1]: stationmaster.service: Scheduled restart job, restart counter is at 19.
+Oct 20 13:18:09 03080 systemd[1]: Started stationmaster.service - StationMaster downloader + headless Processing/Java.
+Oct 20 13:18:09 03080 bash[55525]: Base dir: /home/matsurinoyama/stationMaster
+Oct 20 13:18:09 03080 bash[55525]: Starting downloader loop (background)...
+Oct 20 13:18:09 03080 bash[55525]: Downloader started (pid=55530). Sleeping briefly before launching Processing...
+Oct 20 13:18:11 03080 bash[55525]: Launching Processing via processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:18:11 03080 bash[55525]: Launching: processing cli --sketch=/home/matsurinoyama/stationMaster/projection --present
+Oct 20 13:18:11 03080 bash[55525]: Processing wrapper PID=55533
