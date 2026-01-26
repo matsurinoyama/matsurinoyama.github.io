@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="static/favicon.png" />
@@ -297,118 +297,47 @@
     </style>
   </head>
   <body>
-    <div class="slide_Container">
-      <div
-        class="slide"
-        style="background-image: url(static/2022/WWSA/after_02.jpg)"
-      >
-        <div class="slideText"><p>Warna-Warni Shah Alam, 2022</p></div>
-      </div>
-      <div
-        class="slide"
-        style="background-image: url(static/2023/PAWD/PAM1.jpg)"
-      >
-        <div class="slideText"><p>PAM Awards 2023, 2023</p></div>
-      </div>
-      <div
-        class="slide"
-        style="background-image: url(static/2024/001/preview.gif)"
-      >
-        <div class="slideText"><p>untitled video experiment, 2024</p></div>
-      </div>
-      <div
-        class="slide"
-        style="background-image: url(static/2025/SMG/bathroom.jpg)"
-      >
-        <div class="slideText">
-          <p>Mamorigami No Me, 2025</p>
-        </div>
+    <div class="content">
+      <div class="contentContact_Container" id="selector">
+        <h3>Welcome! ようこそ! Selamat Datang!</h3>
       </div>
     </div>
-
-    <div class="slideNav_Container"></div>
 
     <script>
-      // Slideshow functionality
-      const slides = document.querySelectorAll(".slide");
-      const slideNavsContainer = document.querySelector(".slideNav_Container");
-      let currentIndex = 0;
-
-      // Create navigation slideNavs
-      slides.forEach((_, index) => {
-        const slideNav = document.createElement("div");
-        slideNav.classList.add("slideNav");
-        if (index === 0) slideNav.classList.add("active");
-        slideNav.addEventListener("click", () => goToSlide(index));
-        slideNavsContainer.appendChild(slideNav);
-      });
-
-      const slideNavs = document.querySelectorAll(".slideNav");
-
-      function updateSlides() {
-        slides.forEach((slide, index) => {
-          slide.classList.toggle("active", index === currentIndex);
-        });
-        slideNavs.forEach((slideNav, index) => {
-          slideNav.classList.toggle("active", index === currentIndex);
-        });
+      // Detect user's preferred language from browser settings
+      function detectLanguage() {
+        const userLang = navigator.language || navigator.userLanguage;
+        // Check if Japanese is preferred
+        if (userLang.startsWith("ja")) {
+          return "ja";
+        }
+        // Default to English for all other languages
+        return "en";
       }
 
-      function nextSlide() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        updateSlides();
-      }
+      // Auto-redirect based on browser language (with 1.5 second delay to allow manual selection)
+      const preferredLang = detectLanguage();
+      const selector = document.getElementById("selector");
 
-      function goToSlide(index) {
-        currentIndex = index;
-        updateSlides();
-      }
+      // Show loading message
+      const loadingMsg = document.createElement("p");
+      loadingMsg.className = "loading";
+      loadingMsg.textContent =
+        preferredLang === "ja"
+          ? "日本語版に自動で移動します..."
+          : "Redirecting you to the English version...";
+      loadingMsg.style.marginTop = "20px";
+      loadingMsg.style.fontSize = "14px";
+      selector.appendChild(loadingMsg);
 
-      // Start the slideshow
-      updateSlides();
-      setInterval(nextSlide, 10000);
-
-      // Optional: Handle window resize
-      window.addEventListener("resize", () => {
-        slides.forEach((slide) => {
-          // Force redraw to maintain aspect ratio
-          slide.style.backgroundImage = slide.style.backgroundImage;
-        });
-      });
+      // Redirect after delay
+      setTimeout(() => {
+        if (preferredLang === "ja") {
+          window.location.href = "jp/";
+        } else {
+          window.location.href = "en/";
+        }
+      }, 1500);
     </script>
-    <div class="content">
-      <div class="contentContact_Container">
-        <div class="contentContact">
-          <h3>
-            <a href="mailto:hello@03080.jp">hello@03080.jp</a>
-          </h3>
-          <h3>
-            <a href="tel:+817089993485">+81 70 8999 3485</a>
-          </h3>
-        </div>
-      </div>
-      <div class="heading_Container">
-        <div class="headingIcon_Container">
-          <picture>
-            <source media="(max-width: 1000px)" srcset="static/temp-h.svg" />
-            <source media="(min-width: 500px)" srcset="static/temp-v.svg" />
-            <img src="static/temp-v.svg" alt="temp.svg" />
-          </picture>
-          <p>
-            Multimedia Creative based in Kyoto and Shah Alam. Currently studying
-            at Kyoto Seika University. Please note that the website is still
-            being worked on as on right now 🏗️
-          </p>
-        </div>
-        <div class="headingMenu_Container">
-          <div class="headingMenu">
-            <h5><a href="https://www.instagram.com/03080.jp">Works</a></h5>
-            <h5><a href="static/resume/English.pdf">Résumé</a></h5>
-            <h5><a href="jp/">JP</a></h5>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script src="" async defer></script>
   </body>
 </html>
