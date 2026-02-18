@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drifting Away — Spectator</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="spectator-layout">
+      <!-- ── Header ──────────────────────────────────────────────── -->
+      <div class="spectator-header">
+        <span class="title"
+          >Drifting Away — <span id="spectator-phase">WAITING</span></span
+        >
+        <div id="timer" class="timer">3:00</div>
+      </div>
+
+      <!-- ── Player 1 panel ──────────────────────────────────────── -->
+      <div class="spectator-panel spectator-panel--p1">
+        <h3>
+          <span
+            class="player-badge player-badge--1"
+            style="display: inline-block; margin-right: 0.5rem"
+            >P1</span
+          >
+          Player 1
+        </h3>
+        <div id="panel-p1"></div>
+      </div>
+
+      <!-- ── Player 2 panel ──────────────────────────────────────── -->
+      <div class="spectator-panel spectator-panel--p2">
+        <h3>
+          <span
+            class="player-badge player-badge--2"
+            style="display: inline-block; margin-right: 0.5rem"
+            >P2</span
+          >
+          Player 2
+        </h3>
+        <div id="panel-p2"></div>
+      </div>
+
+      <!-- ── Original prompt bar ─────────────────────────────────── -->
+      <div class="spectator-prompt" id="spectator-prompt" hidden>
+        <div class="label">Original Topic</div>
+        <div
+          class="prompt-text"
+          style="font-size: 1.2rem; margin-top: 0.3rem"
+        ></div>
+      </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/spectator.js"></script>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drifting Away — Control Panel</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="screen">
+      <div class="control-panel">
+        <h1>🎛 Control Panel</h1>
+
+        <button class="btn" id="btn-start">▶ Start Game</button>
+        <button class="btn" id="btn-reveal">
+          ⏭ Force Reveal (skip timer)
+        </button>
+        <button class="btn btn--danger" id="btn-reset">↺ Reset Round</button>
+
+        <div class="status-line" id="status">
+          Phase: idle &nbsp;|&nbsp; Clients: 0
+        </div>
+
+        <div style="margin-top: 2rem; color: var(--fg-dim); font-size: 0.85rem">
+          <p><strong>Screen URLs:</strong></p>
+          <p>
+            Player 1:
+            <a href="/player/1" target="_blank" style="color: var(--p1)"
+              >/player/1</a
+            >
+          </p>
+          <p>
+            Player 2:
+            <a href="/player/2" target="_blank" style="color: var(--p2)"
+              >/player/2</a
+            >
+          </p>
+          <p>
+            Spectator:
+            <a href="/spectator" target="_blank" style="color: var(--accent)"
+              >/spectator</a
+            >
+          </p>
+        </div>
+
+        <!-- Debug transcript panel -->
+        <div class="debug-panel" style="margin-top: 2rem">
+          <h2
+            style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent)"
+          >
+            🐛 Debug Transcripts
+          </h2>
+          <div
+            id="debug-log"
+            style="
+              max-height: 360px;
+              overflow-y: auto;
+              font-family: &quot;JetBrains Mono&quot;, monospace;
+              font-size: 0.78rem;
+              line-height: 1.5;
+              background: rgba(0, 0, 0, 0.3);
+              border-radius: 8px;
+              padding: 0.75rem;
+            "
+          >
+            <p style="color: var(--fg-dim)">Waiting for speech…</p>
+          </div>
+          <button
+            class="btn"
+            id="btn-clear-log"
+            style="
+              margin-top: 0.5rem;
+              font-size: 0.75rem;
+              padding: 0.3rem 0.8rem;
+            "
+          >
+            Clear log
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+    <script>
+      const socket = new DriftSocket("control");
+
+      const $status = document.getElementById("status");
+      const $start = document.getElementById("btn-start");
+      const $reveal = document.getElementById("btn-reveal");
+      const $reset = document.getElementById("btn-reset");
+
+      $start.addEventListener("click", () =>
+        socket.send({ action: "start_game" }),
+      );
+      $reveal.addEventListener("click", () =>
+        socket.send({ action: "force_reveal" }),
+      );
+      $reset.addEventListener("click", () => socket.send({ action: "reset" }));
+
+      socket.on("snapshot", (msg) => {
+        $status.textContent = `Phase: ${msg.phase}  |  Timer: ${formatTime(
+          msg.remaining || 0,
+        )}`;
+      });
+      socket.on("phase", (msg) => {
+        $status.textContent = `Phase: ${msg.phase}`;
+      });
+      socket.on("timer", (msg) => {
+        $status.textContent = `Phase: conversation  |  Timer: ${formatTime(
+          msg.remaining,
+        )}`;
+      });
+
+      // ── Debug transcript log ────────────────────────────────────
+      const $debugLog = document.getElementById("debug-log");
+      const $clearLog = document.getElementById("btn-clear-log");
+
+      function escHtml(s) {
+        const d = document.createElement("span");
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      socket.on("debug_turn", (msg) => {
+        // Remove placeholder if present
+        const placeholder = $debugLog.querySelector("p");
+        if (placeholder && placeholder.textContent.includes("Waiting")) {
+          placeholder.remove();
+        }
+
+        const pColor = msg.player === 1 ? "var(--p1)" : "var(--p2)";
+        const entry = document.createElement("div");
+        entry.style.marginBottom = "0.6rem";
+        entry.style.borderLeft = `3px solid ${pColor}`;
+        entry.style.paddingLeft = "0.5rem";
+        entry.innerHTML = `
+          <div style="color:${pColor}; font-weight:600;">Player ${
+            msg.player
+          }</div>
+          <div><span style="color:var(--fg-dim);">STT:</span> ${escHtml(
+            msg.original,
+          )}</div>
+          <div><span style="color:var(--fg-dim);">LLM:</span> ${escHtml(
+            msg.misheard,
+          )}</div>
+        `;
+        $debugLog.appendChild(entry);
+        $debugLog.scrollTop = $debugLog.scrollHeight;
+      });
+
+      $clearLog.addEventListener("click", () => {
+        $debugLog.innerHTML =
+          '<p style="color: var(--fg-dim);">Waiting for speech…</p>';
+      });
+    </script>
+  </body>
+</html>

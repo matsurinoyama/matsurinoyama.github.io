@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drifting Away — Player {{ player_id }}</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body data-player-id="{{ player_id }}">
+    <!-- ── Header ──────────────────────────────────────────────────── -->
+    <div class="header">
+      <span class="title">Drifting Away</span>
+      <div id="timer" class="timer">3:00</div>
+      <span class="player-badge player-badge--{{ player_id }}">
+        Player {{ player_id }}
+      </span>
+    </div>
+
+    <!-- ── IDLE ────────────────────────────────────────────────────── -->
+    <div class="screen screen--player" data-phase="idle">
+      <div class="idle-screen">
+        <h1>Drifting Away</h1>
+        <p>
+          Put on your earmuffs and wait for the game to start<span
+            class="waiting-dots"
+          ></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ── PROMPT SELECT ───────────────────────────────────────────── -->
+    <div class="screen screen--player" data-phase="prompt_select" hidden>
+      <div class="prompt-select">
+        <h2>Choose a conversation topic</h2>
+        <div class="prompt-cards" id="prompt-cards"></div>
+        <div class="prompt-key-hint">
+          [1] Previous &nbsp;&middot;&nbsp; [2] Select &nbsp;&middot;&nbsp; [3]
+          Next
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONVERSATION ────────────────────────────────────────────── -->
+    <div class="screen screen--player" data-phase="conversation" hidden>
+      <div class="conversation">
+        <div class="messages" id="messages"></div>
+        <div class="ptt-bar">
+          <div class="ptt-indicator" id="ptt-indicator"></div>
+          <span class="ptt-label" id="ptt-label">Hold [2] to talk</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── REVEAL ──────────────────────────────────────────────────── -->
+    <div class="screen screen--player" data-phase="reveal" hidden>
+      <div class="reveal">
+        <h2>Time's Up!</h2>
+        <div id="reveal-body"></div>
+      </div>
+    </div>
+
+    <!-- ── RESET ───────────────────────────────────────────────────── -->
+    <div class="screen screen--player" data-phase="reset" hidden>
+      <div class="idle-screen">
+        <h1>Thanks for playing!</h1>
+        <p>Preparing for the next round<span class="waiting-dots"></span></p>
+      </div>
+    </div>
+
+    <!-- ── MIC SETUP OVERLAY (shown once on first load) ────────── -->
+    <div class="mic-setup" id="mic-setup">
+      <div class="mic-setup-card">
+        <h2>🎙 Microphone Setup</h2>
+        <p class="mic-setup-sub">
+          Select the microphone for Player {{ player_id }}
+        </p>
+        <div id="mic-list" class="mic-list">
+          <p class="mic-loading">Requesting mic access…</p>
+        </div>
+        <div class="mic-setup-actions">
+          <button class="btn" id="mic-test-btn" disabled>🔊 Test</button>
+          <button class="btn" id="mic-confirm-btn" disabled>✓ Confirm</button>
+        </div>
+        <p class="mic-setup-hint">
+          This choice is saved for this browser. Reopen /player/{{ player_id }}
+          to change it.
+        </p>
+      </div>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/audio.js"></script>
+    <script src="/static/js/player.js"></script>
+  </body>
+</html>

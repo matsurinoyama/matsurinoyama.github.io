@@ -1,0 +1,21 @@
+# ── Core ──────────────────────────────────
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
+websockets>=14,<15
+jinja2>=3.1,<4
+python-multipart>=0.0.18
+aiofiles>=24,<25
+
+# ── Transcription (Apple Silicon) ─────────
+mlx>=0.21
+mlx-whisper>=0.4
+
+# ── LLM — pick at least one ──────────────
+anthropic>=0.42,<1        # Option A: Anthropic API (default)
+# openai>=1.60,<2         # Option B: OpenAI API (uncomment if needed)
+# mlx-lm>=0.21            # Option C: local LLM (uncomment if needed)
+
+# ── Utilities ─────────────────────────────
+numpy>=1.26,<3
+pydantic>=2,<3
+python-dotenv>=1.0,<2
