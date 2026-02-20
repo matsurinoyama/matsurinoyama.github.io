@@ -3,14 +3,18 @@
  * Shared WebSocket connection, state management, key config.
  */
 
-const KEY_PREV = "Numpad1";
-const KEY_SELECT = "Numpad2";
-const KEY_NEXT = "Numpad3";
+// Per-player key bindings
+// Player 1: I / O / P   |   Player 2: J / K / L
+const PLAYER_KEYS = {
+  1: { prev: ["KeyI"], select: ["KeyO"], next: ["KeyP"] },
+  2: { prev: ["KeyJ"], select: ["KeyK"], next: ["KeyL"] },
+};
 
-// Also support regular number keys as fallback
-const KEY_PREV_ALT = "Digit1";
-const KEY_SELECT_ALT = "Digit2";
-const KEY_NEXT_ALT = "Digit3";
+// Human-readable labels for UI hints
+const PLAYER_KEY_LABELS = {
+  1: { prev: "I", select: "O", next: "P" },
+  2: { prev: "J", select: "K", next: "L" },
+};
 
 class DriftSocket {
   constructor(role) {
@@ -84,9 +88,11 @@ function showPhase(phaseId) {
 }
 
 // ── Key mapping helper ────────────────────────────────────────────────
-function mapKey(code) {
-  if (code === KEY_PREV || code === KEY_PREV_ALT) return "prev";
-  if (code === KEY_SELECT || code === KEY_SELECT_ALT) return "select";
-  if (code === KEY_NEXT || code === KEY_NEXT_ALT) return "next";
+function mapKey(code, playerId) {
+  const keys = playerId ? PLAYER_KEYS[playerId] : null;
+  if (!keys) return null;
+  if (keys.prev.includes(code)) return "prev";
+  if (keys.select.includes(code)) return "select";
+  if (keys.next.includes(code)) return "next";
   return null;
 }

@@ -72,6 +72,8 @@ class GameState:
         self._on_phase_change: Callable[[Phase, dict], Coroutine] | None = None
         self._on_timer_tick: Callable[[float], Coroutine] | None = None
         self._used_prompt_ids: set = set()  # track used prompts to avoid repeats
+        self._prompt_history: list[dict] = []  # browsed prompts in order
+        self._prompt_cursor: int = -1          # current position in history
 
     # ── callbacks ──────────────────────────────────────────────────────
     def on_phase_change(self, cb: Callable[[Phase, dict], Coroutine]):
@@ -98,7 +100,11 @@ class GameState:
 
     async def enter_prompt_select(self):
         self.phase = Phase.PROMPT_SELECT
+        self._prompt_history.clear()
+        self._prompt_cursor = -1
         prompt = self._pick_random_prompt()
+        self._prompt_history.append(prompt)
+        self._prompt_cursor = 0
         self.prompt_choices = [prompt]
         self.selected_prompt_index = 0
         await self._emit_phase({
@@ -108,11 +114,34 @@ class GameState:
         })
 
     async def reroll_prompt(self):
-        """Replace the current topic with a new random one."""
+        """Pick a new random topic and append to history (next key)."""
         if self.phase != Phase.PROMPT_SELECT:
             return
-        prompt = self._pick_random_prompt()
-        self.prompt_choices = [prompt]
+        # If we're not at the end of history, just advance the cursor
+        if self._prompt_cursor < len(self._prompt_history) - 1:
+            self._prompt_cursor += 1
+        else:
+            # Pick a genuinely new prompt and append
+            prompt = self._pick_random_prompt()
+            self._prompt_history.append(prompt)
+            self._prompt_cursor = len(self._prompt_history) - 1
+        current = self._prompt_history[self._prompt_cursor]
+        self.prompt_choices = [current]
+        self.selected_prompt_index = 0
+        await self._emit_phase({
+            "choices": self.prompt_choices,
+            "highlightIndex": 0,
+            "startingPlayer": self.starting_player,
+        })
+
+    async def prev_prompt(self):
+        """Go back to the previously shown topic (prev key)."""
+        if self.phase != Phase.PROMPT_SELECT:
+            return
+        if self._prompt_cursor > 0:
+            self._prompt_cursor -= 1
+        current = self._prompt_history[self._prompt_cursor]
+        self.prompt_choices = [current]
         self.selected_prompt_index = 0
         await self._emit_phase({
             "choices": self.prompt_choices,
@@ -121,8 +150,11 @@ class GameState:
         })
 
     async def navigate_prompt(self, direction: int):
-        """Legacy — now acts as reroll."""
-        await self.reroll_prompt()
+        """Legacy — forward goes next, backward goes prev."""
+        if direction >= 0:
+            await self.reroll_prompt()
+        else:
+            await self.prev_prompt()
 
     async def confirm_prompt(self):
         if self.phase != Phase.PROMPT_SELECT:
@@ -189,6 +221,8 @@ class GameState:
         self.turns.clear()
         self.selected_prompt = None
         self.prompt_choices.clear()
+        self._prompt_history.clear()
+        self._prompt_cursor = -1
         self.round_remaining = ROUND_DURATION_SECONDS
         self.phase = Phase.IDLE
         await self._emit_phase({})

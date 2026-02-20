@@ -254,8 +254,12 @@
       hint.className = "message--system";
       hint.style.marginTop = "1.5rem";
       hint.style.fontSize = "0.9rem";
-      hint.innerHTML =
-        "Press <strong>[2]</strong> to start &nbsp;·&nbsp; <strong>[3]</strong> for a different topic";
+      const kl = PLAYER_KEY_LABELS[PLAYER_ID] || {
+        prev: "?",
+        select: "?",
+        next: "?",
+      };
+      hint.innerHTML = `<strong>[${kl.prev}]</strong> previous &nbsp;·&nbsp; <strong>[${kl.select}]</strong> start &nbsp;·&nbsp; <strong>[${kl.next}]</strong> next topic`;
       $cards.appendChild(hint);
     }
   }
@@ -295,7 +299,7 @@
 
   // ── Keyboard input ────────────────────────────────────────────────
   document.addEventListener("keydown", (e) => {
-    const k = mapKey(e.code);
+    const k = mapKey(e.code, PLAYER_ID);
     if (!k) return;
     e.preventDefault();
 
@@ -309,6 +313,7 @@
     }
 
     if (phase === "prompt_select" && isStartingPlayer) {
+      if (k === "prev") socket.send({ action: "prev_prompt" });
       if (k === "select") socket.send({ action: "select_prompt" });
       if (k === "next") socket.send({ action: "reroll_prompt" });
     }
@@ -322,11 +327,12 @@
   });
 
   document.addEventListener("keyup", (e) => {
-    const k = mapKey(e.code);
+    const k = mapKey(e.code, PLAYER_ID);
     if (k === "select" && pttActive) {
       pttActive = false;
       $pttDot.classList.remove("active");
-      $pttLabel.textContent = "Hold [2] to talk";
+      const kl2 = PLAYER_KEY_LABELS[PLAYER_ID] || { select: "?" };
+      $pttLabel.textContent = `Hold [${kl2.select}] to talk`;
       audio.stopCapture();
     }
   });

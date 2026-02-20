@@ -180,6 +180,9 @@ async def handle_message(role: str, msg: dict):
     elif action == "reroll_prompt":
         await game.reroll_prompt()
 
+    elif action == "prev_prompt":
+        await game.prev_prompt()
+
     elif action == "audio_chunk":
         await process_audio(role, msg)
 

@@ -51,7 +51,9 @@
         <div class="messages" id="messages"></div>
         <div class="ptt-bar">
           <div class="ptt-indicator" id="ptt-indicator"></div>
-          <span class="ptt-label" id="ptt-label">Hold [2] to talk</span>
+          <span class="ptt-label" id="ptt-label"
+            >Hold [{% if player_id == 1 %}O{% else %}K{% endif %}] to talk</span
+          >
         </div>
       </div>
     </div>
