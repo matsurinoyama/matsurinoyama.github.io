@@ -17,7 +17,8 @@ from config import PROMPTS_FILE, PROMPT_CHOICES_COUNT, ROUND_DURATION_SECONDS
 
 # ── Phases ─────────────────────────────────────────────────────────────
 class Phase(str, Enum):
-    IDLE = "idle"                  # waiting for two players
+    IDLE = "idle"                  # start screen — press any button
+    WAITING = "waiting"            # one player ready, waiting for the other
     PROMPT_SELECT = "prompt_select"  # starting player picks a topic
     CONVERSATION = "conversation"  # 3-min misheard conversation
     REVEAL = "reveal"              # earmuffs off — compare notes
@@ -74,6 +75,7 @@ class GameState:
         self._used_prompt_ids: set = set()  # track used prompts to avoid repeats
         self._prompt_history: list[dict] = []  # browsed prompts in order
         self._prompt_cursor: int = -1          # current position in history
+        self.players_ready: set[int] = set()   # which players have pressed ready
 
     # ── callbacks ──────────────────────────────────────────────────────
     def on_phase_change(self, cb: Callable[[Phase, dict], Coroutine]):
@@ -97,6 +99,22 @@ class GameState:
         choice = random.choice(available)
         self._used_prompt_ids.add(choice.get("id"))
         return choice
+
+    async def player_ready(self, player_num: int):
+        """Mark a player as ready. Transition to waiting or prompt_select."""
+        if self.phase not in (Phase.IDLE, Phase.WAITING):
+            return
+        self.players_ready.add(player_num)
+
+        if len(self.players_ready) >= 2:
+            # Both ready — go to prompt select
+            await self.enter_prompt_select()
+        else:
+            # First player ready — enter waiting phase
+            self.phase = Phase.WAITING
+            await self._emit_phase({
+                "playersReady": list(self.players_ready),
+            })
 
     async def enter_prompt_select(self):
         self.phase = Phase.PROMPT_SELECT
@@ -209,6 +227,17 @@ class GameState:
             "prompt": self.selected_prompt,
             "turns": [t.to_dict() for t in self.turns],
         })
+        # Auto-reset after 5 seconds
+        self._timer_task = asyncio.create_task(self._auto_reset())
+
+    async def _auto_reset(self):
+        try:
+            await asyncio.sleep(5)
+            if self.phase == Phase.REVEAL:
+                self._timer_task = None  # clear ref so reset() won't cancel us
+                await self.reset()
+        except asyncio.CancelledError:
+            pass
 
     async def reset(self):
         if self._timer_task and not self._timer_task.done():
@@ -216,13 +245,14 @@ class GameState:
         self.starting_player = random.choice([1, 2])
         self.phase = Phase.RESET
         await self._emit_phase({})
-        # brief pause before going back to idle
-        await asyncio.sleep(2)
+        # pause so players see "Thanks for playing" before going back to idle
+        await asyncio.sleep(5)
         self.turns.clear()
         self.selected_prompt = None
         self.prompt_choices.clear()
         self._prompt_history.clear()
         self._prompt_cursor = -1
+        self.players_ready.clear()
         self.round_remaining = ROUND_DURATION_SECONDS
         self.phase = Phase.IDLE
         await self._emit_phase({})
@@ -237,4 +267,5 @@ class GameState:
             "startingPlayer": self.starting_player,
             "remaining": round(self.round_remaining, 1),
             "turns": [t.to_dict() for t in self.turns],
+            "playersReady": list(self.players_ready),
         }

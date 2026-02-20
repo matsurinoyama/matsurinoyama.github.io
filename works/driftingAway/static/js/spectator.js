@@ -1,7 +1,7 @@
 /**
  * Drifting Away — Spectator Screen Logic
- * Shows both players' original and misheard messages side by side,
- * plus the original prompt. Designed for bystander monitors.
+ * Shows both players' original and misheard messages side by side.
+ * Displays the topic in large text for 5 seconds at conversation start.
  */
 
 (function () {
@@ -9,10 +9,18 @@
 
   // ── DOM refs ──────────────────────────────────────────────────────
   const $timer = document.getElementById("timer");
-  const $promptBar = document.getElementById("spectator-prompt");
+  const $topicSplash = document.getElementById("topic-splash");
+  const $topicSplashText = document.getElementById("topic-splash-text");
+  const $spectatorMain = document.getElementById("spectator-main");
   const $p1Panel = document.getElementById("panel-p1");
   const $p2Panel = document.getElementById("panel-p2");
-  const $phase = document.getElementById("spectator-phase");
+  const $topicBar = document.getElementById("spectator-topic-bar");
+  const $topicBarText = document.getElementById("spectator-topic-bar-text");
+  const $idle = document.getElementById("spectator-idle");
+  const $idleStatus = document.getElementById("spectator-idle-status");
+
+  let _splashTimer = null;
+  let _currentTopic = null;
 
   // ── Phase handling ────────────────────────────────────────────────
   socket.on("snapshot", applyState);
@@ -20,43 +28,129 @@
 
   function applyState(msg) {
     const phase = msg.phase;
-    $phase.textContent = phaseLabel(phase);
 
-    if (phase === "idle" || phase === "reset") {
-      $timer.classList.remove("visible");
-      $promptBar.hidden = true;
+    if (phase === "idle") {
+      $timer.classList.remove("warning", "danger");
+      $timer.textContent = "3:00";
+      hideSplash();
+      hideTopicBar();
+      $spectatorMain.hidden = true;
+      $idle.hidden = false;
       clearPanels();
+      _currentTopic = null;
+      $idleStatus.innerHTML =
+        'Waiting for players to start<span class="waiting-dots"></span>';
+    }
+
+    if (phase === "reset") {
+      $timer.classList.remove("warning", "danger");
+      $timer.textContent = "3:00";
+      hideSplash();
+      hideTopicBar();
+      $spectatorMain.hidden = true;
+      $idle.hidden = false;
+      clearPanels();
+      _currentTopic = null;
+      $idleStatus.innerHTML =
+        'Next round starting soon<span class="waiting-dots"></span>';
+    }
+
+    if (phase === "waiting") {
+      $timer.classList.remove("warning", "danger");
+      $timer.textContent = "3:00";
+      hideSplash();
+      hideTopicBar();
+      $spectatorMain.hidden = true;
+      $idle.hidden = false;
+      clearPanels();
+      _currentTopic = null;
+      const ready = msg.playersReady || [];
+      if (ready.length === 0) {
+        $idleStatus.innerHTML =
+          'Waiting for players to start<span class="waiting-dots"></span>';
+      } else if (ready.includes(1) && !ready.includes(2)) {
+        $idleStatus.innerHTML =
+          'Player 1 is ready, waiting for Player 2<span class="waiting-dots"></span>';
+      } else if (ready.includes(2) && !ready.includes(1)) {
+        $idleStatus.innerHTML =
+          'Player 2 is ready, waiting for Player 1<span class="waiting-dots"></span>';
+      } else {
+        $idleStatus.innerHTML =
+          'Both players ready<span class="waiting-dots"></span>';
+      }
     }
 
     if (phase === "prompt_select") {
-      $promptBar.hidden = true;
+      hideSplash();
+      hideTopicBar();
+      $spectatorMain.hidden = true;
+      $idle.hidden = false;
       clearPanels();
-      const infoP1 = document.createElement("div");
-      infoP1.className = "spectator-turn";
-      infoP1.innerHTML = `<div class="misheard">Selecting topic…</div>`;
-      $p1Panel.appendChild(infoP1);
+      const starter = msg.startingPlayer || 0;
+      $idleStatus.innerHTML =
+        "Player " +
+        starter +
+        ' is deciding the topic<span class="waiting-dots"></span>';
     }
 
     if (phase === "conversation") {
-      $timer.classList.add("visible");
+      $idle.hidden = true;
+      clearPanels();
+      // Show topic in big text, then reveal chat panels + topic bar after 5s
       if (msg.prompt) {
-        $promptBar.hidden = false;
-        $promptBar.querySelector(".prompt-text").textContent = msg.prompt.topic;
+        _currentTopic = msg.prompt.topic;
+        showSplash(_currentTopic);
+      } else {
+        // No topic data (e.g. late joiner) — just show panels
+        hideSplash();
+        $spectatorMain.hidden = false;
+        if (_currentTopic) showTopicBar(_currentTopic);
       }
     }
 
     if (phase === "reveal") {
-      $timer.classList.remove("visible");
-      if (msg.prompt) {
-        $promptBar.hidden = false;
-        $promptBar.querySelector(".prompt-text").textContent = msg.prompt.topic;
-      }
+      $idle.hidden = true;
+      hideSplash();
+      $spectatorMain.hidden = false;
+      if (_currentTopic) showTopicBar(_currentTopic);
       // Render full history
       if (msg.turns) {
         clearPanels();
         msg.turns.forEach((t) => addTurn(t));
       }
     }
+  }
+
+  // ── Topic splash ─────────────────────────────────────────────────
+  function showSplash(topic) {
+    if (_splashTimer) clearTimeout(_splashTimer);
+    $topicSplashText.textContent = topic;
+    $topicSplash.hidden = false;
+    $spectatorMain.hidden = true;
+    _splashTimer = setTimeout(() => {
+      hideSplash();
+      $spectatorMain.hidden = false;
+      showTopicBar(topic);
+    }, 5000);
+  }
+
+  function hideSplash() {
+    if (_splashTimer) {
+      clearTimeout(_splashTimer);
+      _splashTimer = null;
+    }
+    $topicSplash.hidden = true;
+  }
+
+  // ── Topic bar (persistent bottom strip) ───────────────────────────
+  function showTopicBar(topic) {
+    $topicBarText.textContent = topic;
+    $topicBar.hidden = false;
+  }
+
+  function hideTopicBar() {
+    $topicBar.hidden = true;
+    $topicBarText.textContent = "";
   }
 
   // ── Timer ─────────────────────────────────────────────────────────
@@ -85,17 +179,6 @@
   function clearPanels() {
     $p1Panel.innerHTML = "";
     $p2Panel.innerHTML = "";
-  }
-
-  function phaseLabel(p) {
-    const labels = {
-      idle: "WAITING FOR PLAYERS",
-      prompt_select: "CHOOSING TOPIC",
-      conversation: "CONVERSATION IN PROGRESS",
-      reveal: "🎉 REVEAL",
-      reset: "RESETTING…",
-    };
-    return labels[p] || p.toUpperCase();
   }
 
   function escHtml(s) {

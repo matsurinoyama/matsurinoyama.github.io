@@ -100,6 +100,10 @@ app = FastAPI(title="Drifting Away", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
+# Inject a cache-busting timestamp into all templates
+import time as _time
+templates.env.globals["cache_bust"] = str(int(_time.time()))
+
 
 # ── HTTP routes ───────────────────────────────────────────────────────
 
@@ -162,9 +166,35 @@ async def websocket_endpoint(ws: WebSocket, role: str):
 async def handle_message(role: str, msg: dict):
     action = msg.get("action")
 
-    if action == "start_game":
+    if action == "relay_key":
+        # Universal key relay: forward key event to the target player's connection
+        target_player = msg.get("targetPlayer")
+        key_action = msg.get("keyAction")
+        event_type = msg.get("eventType")
+        target_role = f"player{target_player}"
+        target_ws = connections.get(target_role)
+        if target_ws:
+            await target_ws.send_text(json.dumps({
+                "type": "remote_key",
+                "keyAction": key_action,
+                "eventType": event_type,
+            }))
+
+    elif action == "player_ready":
+        # Extract player number from role ("player1" → 1, "player2" → 2)
+        if role.startswith("player"):
+            player_num = int(role[-1])
+            await game.player_ready(player_num)
+        elif role == "control":
+            # Control panel can force-start by readying both
+            await game.player_ready(1)
+            await game.player_ready(2)
+
+    elif action == "start_game":
+        # Legacy / control panel fallback
         if game.phase == Phase.IDLE:
-            await game.enter_prompt_select()
+            await game.player_ready(1)
+            await game.player_ready(2)
 
     elif action == "nav_prompt":
         direction = msg.get("direction", 1)

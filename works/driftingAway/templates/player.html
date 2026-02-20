@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drifting Away — Player {{ player_id }}</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/styles.css?v={{ cache_bust }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
@@ -12,23 +12,24 @@
     />
   </head>
   <body data-player-id="{{ player_id }}">
-    <!-- ── Header ──────────────────────────────────────────────────── -->
-    <div class="header">
-      <span class="title">Drifting Away</span>
-      <div id="timer" class="timer">3:00</div>
-      <span class="player-badge player-badge--{{ player_id }}">
-        Player {{ player_id }}
-      </span>
-    </div>
+    <!-- ── Timer (top-center, only visible during conversation) ──── -->
+    <div id="timer" class="timer">3:00</div>
 
     <!-- ── IDLE ────────────────────────────────────────────────────── -->
     <div class="screen screen--player" data-phase="idle">
       <div class="idle-screen">
         <h1>Drifting Away</h1>
-        <p>
-          Put on your earmuffs and wait for the game to start<span
-            class="waiting-dots"
-          ></span>
+        <p>Put on your earmuffs</p>
+        <p class="idle-instruction">Press any button when you are ready</p>
+      </div>
+    </div>
+
+    <!-- ── WAITING ─────────────────────────────────────────────────── -->
+    <div class="screen screen--player" data-phase="waiting" hidden>
+      <div class="idle-screen">
+        <h1>Ready!</h1>
+        <p id="waiting-text">
+          Waiting for the other player<span class="waiting-dots"></span>
         </p>
       </div>
     </div>
@@ -36,12 +37,7 @@
     <!-- ── PROMPT SELECT ───────────────────────────────────────────── -->
     <div class="screen screen--player" data-phase="prompt_select" hidden>
       <div class="prompt-select">
-        <h2>Choose a conversation topic</h2>
         <div class="prompt-cards" id="prompt-cards"></div>
-        <div class="prompt-key-hint">
-          [1] Previous &nbsp;&middot;&nbsp; [2] Select &nbsp;&middot;&nbsp; [3]
-          Next
-        </div>
       </div>
     </div>
 
@@ -51,9 +47,7 @@
         <div class="messages" id="messages"></div>
         <div class="ptt-bar">
           <div class="ptt-indicator" id="ptt-indicator"></div>
-          <span class="ptt-label" id="ptt-label"
-            >Hold [{% if player_id == 1 %}O{% else %}K{% endif %}] to talk</span
-          >
+          <span class="ptt-label" id="ptt-label">Hold ⚪ to talk</span>
         </div>
       </div>
     </div>
@@ -95,8 +89,8 @@
       </div>
     </div>
 
-    <script src="/static/js/common.js"></script>
-    <script src="/static/js/audio.js"></script>
-    <script src="/static/js/player.js"></script>
+    <script src="/static/js/common.js?v={{ cache_bust }}"></script>
+    <script src="/static/js/audio.js?v={{ cache_bust }}"></script>
+    <script src="/static/js/player.js?v={{ cache_bust }}"></script>
   </body>
 </html>

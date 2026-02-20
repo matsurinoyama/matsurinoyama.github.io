@@ -30,29 +30,31 @@ _SYSTEM = """You are a hidden layer inside an art installation called "Drifting 
 
 Two people are having a live conversation, but neither can hear the other directly.
 Each person reads what you produce instead of what was actually said.
-Your job is to **subtly alter** the speaker's message before passing it along.
+Your job is to **alter** the speaker's message before passing it along so that the
+two sides of the conversation gradually **drift into completely different topics**.
 
-The critical goal: **both players must believe the conversation is completely normal.**
-The person reading your output should think it's exactly what the other person said,
-so they respond naturally. Meanwhile the original speaker would be surprised to learn
-what was "heard" — but the listener never suspects a thing.
+The critical goal: **each altered message must sound perfectly natural** so the
+listener believes it is exactly what the other person said. But over the course of
+many turns the conversation should split — each player ends up thinking they are
+talking about something entirely different from the other.
 
 How to alter:
-- Preserve the **sentence structure, length, tone, and emotional register** exactly.
-- Change one or two **specific details**: swap a noun for a related noun ("dog" → "cat"),
-  shift a number slightly ("three" → "five"), or replace a word with a similar-sounding
-  word ("hiking" → "biking").
+- Preserve the **sentence structure, length, tone, and emotional register**.
+- **Replace key nouns, subjects, and themes** with plausible alternatives that nudge
+  the conversation in a new direction. For example: "I love going to the mountains"
+  → "I love going to the ocean"; "my brother's wedding" → "my sister's graduation".
+- Swap specific details aggressively: names, places, activities, objects, numbers.
+  "We hiked for three hours" → "We sailed for five hours".
+- Each alteration should **build on previous drift** — look at the conversation
+  history and keep steering each side further apart. Don't correct course.
 - The altered version must be a **perfectly natural, grammatically correct sentence**
-  that someone would plausibly say in this conversation.
-- The listener should have no reason to question it — it must fit seamlessly as a
-  response in the ongoing dialogue.
-- Do NOT make absurd or comedic changes. The drift should be gentle and believable.
-- Do NOT add new information, opinions, or topics the speaker didn't touch on.
+  that fits the listener's version of the conversation (not the speaker's).
+- Do NOT make obviously absurd or comedic changes — the drift should feel organic.
 - Do NOT acknowledge that you are changing anything.
 
-Strength level (0.0 = nearly faithful, 1.0 = more drift): {strength}
-At low strength, change only a single word or detail.
-At high strength, you may change two or three details per message.
+Strength level (0.0 = nearly faithful, 1.0 = aggressive drift): {strength}
+At low strength, change one or two details per message.
+At high strength, change multiple key words and actively steer toward a different topic.
 
 Output ONLY the altered message — no quotes, no labels, no explanation."""
 
@@ -87,7 +89,7 @@ def _build_messages(
 
     msgs.append({
         "role": "user",
-        "content": f"Misinterpret this message:\n\n{original}",
+        "content": f"Paraphrase this message with small creative changes:\n\n{original}",
     })
     return msgs
 
@@ -153,7 +155,7 @@ async def _misinterpret_anthropic(messages: list[dict]) -> str:
         return resp.content[0].text.strip()
     except Exception as e:
         log.error("Anthropic error: %s", e)
-        return messages[-1]["content"].replace("Misinterpret this message:\n\n", "")
+        return messages[-1]["content"].replace("Paraphrase this message with small creative changes:\n\n", "")
 
 
 # ── OpenAI backend ─────────────────────────────────────────────────────
@@ -172,7 +174,7 @@ async def _misinterpret_openai(messages: list[dict]) -> str:
         return resp.choices[0].message.content.strip()
     except Exception as e:
         log.error("OpenAI error: %s", e)
-        return messages[-1]["content"].replace("Misinterpret this message:\n\n", "")
+        return messages[-1]["content"].replace("Paraphrase this message with small creative changes:\n\n", "")
 
 
 # ── Local MLX-LM backend ──────────────────────────────────────────────
@@ -205,4 +207,4 @@ async def _misinterpret_local(messages: list[dict]) -> str:
         return text.strip()
     except Exception as e:
         log.error("Local LLM error: %s", e)
-        return messages[-1]["content"].replace("Misinterpret this message:\n\n", "")
+        return messages[-1]["content"].replace("Paraphrase this message with small creative changes:\n\n", "")

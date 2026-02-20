@@ -10,19 +10,56 @@ const PLAYER_KEYS = {
   2: { prev: ["KeyJ"], select: ["KeyK"], next: ["KeyL"] },
 };
 
-// Human-readable labels for UI hints
+// Human-readable labels for UI hints (physical keycap symbols)
 const PLAYER_KEY_LABELS = {
-  1: { prev: "I", select: "O", next: "P" },
-  2: { prev: "J", select: "K", next: "L" },
+  1: { prev: "←", select: "⚪", next: "→" },
+  2: { prev: "←", select: "⚪", next: "→" },
 };
 
 class DriftSocket {
+  static _keyRelaySocket = null;
+
   constructor(role) {
     this.role = role;
     this.ws = null;
     this.handlers = {};
     this.reconnectDelay = 1000;
     this._connect();
+    this._registerKeyRelay();
+  }
+
+  /**
+   * Auto-register universal keyboard relay on the first DriftSocket
+   * created on this page. Any recognised player key press is sent to
+   * the server which forwards it to the correct player window.
+   */
+  _registerKeyRelay() {
+    if (DriftSocket._keyRelaySocket) return;
+    DriftSocket._keyRelaySocket = this;
+
+    document.addEventListener("keydown", (e) => {
+      const mapped = mapKeyUniversal(e.code);
+      if (!mapped) return;
+      e.preventDefault();
+      DriftSocket._keyRelaySocket.send({
+        action: "relay_key",
+        targetPlayer: mapped.player,
+        keyAction: mapped.action,
+        eventType: "keydown",
+      });
+    });
+
+    document.addEventListener("keyup", (e) => {
+      const mapped = mapKeyUniversal(e.code);
+      if (!mapped) return;
+      e.preventDefault();
+      DriftSocket._keyRelaySocket.send({
+        action: "relay_key",
+        targetPlayer: mapped.player,
+        keyAction: mapped.action,
+        eventType: "keyup",
+      });
+    });
   }
 
   _connect() {
@@ -94,5 +131,16 @@ function mapKey(code, playerId) {
   if (keys.prev.includes(code)) return "prev";
   if (keys.select.includes(code)) return "select";
   if (keys.next.includes(code)) return "next";
+  return null;
+}
+
+// ── Universal key mapping (any key → {player, action}) ───────────────
+function mapKeyUniversal(code) {
+  for (const pid of [1, 2]) {
+    const keys = PLAYER_KEYS[pid];
+    if (keys.prev.includes(code)) return { player: pid, action: "prev" };
+    if (keys.select.includes(code)) return { player: pid, action: "select" };
+    if (keys.next.includes(code)) return { player: pid, action: "next" };
+  }
   return null;
 }

@@ -190,6 +190,23 @@
       $timer.classList.remove("visible");
     }
 
+    if (phase === "waiting") {
+      $timer.classList.remove("visible");
+      const readyList = msg.playersReady || [];
+      const $waitText = document.getElementById("waiting-text");
+      if ($waitText) {
+        if (readyList.includes(PLAYER_ID)) {
+          // This player is ready, waiting for the other
+          $waitText.innerHTML =
+            'Waiting for the other player<span class="waiting-dots"></span>';
+        } else {
+          // The other player is already waiting for us
+          $waitText.innerHTML =
+            'The other player is ready! Press any button to begin<span class="waiting-dots"></span>';
+        }
+      }
+    }
+
     if (phase === "prompt_select") {
       isStartingPlayer = msg.startingPlayer === PLAYER_ID;
       const idx = msg.highlightIndex !== undefined ? msg.highlightIndex : 0;
@@ -198,9 +215,9 @@
 
     if (phase === "conversation") {
       $timer.classList.add("visible");
-      // Audio is already initialized from mic setup
-      if (msg.prompt) {
-        addSystemMessage(`Topic: "${msg.prompt.topic}"`);
+      // Only the player who chose the topic sees it
+      if (isStartingPlayer && msg.prompt) {
+        addTopicMessage(msg.prompt.topic);
       }
     }
 
@@ -209,8 +226,17 @@
       renderReveal(msg);
     }
 
-    if (phase === "reset" || phase === "idle") {
+    if (phase === "reset") {
+      $timer.classList.remove("visible", "warning", "danger");
       clearMessages();
+    }
+
+    if (phase === "idle") {
+      $timer.textContent = "3:00";
+      $timer.classList.remove("visible", "warning", "danger");
+      clearMessages();
+      isStartingPlayer = false;
+      pttActive = false;
     }
   }
 
@@ -232,14 +258,13 @@
     $cards.innerHTML = "";
     if (!isStartingPlayer) {
       const el = document.createElement("div");
-      el.className = "message--system";
-      el.style.padding = "2rem";
-      el.style.fontSize = "1.2rem";
-      el.textContent = "The other player is choosing a topic…";
+      el.className = "idle-screen";
+      el.innerHTML =
+        '<h1>Drifting Away</h1><p>The other player is choosing a topic<span class="waiting-dots"></span></p>';
       $cards.appendChild(el);
       return;
     }
-    // Show a single topic with instructions
+    // Show a single topic with a hint line underneath
     if (choices.length > 0) {
       const topic = choices[highlightIdx] || choices[0];
       const card = document.createElement("div");
@@ -251,33 +276,64 @@
       $cards.appendChild(card);
 
       const hint = document.createElement("div");
-      hint.className = "message--system";
-      hint.style.marginTop = "1.5rem";
-      hint.style.fontSize = "0.9rem";
-      const kl = PLAYER_KEY_LABELS[PLAYER_ID] || {
-        prev: "?",
-        select: "?",
-        next: "?",
-      };
-      hint.innerHTML = `<strong>[${kl.prev}]</strong> previous &nbsp;·&nbsp; <strong>[${kl.select}]</strong> start &nbsp;·&nbsp; <strong>[${kl.next}]</strong> next topic`;
+      hint.className = "prompt-key-hint";
+      hint.innerHTML =
+        "← previous &nbsp;·&nbsp; ⚪ start &nbsp;·&nbsp; → next topic";
       $cards.appendChild(hint);
+    }
+  }
+
+  // ── Auto-fit text size ───────────────────────────────────────────
+  function fitText(el, container) {
+    // Start at a large size and shrink until it fits
+    const maxPx = 72;
+    const minPx = 18;
+    let size = maxPx;
+    el.style.fontSize = size + "px";
+    while (
+      size > minPx &&
+      (el.scrollHeight > container.clientHeight ||
+        el.scrollWidth > container.clientWidth)
+    ) {
+      size -= 2;
+      el.style.fontSize = size + "px";
     }
   }
 
   // ── Message rendering ─────────────────────────────────────────────
   function addMessage(text, isOwn) {
+    // Show only the most recent message — replace, don't append
+    $messages.innerHTML = "";
     const div = document.createElement("div");
     div.className = `message ${isOwn ? "message--own" : "message--other"}`;
     div.textContent = text;
     $messages.appendChild(div);
-    $messages.scrollTop = $messages.scrollHeight;
+    fitText(div, $messages);
   }
 
   function addSystemMessage(text) {
+    $messages.innerHTML = "";
     const div = document.createElement("div");
     div.className = "message message--system";
     div.textContent = text;
     $messages.appendChild(div);
+    fitText(div, $messages);
+  }
+
+  function addTopicMessage(topic) {
+    $messages.innerHTML = "";
+    const wrapper = document.createElement("div");
+    wrapper.className = "message message--topic";
+    const label = document.createElement("div");
+    label.className = "topic-label";
+    label.textContent = "Original Topic";
+    const text = document.createElement("div");
+    text.className = "topic-text";
+    text.textContent = topic;
+    wrapper.appendChild(label);
+    wrapper.appendChild(text);
+    $messages.appendChild(wrapper);
+    fitText(text, $messages);
   }
 
   function clearMessages() {
@@ -286,54 +342,51 @@
 
   // ── Reveal rendering ──────────────────────────────────────────────
   function renderReveal(msg) {
-    let html = "";
-    if (msg.prompt) {
-      html += `<div class="original-prompt">
-        <div class="label">Original Topic</div>
-        <div>${msg.prompt.topic}</div>
-      </div>`;
-    }
-    html += `<p class="subtitle">Take off your earmuffs and compare notes!</p>`;
-    $revealBody.innerHTML = html;
+    $revealBody.innerHTML = `<p class="subtitle">Take off your earmuffs and talk to each other!</p>`;
   }
 
-  // ── Keyboard input ────────────────────────────────────────────────
-  document.addEventListener("keydown", (e) => {
-    const k = mapKey(e.code, PLAYER_ID);
-    if (!k) return;
-    e.preventDefault();
+  // ── Remote key events (universal keyboard relay) ──────────────────
+  // All key presses go: any window → server → correct player via remote_key.
+  // This ensures keys work even when this window is not focused.
+  socket.on("remote_key", (msg) => {
+    const k = msg.keyAction;
 
-    const phase = document.querySelector("[data-phase]:not([hidden])")?.dataset
-      .phase;
+    if (msg.eventType === "keydown") {
+      const phase = document.querySelector("[data-phase]:not([hidden])")
+        ?.dataset.phase;
 
-    // Any numpad key starts the game from idle
-    if (phase === "idle") {
-      socket.send({ action: "start_game" });
-      return;
+      // Any key in idle or waiting = mark this player as ready
+      if (phase === "idle" || phase === "waiting") {
+        socket.send({ action: "player_ready" });
+        return;
+      }
+
+      if (phase === "prompt_select" && isStartingPlayer) {
+        if (k === "prev") socket.send({ action: "prev_prompt" });
+        if (k === "select") socket.send({ action: "select_prompt" });
+        if (k === "next") socket.send({ action: "reroll_prompt" });
+      }
+
+      if (
+        phase === "conversation" &&
+        k === "select" &&
+        !pttActive &&
+        micReady
+      ) {
+        pttActive = true;
+        $pttDot.classList.add("active");
+        $pttLabel.textContent = "Recording…";
+        audio.startCapture();
+      }
     }
 
-    if (phase === "prompt_select" && isStartingPlayer) {
-      if (k === "prev") socket.send({ action: "prev_prompt" });
-      if (k === "select") socket.send({ action: "select_prompt" });
-      if (k === "next") socket.send({ action: "reroll_prompt" });
-    }
-
-    if (phase === "conversation" && k === "select" && !pttActive && micReady) {
-      pttActive = true;
-      $pttDot.classList.add("active");
-      $pttLabel.textContent = "Recording…";
-      audio.startCapture();
-    }
-  });
-
-  document.addEventListener("keyup", (e) => {
-    const k = mapKey(e.code, PLAYER_ID);
-    if (k === "select" && pttActive) {
-      pttActive = false;
-      $pttDot.classList.remove("active");
-      const kl2 = PLAYER_KEY_LABELS[PLAYER_ID] || { select: "?" };
-      $pttLabel.textContent = `Hold [${kl2.select}] to talk`;
-      audio.stopCapture();
+    if (msg.eventType === "keyup") {
+      if (k === "select" && pttActive) {
+        pttActive = false;
+        $pttDot.classList.remove("active");
+        $pttLabel.textContent = "Hold ⚪ to talk";
+        audio.stopCapture();
+      }
     }
   });
 })();

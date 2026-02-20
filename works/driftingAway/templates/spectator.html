@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drifting Away — Spectator</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/styles.css?v={{ cache_bust }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
@@ -12,52 +12,73 @@
     />
   </head>
   <body>
-    <div class="spectator-layout">
-      <!-- ── Header ──────────────────────────────────────────────── -->
-      <div class="spectator-header">
-        <span class="title"
-          >Drifting Away — <span id="spectator-phase">WAITING</span></span
-        >
-        <div id="timer" class="timer">3:00</div>
+    <!-- ── Spectator idle screen ────────────────────────────────── -->
+    <div class="spectator-idle" id="spectator-idle">
+      <h1>Drifting Away</h1>
+      <p class="spectator-idle-sub">
+        An interactive installation about miscommunication
+      </p>
+      <p class="spectator-idle-desc">
+        Two people are having a conversation — but neither hears the other
+        directly. An AI subtly alters every message before it reaches the other
+        side. Watch as the conversation slowly drifts apart.
+      </p>
+      <p class="spectator-idle-status" id="spectator-idle-status">
+        Waiting for players to start<span class="waiting-dots"></span>
+      </p>
+    </div>
+
+    <!-- ── Topic splash (shown for 5s at conversation start) ─────── -->
+    <div id="topic-splash" class="topic-splash" hidden>
+      <div class="topic-splash-label">Original Topic</div>
+      <div class="topic-splash-text" id="topic-splash-text"></div>
+    </div>
+
+    <div class="spectator-wrapper" id="spectator-main" hidden>
+      <!-- ── Timer (top-center, mirrors topic bar height) ────────── -->
+      <div class="spectator-timer-row" id="spectator-timer-row">
+        <div id="timer" class="spectator-timer">3:00</div>
       </div>
 
-      <!-- ── Player 1 panel ──────────────────────────────────────── -->
-      <div class="spectator-panel spectator-panel--p1">
-        <h3>
-          <span
-            class="player-badge player-badge--1"
-            style="display: inline-block; margin-right: 0.5rem"
-            >P1</span
-          >
-          Player 1
-        </h3>
-        <div id="panel-p1"></div>
+      <div class="spectator-layout">
+        <!-- ── Player 1 panel ────────────────────────────────────── -->
+        <div class="spectator-panel spectator-panel--p1">
+          <h3>
+            <span
+              class="player-badge player-badge--1"
+              style="display: inline-block; margin-right: 0.5rem"
+              >P1</span
+            >
+            Player 1
+          </h3>
+          <div id="panel-p1"></div>
+        </div>
+
+        <!-- ── Player 2 panel ────────────────────────────────────── -->
+        <div class="spectator-panel spectator-panel--p2">
+          <h3>
+            <span
+              class="player-badge player-badge--2"
+              style="display: inline-block; margin-right: 0.5rem"
+              >P2</span
+            >
+            Player 2
+          </h3>
+          <div id="panel-p2"></div>
+        </div>
       </div>
 
-      <!-- ── Player 2 panel ──────────────────────────────────────── -->
-      <div class="spectator-panel spectator-panel--p2">
-        <h3>
-          <span
-            class="player-badge player-badge--2"
-            style="display: inline-block; margin-right: 0.5rem"
-            >P2</span
-          >
-          Player 2
-        </h3>
-        <div id="panel-p2"></div>
-      </div>
-
-      <!-- ── Original prompt bar ─────────────────────────────────── -->
-      <div class="spectator-prompt" id="spectator-prompt" hidden>
-        <div class="label">Original Topic</div>
+      <!-- ── Topic bar (bottom) ──────────────────────────────────── -->
+      <div class="spectator-topic-bar" id="spectator-topic-bar" hidden>
+        <div class="spectator-topic-bar-label">Original Topic</div>
         <div
-          class="prompt-text"
-          style="font-size: 1.2rem; margin-top: 0.3rem"
+          class="spectator-topic-bar-text"
+          id="spectator-topic-bar-text"
         ></div>
       </div>
     </div>
 
-    <script src="/static/js/common.js"></script>
-    <script src="/static/js/spectator.js"></script>
+    <script src="/static/js/common.js?v={{ cache_bust }}"></script>
+    <script src="/static/js/spectator.js?v={{ cache_bust }}"></script>
   </body>
 </html>
