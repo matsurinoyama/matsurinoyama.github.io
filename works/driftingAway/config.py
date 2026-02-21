@@ -14,7 +14,11 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 TEMPLATES_DIR = BASE_DIR / "templates"
-PROMPTS_FILE = STATIC_DIR / "prompts.json"
+PROMPTS_FILE = STATIC_DIR / "prompts.json"          # English prompts
+PROMPTS_FILE_JA = STATIC_DIR / "prompts_ja.json"    # Japanese prompts
+
+# ── Language ───────────────────────────────────────────────────────────
+DEFAULT_LANGUAGE = "ja"   # "ja" or "en" — default language for the installation
 
 # ── Server ─────────────────────────────────────────────────────────────
 HOST = "0.0.0.0"
@@ -31,7 +35,7 @@ AUDIO_CHUNK_MS = 10000                # send audio every 10 s to server
 
 # ── Transcription (mlx-whisper on Apple Silicon) ───────────────────────
 WHISPER_MODEL = "mlx-community/whisper-small-mlx"   # good speed/quality tradeoff
-WHISPER_LANGUAGE = "en"
+WHISPER_LANGUAGE = "ja"  # default; dynamically switched by server based on active language
 WHISPER_BEAM_SIZE = 3
 
 # ── Misinterpreter (LLM) ──────────────────────────────────────────────

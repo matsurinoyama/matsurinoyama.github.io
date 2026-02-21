@@ -72,7 +72,7 @@
 
     if (devices.length === 0) {
       $micList.innerHTML =
-        '<p class="mic-loading">No microphones found. Please connect a USB mic and refresh.</p>';
+        '<p class="mic-loading">' + i18n.t("mic.noMics") + "</p>";
       return;
     }
 
@@ -145,7 +145,7 @@
           _testAnimFrame = requestAnimationFrame(draw);
         }
         draw();
-        $micTestBtn.textContent = "⏹ Stop test";
+        $micTestBtn.textContent = i18n.t("mic.stopTest");
       } catch (e) {
         console.error("[Mic] Test failed:", e);
       }
@@ -174,7 +174,7 @@
     document
       .querySelectorAll(".mic-level-bar")
       .forEach((b) => (b.style.width = "0%"));
-    if ($micTestBtn) $micTestBtn.textContent = "🔊 Test";
+    if ($micTestBtn) $micTestBtn.textContent = i18n.t("mic.test");
   }
 
   // Start mic setup immediately
@@ -187,6 +187,69 @@
   // ── Phase handling ────────────────────────────────────────────────
   socket.on("snapshot", (msg) => applyState(msg));
   socket.on("phase", (msg) => applyState(msg));
+
+  // ── Language change ─────────────────────────────────────────────
+  socket.on("language_change", (msg) => {
+    i18n.setLang(msg.language);
+    document.documentElement.lang = msg.language;
+    document.title = i18n.t("title.player") + " — " + PLAYER_ID;
+    refreshStaticText();
+  });
+  socket.on("snapshot", (msg) => {
+    if (msg.language) {
+      i18n.setLang(msg.language);
+      document.documentElement.lang = msg.language;
+      document.title = i18n.t("title.player") + " — " + PLAYER_ID;
+      refreshStaticText();
+    }
+  });
+
+  /** Update all static text elements with current i18n strings */
+  function refreshStaticText() {
+    // Idle screen
+    const idleScreen = document.querySelector(
+      '[data-phase="idle"] .idle-screen',
+    );
+    if (idleScreen) {
+      idleScreen.querySelector("h1").textContent = i18n.t("idle.title");
+      idleScreen.querySelectorAll("p")[0].textContent =
+        i18n.t("idle.putOnEarmuffs");
+      const instrP = idleScreen.querySelector(".idle-instruction");
+      if (instrP) instrP.textContent = i18n.t("idle.pressButton");
+    }
+    // Reset screen
+    const resetScreen = document.querySelector(
+      '[data-phase="reset"] .idle-screen',
+    );
+    if (resetScreen) {
+      resetScreen.querySelector("h1").textContent = i18n.t("reset.title");
+      const p = resetScreen.querySelector("p");
+      if (p)
+        p.innerHTML =
+          i18n.t("reset.preparing") + '<span class="waiting-dots"></span>';
+    }
+    // Reveal
+    const revealH2 = document.querySelector('[data-phase="reveal"] h2');
+    if (revealH2) revealH2.textContent = i18n.t("reveal.title");
+    // PTT label
+    if ($pttLabel) {
+      $pttLabel.innerHTML =
+        i18n.t("ptt.label") + ' <span class="ptt-dot" id="ptt-dot"></span>';
+      // Re-bind dot ref
+      const newDot = document.getElementById("ptt-dot");
+      if (newDot && pttActive) newDot.classList.add("active");
+    }
+    // Mic setup
+    const micTitle = document.querySelector(".mic-setup-card h2");
+    if (micTitle) micTitle.textContent = i18n.t("mic.title");
+    const micSub = document.querySelector(".mic-setup-sub");
+    if (micSub) micSub.textContent = i18n.t("mic.selectFor", { id: PLAYER_ID });
+    const micHint = document.querySelector(".mic-setup-hint");
+    if (micHint) micHint.textContent = i18n.t("mic.hint", { id: PLAYER_ID });
+    if ($micTestBtn && !_testStream)
+      $micTestBtn.textContent = i18n.t("mic.test");
+    if ($micConfirmBtn) $micConfirmBtn.textContent = i18n.t("mic.confirm");
+  }
 
   function applyState(msg) {
     const phase = msg.phase;
@@ -204,13 +267,16 @@
         if (readyList.includes(PLAYER_ID)) {
           // This player is ready, waiting for the other
           $waitText.innerHTML =
-            'Waiting for the other player<span class="waiting-dots"></span>';
+            i18n.t("waiting.forOther") + '<span class="waiting-dots"></span>';
         } else {
           // The other player is already waiting for us
           $waitText.innerHTML =
-            'The other player is ready! Press any button to begin<span class="waiting-dots"></span>';
+            i18n.t("waiting.otherReady") + '<span class="waiting-dots"></span>';
         }
       }
+      // Update waiting title
+      const waitH1 = document.querySelector('[data-phase="waiting"] h1');
+      if (waitH1) waitH1.textContent = i18n.t("waiting.title");
     }
 
     if (phase === "prompt_select") {
@@ -266,7 +332,11 @@
       const el = document.createElement("div");
       el.className = "idle-screen";
       el.innerHTML =
-        '<h1>Drifting Away</h1><p>The other player is choosing a topic<span class="waiting-dots"></span></p>';
+        "<h1>" +
+        i18n.t("idle.title") +
+        "</h1><p>" +
+        i18n.t("prompt.otherChoosing") +
+        '<span class="waiting-dots"></span></p>';
       $cards.appendChild(el);
       return;
     }
@@ -288,8 +358,7 @@
     if (existingHint) existingHint.remove();
     const hint = document.createElement("div");
     hint.className = "prompt-key-hint";
-    hint.innerHTML =
-      "\u2190 Previous prompt &nbsp;&nbsp;&nbsp; \u25cf Select prompt &nbsp;&nbsp;&nbsp; Generate new prompt \u2192";
+    hint.innerHTML = i18n.t("prompt.hint");
     $cards.parentElement.appendChild(hint);
   }
 
@@ -363,7 +432,7 @@
       wrapper.className = "message message--topic";
       const label = document.createElement("div");
       label.className = "topic-label";
-      label.textContent = "Original Topic";
+      label.textContent = i18n.t("topic.label");
       const text = document.createElement("div");
       text.className = "topic-text";
       text.textContent = topic;
@@ -384,7 +453,9 @@
 
   // ── Reveal rendering ──────────────────────────────────────────────
   function renderReveal(msg) {
-    $revealBody.innerHTML = `<p class="subtitle">Take off your earmuffs and talk to each other!</p>`;
+    $revealBody.innerHTML = `<p class="subtitle">${i18n.t(
+      "reveal.subtitle",
+    )}</p>`;
   }
 
   // ── Remote key events (universal keyboard relay) ──────────────────

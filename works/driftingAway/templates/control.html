@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Drifting Away — Control Panel</title>
+    <title>離れていく — Control Panel</title>
     <link rel="stylesheet" href="/static/css/styles.css?v={{ cache_bust }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,20 +15,33 @@
   <body>
     <div class="screen">
       <div class="control-panel">
-        <h1>🎛 Control Panel</h1>
+        <h1>🎛 コントロールパネル</h1>
 
-        <button class="btn" id="btn-start">▶ Start Game</button>
+        <button class="btn" id="btn-start">▶ ゲーム開始</button>
         <button class="btn" id="btn-reveal">
-          ⏭ Force Reveal (skip timer)
+          ⏭ 強制リビール（タイマースキップ）
         </button>
-        <button class="btn btn--danger" id="btn-reset">↺ Reset Round</button>
+        <button class="btn btn--danger" id="btn-reset">
+          ↺ ラウンドリセット
+        </button>
+
+        <!-- ── Language toggle ───────────────────────────────────── -->
+        <div style="margin-top: 1.5rem">
+          <p style="font-weight: 600; margin-bottom: 0.5rem">
+            🌐 言語 / Language
+          </p>
+          <button class="btn" id="btn-lang-ja" style="margin-right: 0.5rem">
+            日本語
+          </button>
+          <button class="btn" id="btn-lang-en">English</button>
+        </div>
 
         <div class="status-line" id="status">
           Phase: idle &nbsp;|&nbsp; Clients: 0
         </div>
 
         <div style="margin-top: 2rem; color: var(--fg-dim); font-size: 0.85rem">
-          <p><strong>Screen URLs:</strong></p>
+          <p><strong>スクリーンURL：</strong></p>
           <p>
             Player 1:
             <a href="/player/1" target="_blank" style="color: var(--p1)"
@@ -54,7 +67,7 @@
           <h2
             style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent)"
           >
-            🐛 Debug Transcripts
+            🐛 デバッグ・トランスクリプト
           </h2>
           <div
             id="debug-log"
@@ -70,7 +83,7 @@
               padding: 0.75rem;
             "
           >
-            <p style="color: var(--fg-dim)">Waiting for speech…</p>
+            <p style="color: var(--fg-dim)">発話を待っています…</p>
           </div>
           <button
             class="btn"
@@ -81,12 +94,13 @@
               padding: 0.3rem 0.8rem;
             "
           >
-            Clear log
+            ログをクリア
           </button>
         </div>
       </div>
     </div>
 
+    <script src="/static/js/i18n.js?v={{ cache_bust }}"></script>
     <script src="/static/js/common.js?v={{ cache_bust }}"></script>
     <script>
       const socket = new DriftSocket("control");
@@ -95,6 +109,8 @@
       const $start = document.getElementById("btn-start");
       const $reveal = document.getElementById("btn-reveal");
       const $reset = document.getElementById("btn-reset");
+      const $langJa = document.getElementById("btn-lang-ja");
+      const $langEn = document.getElementById("btn-lang-en");
 
       $start.addEventListener("click", () =>
         socket.send({ action: "start_game" }),
@@ -104,10 +120,33 @@
       );
       $reset.addEventListener("click", () => socket.send({ action: "reset" }));
 
+      // ── Language toggle ─────────────────────────────────────────
+      $langJa.addEventListener("click", () =>
+        socket.send({ action: "set_language", language: "ja" }),
+      );
+      $langEn.addEventListener("click", () =>
+        socket.send({ action: "set_language", language: "en" }),
+      );
+
+      function updateLangButtons(lang) {
+        $langJa.style.opacity = lang === "ja" ? "1" : "0.5";
+        $langEn.style.opacity = lang === "en" ? "1" : "0.5";
+      }
+      updateLangButtons("ja"); // default
+
+      socket.on("language_change", (msg) => {
+        i18n.setLang(msg.language);
+        updateLangButtons(msg.language);
+      });
+
       socket.on("snapshot", (msg) => {
         $status.textContent = `Phase: ${msg.phase}  |  Timer: ${formatTime(
           msg.remaining || 0,
         )}`;
+        if (msg.language) {
+          i18n.setLang(msg.language);
+          updateLangButtons(msg.language);
+        }
       });
       socket.on("phase", (msg) => {
         $status.textContent = `Phase: ${msg.phase}`;
@@ -131,6 +170,9 @@
       socket.on("debug_turn", (msg) => {
         // Remove placeholder if present
         const placeholder = $debugLog.querySelector("p");
+        if (placeholder && placeholder.textContent.includes("待って")) {
+          placeholder.remove();
+        }
         if (placeholder && placeholder.textContent.includes("Waiting")) {
           placeholder.remove();
         }
@@ -157,7 +199,7 @@
 
       $clearLog.addEventListener("click", () => {
         $debugLog.innerHTML =
-          '<p style="color: var(--fg-dim);">Waiting for speech…</p>';
+          '<p style="color: var(--fg-dim);">発話を待っています…</p>';
       });
     </script>
   </body>

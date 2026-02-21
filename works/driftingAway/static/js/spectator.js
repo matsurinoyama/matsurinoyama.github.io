@@ -26,6 +26,44 @@
   socket.on("snapshot", applyState);
   socket.on("phase", applyState);
 
+  // ── Language change ─────────────────────────────────────────────
+  socket.on("language_change", (msg) => {
+    i18n.setLang(msg.language);
+    document.documentElement.lang = msg.language;
+    document.title = i18n.t("title.spectator") + " — Spectator";
+    refreshStaticText();
+  });
+  socket.on("snapshot", (msg) => {
+    if (msg.language) {
+      i18n.setLang(msg.language);
+      document.documentElement.lang = msg.language;
+      document.title = i18n.t("title.spectator") + " — Spectator";
+      refreshStaticText();
+    }
+  });
+
+  /** Update all static text elements with current i18n strings */
+  function refreshStaticText() {
+    // Idle screen
+    const h1 = document.querySelector(".spectator-idle h1");
+    if (h1) h1.textContent = i18n.t("spectator.title");
+    const sub = document.querySelector(".spectator-idle-sub");
+    if (sub) sub.textContent = i18n.t("spectator.subtitle");
+    const desc = document.querySelector(".spectator-idle-desc");
+    if (desc) desc.textContent = i18n.t("spectator.description");
+    // Player headers
+    const p1H = document.querySelector(".spectator-panel--p1 h3");
+    if (p1H) p1H.textContent = i18n.t("spectator.player1");
+    const p2H = document.querySelector(".spectator-panel--p2 h3");
+    if (p2H) p2H.textContent = i18n.t("spectator.player2");
+    // Topic labels
+    const splashLabel = document.querySelector(".topic-splash-label");
+    if (splashLabel)
+      splashLabel.textContent = i18n.t("spectator.originalTopic");
+    const barLabel = document.querySelector(".spectator-topic-bar-label");
+    if (barLabel) barLabel.textContent = i18n.t("spectator.originalTopic");
+  }
+
   function applyState(msg) {
     const phase = msg.phase;
 
@@ -39,7 +77,8 @@
       clearPanels();
       _currentTopic = null;
       $idleStatus.innerHTML =
-        'Waiting for players to start<span class="waiting-dots"></span>';
+        i18n.t("spectator.waitingForPlayers") +
+        '<span class="waiting-dots"></span>';
     }
 
     if (phase === "reset") {
@@ -52,7 +91,7 @@
       clearPanels();
       _currentTopic = null;
       $idleStatus.innerHTML =
-        'Next round starting soon<span class="waiting-dots"></span>';
+        i18n.t("spectator.nextRound") + '<span class="waiting-dots"></span>';
     }
 
     if (phase === "waiting") {
@@ -67,16 +106,17 @@
       const ready = msg.playersReady || [];
       if (ready.length === 0) {
         $idleStatus.innerHTML =
-          'Waiting for players to start<span class="waiting-dots"></span>';
+          i18n.t("spectator.waitingForPlayers") +
+          '<span class="waiting-dots"></span>';
       } else if (ready.includes(1) && !ready.includes(2)) {
         $idleStatus.innerHTML =
-          'Player 1 is ready, waiting for Player 2<span class="waiting-dots"></span>';
+          i18n.t("spectator.p1Ready") + '<span class="waiting-dots"></span>';
       } else if (ready.includes(2) && !ready.includes(1)) {
         $idleStatus.innerHTML =
-          'Player 2 is ready, waiting for Player 1<span class="waiting-dots"></span>';
+          i18n.t("spectator.p2Ready") + '<span class="waiting-dots"></span>';
       } else {
         $idleStatus.innerHTML =
-          'Both players ready<span class="waiting-dots"></span>';
+          i18n.t("spectator.bothReady") + '<span class="waiting-dots"></span>';
       }
     }
 
@@ -88,9 +128,8 @@
       clearPanels();
       const starter = msg.startingPlayer || 0;
       $idleStatus.innerHTML =
-        "Player " +
-        starter +
-        ' is deciding the topic<span class="waiting-dots"></span>';
+        i18n.t("spectator.deciding", { n: starter }) +
+        '<span class="waiting-dots"></span>';
     }
 
     if (phase === "conversation") {

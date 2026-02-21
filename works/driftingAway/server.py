@@ -27,6 +27,7 @@ from config import (
     STATIC_DIR,
     TEMPLATES_DIR,
     ROUND_DURATION_SECONDS,
+    DEFAULT_LANGUAGE,
 )
 from game_engine import GameState, Phase
 from transcription import transcribe_audio
@@ -40,6 +41,9 @@ log = logging.getLogger("drifting.server")
 
 # ── Global state ───────────────────────────────────────────────────────
 game = GameState()
+
+# Active language — "ja" (default) or "en", switchable at runtime
+current_language: str = DEFAULT_LANGUAGE
 
 # Connections keyed by role: "player1", "player2", "spectator1", "spectator2"
 connections: dict[str, WebSocket] = {}
@@ -145,6 +149,7 @@ async def websocket_endpoint(ws: WebSocket, role: str):
     # Send current snapshot so late-joiners sync up
     await ws.send_text(json.dumps({
         "type": "snapshot",
+        "language": current_language,
         **game.snapshot(),
     }))
 
@@ -228,6 +233,17 @@ async def handle_message(role: str, msg: dict):
         if game.phase == Phase.PROMPT_SELECT:
             await game.confirm_prompt()
 
+    elif action == "set_language":
+        global current_language
+        lang = msg.get("language", "ja")
+        if lang in ("ja", "en") and lang != current_language:
+            current_language = lang
+            log.info("Language changed to: %s", lang)
+            # Reload prompts for the new language
+            game.set_language(lang)
+            # Broadcast to all clients
+            await broadcast({"type": "language_change", "language": lang})
+
 
 # ── Audio processing pipeline ────────────────────────────────────────
 
@@ -257,27 +273,36 @@ async def process_audio(role: str, msg: dict):
 
     async with audio_lock:
         try:
-            # 1. Transcribe
-            original_text = await transcribe_audio(audio_bytes)
+            # 1. Transcribe (use current language for whisper)
+            original_text = await transcribe_audio(audio_bytes, language=current_language)
             if not original_text.strip():
                 return
 
-            # Skip fragments too short to be meaningful (< 3 words)
-            words = original_text.strip().split()
-            if len(words) < 3:
-                log.debug("P%d: ignoring short fragment (%d words): %s",
-                          player_num, len(words), original_text.strip())
-                return
+            # Skip fragments too short to be meaningful
+            # For Japanese: < 4 characters; for English: < 3 words
+            if current_language == "ja":
+                if len(original_text.strip()) < 4:
+                    log.debug("P%d: ignoring short fragment (%d chars): %s",
+                              player_num, len(original_text.strip()), original_text.strip())
+                    return
+            else:
+                words = original_text.strip().split()
+                if len(words) < 3:
+                    log.debug("P%d: ignoring short fragment (%d words): %s",
+                              player_num, len(words), original_text.strip())
+                    return
 
             # Skip repetitive/spam input (audio glitch: same word repeated)
-            from collections import Counter
-            word_counts = Counter(w.lower() for w in words)
-            most_common_count = word_counts.most_common(1)[0][1]
-            if len(words) >= 5 and most_common_count / len(words) > 0.6:
-                log.warning("P%d: ignoring repetitive audio glitch (%d/%d same word): %s",
-                            player_num, most_common_count, len(words),
-                            original_text.strip()[:80])
-                return
+            words = original_text.strip().split()
+            if len(words) >= 5:
+                from collections import Counter
+                word_counts = Counter(w.lower() for w in words)
+                most_common_count = word_counts.most_common(1)[0][1]
+                if most_common_count / len(words) > 0.6:
+                    log.warning("P%d: ignoring repetitive audio glitch (%d/%d same word): %s",
+                                player_num, most_common_count, len(words),
+                                original_text.strip()[:80])
+                    return
 
             log.info("P%d said: %s", player_num, original_text)
 
@@ -289,6 +314,7 @@ async def process_audio(role: str, msg: dict):
                 conversation_history=history,
                 prompt_topic=topic,
                 speaker=player_num,
+                language=current_language,
             )
 
             log.info("P%d misheard as: %s", player_num, misheard_text)

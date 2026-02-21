@@ -32,12 +32,24 @@ class DriftSocket {
    * Auto-register universal keyboard relay on the first DriftSocket
    * created on this page. Any recognised player key press is sent to
    * the server which forwards it to the correct player window.
+   * Also registers 'A' key for language switching.
    */
   _registerKeyRelay() {
     if (DriftSocket._keyRelaySocket) return;
     DriftSocket._keyRelaySocket = this;
 
     document.addEventListener("keydown", (e) => {
+      // 'A' key → toggle language to English (one-shot)
+      if (e.code === "KeyA") {
+        e.preventDefault();
+        const newLang = i18n.lang === "ja" ? "en" : "ja";
+        DriftSocket._keyRelaySocket.send({
+          action: "set_language",
+          language: newLang,
+        });
+        return;
+      }
+
       const mapped = mapKeyUniversal(e.code);
       if (!mapped) return;
       e.preventDefault();
@@ -50,6 +62,8 @@ class DriftSocket {
     });
 
     document.addEventListener("keyup", (e) => {
+      if (e.code === "KeyA") return; // no relay needed for language key
+
       const mapped = mapKeyUniversal(e.code);
       if (!mapped) return;
       e.preventDefault();

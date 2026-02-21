@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Drifting Away — Spectator</title>
+    <title>離れていく — Spectator</title>
     <link rel="stylesheet" href="/static/css/styles.css?v={{ cache_bust }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,23 +15,22 @@
   <body>
     <!-- ── Spectator idle screen ────────────────────────────────── -->
     <div class="spectator-idle" id="spectator-idle">
-      <h1>Drifting Away</h1>
+      <h1>離れていく</h1>
       <p class="spectator-idle-sub">
-        An interactive installation about miscommunication
+        ミスコミュニケーションについてのインタラクティブ・インスタレーション
       </p>
       <p class="spectator-idle-desc">
-        Two people are having a conversation — but neither hears the other
-        directly. An AI subtly alters every message before it reaches the other
-        side. Watch as the conversation slowly drifts apart.
+        二人が会話をしています —
+        でも、お互いの声は直接聞こえません。AIがメッセージを少しだけ変えてから相手に届けます。会話が少しずつずれていく様子をご覧ください。
       </p>
       <p class="spectator-idle-status" id="spectator-idle-status">
-        Waiting for players to start<span class="waiting-dots"></span>
+        プレイヤーの参加を待っています<span class="waiting-dots"></span>
       </p>
     </div>
 
     <!-- ── Topic splash (shown for 5s at conversation start) ─────── -->
     <div id="topic-splash" class="topic-splash" hidden>
-      <div class="topic-splash-label">Original Topic</div>
+      <div class="topic-splash-label">元のトピック</div>
       <div class="topic-splash-text" id="topic-splash-text"></div>
     </div>
 
@@ -44,20 +43,20 @@
       <div class="spectator-layout">
         <!-- ── Player 1 panel ────────────────────────────────────── -->
         <div class="spectator-panel spectator-panel--p1">
-          <h3>Player 1</h3>
+          <h3>プレイヤー1</h3>
           <div id="panel-p1"></div>
         </div>
 
         <!-- ── Player 2 panel ────────────────────────────────────── -->
         <div class="spectator-panel spectator-panel--p2">
-          <h3>Player 2</h3>
+          <h3>プレイヤー2</h3>
           <div id="panel-p2"></div>
         </div>
       </div>
 
       <!-- ── Topic bar (bottom) ──────────────────────────────────── -->
       <div class="spectator-topic-bar" id="spectator-topic-bar" hidden>
-        <div class="spectator-topic-bar-label">Original Topic</div>
+        <div class="spectator-topic-bar-label">元のトピック</div>
         <div
           class="spectator-topic-bar-text"
           id="spectator-topic-bar-text"
@@ -65,6 +64,7 @@
       </div>
     </div>
 
+    <script src="/static/js/i18n.js?v={{ cache_bust }}"></script>
     <script src="/static/js/common.js?v={{ cache_bust }}"></script>
     <script src="/static/js/spectator.js?v={{ cache_bust }}"></script>
   </body>

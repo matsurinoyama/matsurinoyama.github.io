@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Drifting Away — Player {{ player_id }}</title>
+    <title>離れていく — Player {{ player_id }}</title>
     <link rel="stylesheet" href="/static/css/styles.css?v={{ cache_bust }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,18 +19,18 @@
     <!-- ── IDLE ────────────────────────────────────────────────────── -->
     <div class="screen screen--player" data-phase="idle">
       <div class="idle-screen">
-        <h1>Drifting Away</h1>
-        <p>Put on your earmuffs</p>
-        <p class="idle-instruction">Press any button when you are ready</p>
+        <h1>離れていく</h1>
+        <p>イヤーマフを着けてください</p>
+        <p class="idle-instruction">準備ができたらボタンを押してください</p>
       </div>
     </div>
 
     <!-- ── WAITING ─────────────────────────────────────────────────── -->
     <div class="screen screen--player" data-phase="waiting" hidden>
       <div class="idle-screen">
-        <h1>Ready!</h1>
+        <h1>準備完了！</h1>
         <p id="waiting-text">
-          Waiting for the other player<span class="waiting-dots"></span>
+          もう一人のプレイヤーを待っています<span class="waiting-dots"></span>
         </p>
       </div>
     </div>
@@ -48,8 +48,8 @@
         <div class="messages" id="messages"></div>
         <div class="ptt-bar">
           <span class="ptt-label" id="ptt-label"
-            >Hold <span class="ptt-dot" id="ptt-dot"></span> to talk</span
-          >
+            >長押しで話す <span class="ptt-dot" id="ptt-dot"></span
+          ></span>
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@
     <!-- ── REVEAL ──────────────────────────────────────────────────── -->
     <div class="screen screen--player" data-phase="reveal" hidden>
       <div class="reveal">
-        <h2>Time's Up!</h2>
+        <h2>終了！</h2>
         <div id="reveal-body"></div>
       </div>
     </div>
@@ -65,32 +65,33 @@
     <!-- ── RESET ───────────────────────────────────────────────────── -->
     <div class="screen screen--player" data-phase="reset" hidden>
       <div class="idle-screen">
-        <h1>Thanks for playing!</h1>
-        <p>Preparing for the next round<span class="waiting-dots"></span></p>
+        <h1>お疲れさまでした！</h1>
+        <p>次のラウンドを準備中<span class="waiting-dots"></span></p>
       </div>
     </div>
 
     <!-- ── MIC SETUP OVERLAY (shown once on first load) ────────── -->
     <div class="mic-setup" id="mic-setup">
       <div class="mic-setup-card">
-        <h2>🎙 Microphone Setup</h2>
+        <h2>🎙 マイクの設定</h2>
         <p class="mic-setup-sub">
-          Select the microphone for Player {{ player_id }}
+          プレイヤー{{ player_id }}のマイクを選択してください
         </p>
         <div id="mic-list" class="mic-list">
-          <p class="mic-loading">Requesting mic access…</p>
+          <p class="mic-loading">マイクへのアクセスを要求中…</p>
         </div>
         <div class="mic-setup-actions">
-          <button class="btn" id="mic-test-btn" disabled>🔊 Test</button>
-          <button class="btn" id="mic-confirm-btn" disabled>✓ Confirm</button>
+          <button class="btn" id="mic-test-btn" disabled>🔊 テスト</button>
+          <button class="btn" id="mic-confirm-btn" disabled>✓ 確認</button>
         </div>
         <p class="mic-setup-hint">
-          This choice is saved for this browser. Reopen /player/{{ player_id }}
-          to change it.
+          この設定はこのブラウザに保存されます。変更するには/player/{{ player_id
+          }}を再度開いてください。
         </p>
       </div>
     </div>
 
+    <script src="/static/js/i18n.js?v={{ cache_bust }}"></script>
     <script src="/static/js/common.js?v={{ cache_bust }}"></script>
     <script src="/static/js/audio.js?v={{ cache_bust }}"></script>
     <script src="/static/js/player.js?v={{ cache_bust }}"></script>

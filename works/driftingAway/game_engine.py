@@ -12,7 +12,7 @@ import time
 from enum import Enum
 from typing import Any, Callable, Coroutine
 
-from config import PROMPTS_FILE, PROMPT_CHOICES_COUNT, ROUND_DURATION_SECONDS
+from config import PROMPTS_FILE, PROMPTS_FILE_JA, PROMPT_CHOICES_COUNT, ROUND_DURATION_SECONDS, DEFAULT_LANGUAGE
 
 
 # ── Phases ─────────────────────────────────────────────────────────────
@@ -45,8 +45,9 @@ class Turn:
 
 
 # ── Prompt Pool ────────────────────────────────────────────────────────
-def load_prompts() -> list[dict]:
-    with open(PROMPTS_FILE, "r") as f:
+def load_prompts(language: str = "ja") -> list[dict]:
+    path = PROMPTS_FILE_JA if language == "ja" else PROMPTS_FILE
+    with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
     return data["prompts"]
 
@@ -61,7 +62,8 @@ class GameState:
 
     def __init__(self):
         self.phase: Phase = Phase.IDLE
-        self.prompt_pool: list[dict] = load_prompts()
+        self.language: str = DEFAULT_LANGUAGE
+        self.prompt_pool: list[dict] = load_prompts(self.language)
         self.prompt_choices: list[dict] = []
         self.selected_prompt: dict | None = None
         self.selected_prompt_index: int = 0
@@ -83,6 +85,12 @@ class GameState:
 
     def on_timer_tick(self, cb: Callable[[float], Coroutine]):
         self._on_timer_tick = cb
+
+    def set_language(self, lang: str):
+        """Switch prompt language. Reloads the prompt pool."""
+        self.language = lang
+        self.prompt_pool = load_prompts(lang)
+        self._used_prompt_ids.clear()
 
     async def _emit_phase(self, extra: dict | None = None):
         if self._on_phase_change:

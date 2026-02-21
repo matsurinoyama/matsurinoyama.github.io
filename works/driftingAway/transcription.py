@@ -49,21 +49,24 @@ def _ensure_model():
 
 # ── Public API ─────────────────────────────────────────────────────────
 
-async def transcribe_audio(audio_bytes: bytes) -> str:
+async def transcribe_audio(audio_bytes: bytes, language: str | None = None) -> str:
     """
     Accepts raw PCM-16 mono audio at SAMPLE_RATE and returns text.
     The audio comes from the browser via MediaRecorder → WAV.
+    If *language* is given it overrides the config default (e.g. "ja" or "en").
     """
     _ensure_model()
 
     if _backend == "none":
         return "[transcription unavailable]"
 
+    lang = language or WHISPER_LANGUAGE
+
     # Write a temporary WAV so the whisper libs can ingest it
     tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
     try:
         _write_wav(tmp.name, audio_bytes)
-        text = _run_transcription(tmp.name)
+        text = _run_transcription(tmp.name, lang)
     finally:
         Path(tmp.name).unlink(missing_ok=True)
 
@@ -79,34 +82,34 @@ def _write_wav(path: str, pcm_bytes: bytes):
         wf.writeframes(pcm_bytes)
 
 
-def _run_transcription(wav_path: str) -> str:
+def _run_transcription(wav_path: str, language: str = "ja") -> str:
     if _backend == "mlx":
-        return _transcribe_mlx(wav_path)
+        return _transcribe_mlx(wav_path, language)
     elif _backend == "openai":
-        return _transcribe_openai_whisper(wav_path)
+        return _transcribe_openai_whisper(wav_path, language)
     return ""
 
 
-def _transcribe_mlx(wav_path: str) -> str:
+def _transcribe_mlx(wav_path: str, language: str = "ja") -> str:
     import mlx_whisper
 
     result = mlx_whisper.transcribe(
         wav_path,
         path_or_hf_repo=WHISPER_MODEL,
-        language=WHISPER_LANGUAGE,
+        language=language,
         fp16=True,
         verbose=False,
     )
     return result.get("text", "")
 
 
-def _transcribe_openai_whisper(wav_path: str) -> str:
+def _transcribe_openai_whisper(wav_path: str, language: str = "ja") -> str:
     import whisper
 
     model = whisper.load_model("small")
     result = model.transcribe(
         wav_path,
-        language=WHISPER_LANGUAGE,
+        language=language,
         beam_size=WHISPER_BEAM_SIZE,
         fp16=False,
     )
