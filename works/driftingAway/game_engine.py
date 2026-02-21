@@ -210,6 +210,9 @@ class GameState:
                 if self._on_timer_tick:
                     await self._on_timer_tick(self.round_remaining)
             if self.phase == Phase.CONVERSATION:
+                # Clear self-reference so enter_reveal() won't cancel us
+                # (we're already finishing naturally)
+                self._timer_task = None
                 await self.enter_reveal()
         except asyncio.CancelledError:
             pass

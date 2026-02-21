@@ -12,8 +12,8 @@ const PLAYER_KEYS = {
 
 // Human-readable labels for UI hints (physical keycap symbols)
 const PLAYER_KEY_LABELS = {
-  1: { prev: "←", select: "⚪", next: "→" },
-  2: { prev: "←", select: "⚪", next: "→" },
+  1: { prev: "←", select: "●", next: "→" },
+  2: { prev: "←", select: "●", next: "→" },
 };
 
 class DriftSocket {

@@ -173,7 +173,9 @@
       <div class="misheard">${escHtml(t.misheard)}</div>
     `;
     panel.appendChild(div);
-    panel.scrollTop = panel.scrollHeight;
+    // Scroll the parent .spectator-panel (which has overflow-y: auto)
+    const scrollable = panel.closest(".spectator-panel");
+    if (scrollable) scrollable.scrollTop = scrollable.scrollHeight;
   }
 
   function clearPanels() {

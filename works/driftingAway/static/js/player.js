@@ -16,7 +16,7 @@
   const $timer = document.getElementById("timer");
   const $cards = document.getElementById("prompt-cards");
   const $messages = document.getElementById("messages");
-  const $pttDot = document.getElementById("ptt-indicator");
+  const $pttDot = document.getElementById("ptt-dot");
   const $pttLabel = document.getElementById("ptt-label");
   const $revealBody = document.getElementById("reveal-body");
 
@@ -32,6 +32,12 @@
   let _testStream = null;
   let _testCtx = null;
   let _testAnimFrame = null;
+
+  // Minimum display time for messages (ms)
+  const MIN_DISPLAY_MS = 8000;
+  let _lastMessageShown = 0;
+  let _pendingMessage = null;
+  let _pendingTimer = null;
 
   // ══════════════════════════════════════════════════════════════════
   // MIC SETUP
@@ -274,13 +280,17 @@
         socket.send({ action: "select_prompt" });
       });
       $cards.appendChild(card);
-
-      const hint = document.createElement("div");
-      hint.className = "prompt-key-hint";
-      hint.innerHTML =
-        "← previous &nbsp;·&nbsp; ⚪ start &nbsp;·&nbsp; → next topic";
-      $cards.appendChild(hint);
+      fitText(card, $cards);
     }
+
+    // Hint goes outside the cards container (appended to .prompt-select parent)
+    const existingHint = document.querySelector(".prompt-key-hint");
+    if (existingHint) existingHint.remove();
+    const hint = document.createElement("div");
+    hint.className = "prompt-key-hint";
+    hint.innerHTML =
+      "\u2190 Previous prompt &nbsp;&nbsp;&nbsp; \u25cf Select prompt &nbsp;&nbsp;&nbsp; Generate new prompt \u2192";
+    $cards.parentElement.appendChild(hint);
   }
 
   // ── Auto-fit text size ───────────────────────────────────────────
@@ -301,42 +311,74 @@
   }
 
   // ── Message rendering ─────────────────────────────────────────────
+  // All message display goes through the queue so the 8-second minimum
+  // is always respected — no message can be replaced sooner.
+
+  function _enqueue(renderFn) {
+    const now = Date.now();
+    const elapsed = now - _lastMessageShown;
+
+    if (_lastMessageShown > 0 && elapsed < MIN_DISPLAY_MS) {
+      if (_pendingTimer) clearTimeout(_pendingTimer);
+      _pendingMessage = renderFn;
+      _pendingTimer = setTimeout(() => {
+        _pendingTimer = null;
+        _pendingMessage = null;
+        renderFn();
+        _lastMessageShown = Date.now();
+      }, MIN_DISPLAY_MS - elapsed);
+      return;
+    }
+
+    renderFn();
+    _lastMessageShown = Date.now();
+  }
+
   function addMessage(text, isOwn) {
-    // Show only the most recent message — replace, don't append
-    $messages.innerHTML = "";
-    const div = document.createElement("div");
-    div.className = `message ${isOwn ? "message--own" : "message--other"}`;
-    div.textContent = text;
-    $messages.appendChild(div);
-    fitText(div, $messages);
+    _enqueue(() => {
+      $messages.innerHTML = "";
+      const div = document.createElement("div");
+      div.className = `message ${isOwn ? "message--own" : "message--other"}`;
+      div.textContent = text;
+      $messages.appendChild(div);
+      fitText(div, $messages);
+    });
   }
 
   function addSystemMessage(text) {
-    $messages.innerHTML = "";
-    const div = document.createElement("div");
-    div.className = "message message--system";
-    div.textContent = text;
-    $messages.appendChild(div);
-    fitText(div, $messages);
+    _enqueue(() => {
+      $messages.innerHTML = "";
+      const div = document.createElement("div");
+      div.className = "message message--system";
+      div.textContent = text;
+      $messages.appendChild(div);
+      fitText(div, $messages);
+    });
   }
 
   function addTopicMessage(topic) {
-    $messages.innerHTML = "";
-    const wrapper = document.createElement("div");
-    wrapper.className = "message message--topic";
-    const label = document.createElement("div");
-    label.className = "topic-label";
-    label.textContent = "Original Topic";
-    const text = document.createElement("div");
-    text.className = "topic-text";
-    text.textContent = topic;
-    wrapper.appendChild(label);
-    wrapper.appendChild(text);
-    $messages.appendChild(wrapper);
-    fitText(text, $messages);
+    _enqueue(() => {
+      $messages.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.className = "message message--topic";
+      const label = document.createElement("div");
+      label.className = "topic-label";
+      label.textContent = "Original Topic";
+      const text = document.createElement("div");
+      text.className = "topic-text";
+      text.textContent = topic;
+      wrapper.appendChild(label);
+      wrapper.appendChild(text);
+      $messages.appendChild(wrapper);
+      fitText(text, $messages);
+    });
   }
 
   function clearMessages() {
+    if (_pendingTimer) clearTimeout(_pendingTimer);
+    _pendingTimer = null;
+    _pendingMessage = null;
+    _lastMessageShown = 0;
     $messages.innerHTML = "";
   }
 
@@ -375,7 +417,6 @@
       ) {
         pttActive = true;
         $pttDot.classList.add("active");
-        $pttLabel.textContent = "Recording…";
         audio.startCapture();
       }
     }
@@ -384,7 +425,6 @@
       if (k === "select" && pttActive) {
         pttActive = false;
         $pttDot.classList.remove("active");
-        $pttLabel.textContent = "Hold ⚪ to talk";
         audio.stopCapture();
       }
     }

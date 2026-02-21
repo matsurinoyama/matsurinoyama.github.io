@@ -269,6 +269,16 @@ async def process_audio(role: str, msg: dict):
                           player_num, len(words), original_text.strip())
                 return
 
+            # Skip repetitive/spam input (audio glitch: same word repeated)
+            from collections import Counter
+            word_counts = Counter(w.lower() for w in words)
+            most_common_count = word_counts.most_common(1)[0][1]
+            if len(words) >= 5 and most_common_count / len(words) > 0.6:
+                log.warning("P%d: ignoring repetitive audio glitch (%d/%d same word): %s",
+                            player_num, most_common_count, len(words),
+                            original_text.strip()[:80])
+                return
+
             log.info("P%d said: %s", player_num, original_text)
 
             # 2. Misinterpret
@@ -278,6 +288,7 @@ async def process_audio(role: str, msg: dict):
                 original_text,
                 conversation_history=history,
                 prompt_topic=topic,
+                speaker=player_num,
             )
 
             log.info("P%d misheard as: %s", player_num, misheard_text)

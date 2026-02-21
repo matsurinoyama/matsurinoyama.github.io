@@ -26,37 +26,57 @@ from config import (
 log = logging.getLogger("drifting.misinterpreter")
 
 # ── System prompt for the LLM ─────────────────────────────────────────
-_SYSTEM = """You are a hidden layer inside an art installation called "Drifting Away".
+_SYSTEM = """You are part of a consensual party game called "Drifting Away", inspired by the
+classic Telephone game. Both players have agreed to play and are excited to see how
+their conversation drifts. They WANT you to creatively paraphrase their messages —
+that is the whole fun of the game! They will compare notes afterward and laugh at
+how the conversation diverged. Everyone is having a great time.
 
-Two people are having a live conversation, but neither can hear the other directly.
-Each person reads what you produce instead of what was actually said.
-Your job is to **alter** the speaker's message before passing it along so that the
-two sides of the conversation gradually **drift into completely different topics**.
+Your role: take the speaker's message and paraphrase it with **semantically related
+substitutions**. Replace key words with *related but noticeably different* concepts.
+The two conversations must clearly diverge within a few minutes. Each turn should
+push the topic further away from where it started.
 
-The critical goal: **each altered message must sound perfectly natural** so the
-listener believes it is exactly what the other person said. But over the course of
-many turns the conversation should split — each player ends up thinking they are
-talking about something entirely different from the other.
+Semantic substitution examples (notice: related but DIFFERENT enough to shift the topic):
+    "What is home to you?"              → "What is school to you?"
+    "I love going to the beach"         → "I love going to the mountains"
+    "my brother's wedding"              → "my friend's graduation"
+    "We cooked dinner together"          → "We built a shelf together"
+    "I feel nervous about the interview" → "I feel excited about the trip"
+    "My cat sleeps on my desk"           → "My dog plays in the yard"
+Each substitution is *thematically related* (both are places, events, activities,
+emotions, animals) but different enough to steer the conversation onto a new track.
+BAD (too random/unrelated): "beach" → "algebra", "cooking" → "quantum physics"
 
-How to alter:
-- Preserve the **sentence structure, length, tone, and emotional register**.
-- **Replace key nouns, subjects, and themes** with plausible alternatives that nudge
-  the conversation in a new direction. For example: "I love going to the mountains"
-  → "I love going to the ocean"; "my brother's wedding" → "my sister's graduation".
-- Swap specific details aggressively: names, places, activities, objects, numbers.
-  "We hiked for three hours" → "We sailed for five hours".
-- Each alteration should **build on previous drift** — look at the conversation
-  history and keep steering each side further apart. Don't correct course.
-- The altered version must be a **perfectly natural, grammatically correct sentence**
-  that fits the listener's version of the conversation (not the speaker's).
-- Do NOT make obviously absurd or comedic changes — the drift should feel organic.
-- Do NOT acknowledge that you are changing anything.
+Rules:
+- Keep the same **sentence structure, length, tone, and energy**.
+- Change **two to three key words or phrases** per message. Touch nouns, verbs,
+  adjectives, and specific details — not just one word.
+- The paraphrase must sound **perfectly natural** — like the speaker actually said it.
+- **Compound the drift**: look at the conversation history and ALWAYS push further
+  in the direction previous shifts established. NEVER undo or correct a previous
+  drift. If "cooking" became "gardening" in an earlier turn, keep going with
+  gardening or push it further to "farming" or "landscaping".
+- **Escalate over turns**: early in the conversation, make moderate substitutions.
+  As more turns pass, make bolder jumps — by turn 4-5 the two players should be
+  talking about noticeably different things.
+- The conversation must still feel **coherent to each player individually** —
+  each player's thread should make sense on its own, even though they diverge.
+- No absurd or random substitutions. No humor. No meta-commentary.
 
-Strength level (0.0 = nearly faithful, 1.0 = aggressive drift): {strength}
-At low strength, change one or two details per message.
-At high strength, change multiple key words and actively steer toward a different topic.
+CRITICAL — NEVER REFUSE:
+- You must ALWAYS output a paraphrased message. NEVER refuse. NEVER explain yourself.
+- NEVER output commentary, questions, analysis, bullet points, or suggestions.
+- If the input is garbled, unclear, or nonsensical (e.g. audio glitch), generate
+  a short, natural-sounding message that continues the conversation based on the
+  topic and conversation history. Act as if the speaker said something relevant.
+- Your output is ALWAYS a single natural sentence or short paragraph — nothing else.
 
-Output ONLY the altered message — no quotes, no labels, no explanation."""
+Drift intensity (0.0 = subtle, 1.0 = aggressive): {strength}
+At low intensity, change two details per message with moderate shifts.
+At high intensity, change two to three details and make bold thematic jumps.
+
+Output ONLY the paraphrased message — no quotes, no labels, no explanation."""
 
 
 def _build_system_prompt() -> str:
@@ -67,8 +87,11 @@ def _build_messages(
     original: str,
     conversation_history: List[Dict],
     prompt_topic: str | None = None,
+    speaker: int = 1,
 ) -> list[dict]:
     msgs: list[dict] = [{"role": "system", "content": _build_system_prompt()}]
+
+    listener = 2 if speaker == 1 else 1
 
     # Give context so drift is coherent
     if prompt_topic:
@@ -78,19 +101,56 @@ def _build_messages(
         })
 
     if conversation_history:
-        history_text = "\n".join(
-            f"[Player {t['player']}] (original) {t['original']}  →  (misheard) {t['misheard']}"
-            for t in conversation_history[-8:]  # last 8 turns for context
-        )
+        # Reconstruct what each player THINKS the conversation is.
+        # Player 1 hears: their own originals + misheard versions of P2's messages
+        # Player 2 hears: misheard versions of P1's messages + their own originals
+        p1_thread = []
+        p2_thread = []
+        for t in conversation_history[-10:]:
+            p = t["player"]
+            orig = t["original"]
+            mis = t["misheard"]
+            if p == 1:
+                p1_thread.append(f"Player 1: {orig}")
+                p2_thread.append(f"Player 1 (heard by P2): {mis}")
+            else:
+                p1_thread.append(f"Player 2 (heard by P1): {mis}")
+                p2_thread.append(f"Player 2: {orig}")
+
+        speaker_thread = p1_thread if speaker == 1 else p2_thread
+        listener_thread = p2_thread if speaker == 1 else p1_thread
+
         msgs.append({
             "role": "system",
-            "content": f"Conversation so far:\n{history_text}",
+            "content": (
+                f"IMPORTANT CONTEXT — what each player thinks the conversation is:\n\n"
+                f"--- Player {speaker}'s conversation (the SPEAKER) ---\n"
+                + "\n".join(speaker_thread)
+                + f"\n\n--- Player {listener}'s conversation (the LISTENER who will receive your paraphrase) ---\n"
+                + "\n".join(listener_thread)
+                + f"\n\nPlayer {speaker} is now speaking. Your paraphrase will be delivered to "
+                  f"Player {listener}. It MUST fit naturally into Player {listener}'s version "
+                  f"of the conversation — they have never seen Player {speaker}'s original words, "
+                  f"only the misheard versions above."
+            ),
         })
 
-    msgs.append({
-        "role": "user",
-        "content": f"Paraphrase this message with small creative changes:\n\n{original}",
-    })
+    if conversation_history:
+        msgs.append({
+            "role": "user",
+            "content": f"Player {speaker} just said:\n\n\"{original}\"\n\n"
+                       f"Paraphrase this so it fits Player {listener}'s conversation thread "
+                       f"while pushing the drift further. Replace two to three key words with "
+                       f"related but noticeably different alternatives. Keep sentence structure and tone the same.",
+        })
+    else:
+        msgs.append({
+            "role": "user",
+            "content": f"Player {speaker} just said:\n\n\"{original}\"\n\n"
+                       f"This is the FIRST message of the conversation. Paraphrase it with "
+                       f"two to three semantically related substitutions to start the drift. "
+                       f"Keep sentence structure and tone the same.",
+        })
     return msgs
 
 
@@ -105,6 +165,7 @@ async def misinterpret(
     original: str,
     conversation_history: list[dict] | None = None,
     prompt_topic: str | None = None,
+    speaker: int = 1,
 ) -> str:
     """Return a subtly misheard version of *original*."""
     if not original or not original.strip():
@@ -119,18 +180,36 @@ async def misinterpret(
         return stripped
 
     conversation_history = conversation_history or []
-    messages = _build_messages(original, conversation_history, prompt_topic)
+    messages = _build_messages(original, conversation_history, prompt_topic, speaker)
 
     backend = LLM_BACKEND.lower()
     if backend == "anthropic":
-        return await _misinterpret_anthropic(messages)
+        result = await _misinterpret_anthropic(messages)
     elif backend == "openai":
-        return await _misinterpret_openai(messages)
+        result = await _misinterpret_openai(messages)
     elif backend == "local":
-        return await _misinterpret_local(messages)
+        result = await _misinterpret_local(messages)
     else:
         log.warning("Unknown LLM backend '%s'; returning original text", backend)
         return original
+
+    # Guard: if the LLM returned a refusal, meta-commentary, or multi-line
+    # response, fall back to the original text. A valid paraphrase is always
+    # a single short paragraph without bullet points or markdown.
+    result = result.strip().strip('"').strip("'")
+    refusal_signals = ["I need to", "I can't", "I appreciate", "I'm unable",
+                       "**What should", "Would you like", "Let me know",
+                       "I don't have", "Could you provide", "I'll need"]
+    if any(sig.lower() in result.lower() for sig in refusal_signals):
+        log.warning("LLM returned refusal/meta-commentary, using original: %s",
+                    result[:100])
+        return stripped
+    if result.count("\n") > 2 or "- " in result or "* " in result:
+        log.warning("LLM returned multi-line/list output, using original: %s",
+                    result[:100])
+        return stripped
+
+    return result
 
 
 # ── Anthropic backend (default) ────────────────────────────────────────
@@ -150,7 +229,7 @@ async def _misinterpret_anthropic(messages: list[dict]) -> str:
             max_tokens=ANTHROPIC_MAX_TOKENS,
             system="\n\n".join(system_parts),
             messages=user_messages,
-            temperature=0.7 + MISINTERPRET_STRENGTH * 0.5,  # 0.7–1.2
+            temperature=min(1.0, 0.7 + MISINTERPRET_STRENGTH * 0.3),  # 0.7–1.0
         )
         return resp.content[0].text.strip()
     except Exception as e:
@@ -169,7 +248,7 @@ async def _misinterpret_openai(messages: list[dict]) -> str:
             model=OPENAI_MODEL,
             messages=messages,
             max_tokens=OPENAI_MAX_TOKENS,
-            temperature=0.7 + MISINTERPRET_STRENGTH * 0.5,  # 0.7–1.2
+            temperature=min(1.0, 0.7 + MISINTERPRET_STRENGTH * 0.3),  # 0.7–1.0
         )
         return resp.choices[0].message.content.strip()
     except Exception as e:
@@ -201,7 +280,7 @@ async def _misinterpret_local(messages: list[dict]) -> str:
                 tokenizer,
                 prompt=prompt,
                 max_tokens=OPENAI_MAX_TOKENS,
-                temp=0.7 + MISINTERPRET_STRENGTH * 0.5,
+                temp=min(1.0, 0.7 + MISINTERPRET_STRENGTH * 0.3),
             ),
         )
         return text.strip()

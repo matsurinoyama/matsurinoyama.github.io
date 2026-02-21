@@ -6,8 +6,9 @@
     <title>Drifting Away — Player {{ player_id }}</title>
     <link rel="stylesheet" href="/static/css/styles.css?v={{ cache_bust }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@200;400;600&family=New+Tegomin&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -46,8 +47,9 @@
       <div class="conversation">
         <div class="messages" id="messages"></div>
         <div class="ptt-bar">
-          <div class="ptt-indicator" id="ptt-indicator"></div>
-          <span class="ptt-label" id="ptt-label">Hold ⚪ to talk</span>
+          <span class="ptt-label" id="ptt-label"
+            >Hold <span class="ptt-dot" id="ptt-dot"></span> to talk</span
+          >
         </div>
       </div>
     </div>
