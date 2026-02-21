@@ -23,7 +23,7 @@ const i18n = (() => {
       "idle.pressButton": "準備ができたらボタンを押してください",
 
       // ── Player: Waiting ─────────────────────────────────────────
-      "waiting.title": "準備完了！",
+      "waiting.title": "準備中",
       "waiting.forOther": "もう一人のプレイヤーを待っています",
       "waiting.otherReady":
         "相手の準備ができました！ボタンを押して始めましょう",
