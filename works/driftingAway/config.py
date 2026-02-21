@@ -54,7 +54,7 @@ OPENAI_MAX_TOKENS = 256
 LOCAL_LLM_MODEL = "mlx-community/Mistral-7B-Instruct-v0.3-4bit"
 
 # How aggressively the AI should misinterpret (0.0 = faithful, 1.0 = wild)
-MISINTERPRET_STRENGTH = 0.85
+MISINTERPRET_STRENGTH = 0.83
 
 # ── Key Mapping (USB numpad → actions) ─────────────────────────────────
 # The 3 keys on the numpad will emit these keycodes in the browser.

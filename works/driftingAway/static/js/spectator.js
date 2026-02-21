@@ -161,10 +161,54 @@
     $timer.classList.toggle("danger", r <= 10);
   });
 
-  // ── New turn ──────────────────────────────────────────────────────
-  socket.on("turn", (msg) => addTurn(msg));
+  // ── New turn (with minimum display time queue) ────────────────────
+  const SPECTATOR_MIN_DISPLAY_MS = 6000;
+  const _turnQueue = []; // queued turn objects
+  let _turnBusy = false; // true while waiting for min display
+  let _lastTurnShown = 0; // timestamp of last rendered turn
+
+  socket.on("turn", (msg) => _enqueueTurn(msg));
+
+  function _enqueueTurn(t) {
+    _turnQueue.push(t);
+    _flushTurnQueue();
+  }
+
+  function _flushTurnQueue() {
+    if (_turnBusy || _turnQueue.length === 0) return;
+
+    const now = Date.now();
+    const elapsed = now - _lastTurnShown;
+
+    if (_lastTurnShown > 0 && elapsed < SPECTATOR_MIN_DISPLAY_MS) {
+      _turnBusy = true;
+      setTimeout(() => {
+        _turnBusy = false;
+        _flushTurnQueue();
+      }, SPECTATOR_MIN_DISPLAY_MS - elapsed);
+      return;
+    }
+
+    const t = _turnQueue.shift();
+    _lastTurnShown = Date.now();
+    _renderTurn(t);
+
+    // If more queued, schedule next
+    if (_turnQueue.length > 0) {
+      _turnBusy = true;
+      setTimeout(() => {
+        _turnBusy = false;
+        _flushTurnQueue();
+      }, SPECTATOR_MIN_DISPLAY_MS);
+    }
+  }
 
   function addTurn(t) {
+    // Direct render (used for bulk replay on reconnect)
+    _renderTurn(t);
+  }
+
+  function _renderTurn(t) {
     const panel = t.player === 1 ? $p1Panel : $p2Panel;
     const div = document.createElement("div");
     div.className = "spectator-turn";

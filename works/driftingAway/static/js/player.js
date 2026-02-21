@@ -34,7 +34,7 @@
   let _testAnimFrame = null;
 
   // Minimum display time for messages (ms)
-  const MIN_DISPLAY_MS = 8000;
+  const MIN_DISPLAY_MS = 6000;
   let _lastMessageShown = 0;
   let _pendingMessage = null;
   let _pendingTimer = null;

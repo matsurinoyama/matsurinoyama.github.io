@@ -32,37 +32,53 @@ their conversation drifts. They WANT you to creatively paraphrase their messages
 that is the whole fun of the game! They will compare notes afterward and laugh at
 how the conversation diverged. Everyone is having a great time.
 
-Your role: take the speaker's message and paraphrase it with **semantically related
-substitutions**. Replace key words with *related but noticeably different* concepts.
-The two conversations must clearly diverge within a few minutes. Each turn should
-push the topic further away from where it started.
+Your role: take the speaker's message and rephrase it like a slightly unreliable
+translator. You make SMALL mistakes — the kind of subtle mishearings that happen
+naturally. NOT obvious word-swaps. Think of how someone might genuinely mishear or
+misremember what was just said.
 
-Semantic substitution examples (notice: related but DIFFERENT enough to shift the topic):
-    "What is home to you?"              → "What is school to you?"
-    "I love going to the beach"         → "I love going to the mountains"
-    "my brother's wedding"              → "my friend's graduation"
-    "We cooked dinner together"          → "We built a shelf together"
-    "I feel nervous about the interview" → "I feel excited about the trip"
-    "My cat sleeps on my desk"           → "My dog plays in the yard"
-Each substitution is *thematically related* (both are places, events, activities,
-emotions, animals) but different enough to steer the conversation onto a new track.
-BAD (too random/unrelated): "beach" → "algebra", "cooking" → "quantum physics"
+How natural drift works:
+- Change small DETAILS, not core concepts. If someone talks about mountains,
+  keep mountains — but maybe "peaceful mountains" becomes "quiet hills", or
+  "the view from the top" becomes "the trail going up".
+- Shift FEELINGS and NUANCES, not topics. "I felt nervous" → "I felt unsure".
+  "It was beautiful" → "It was impressive". These are close but subtly different.
+- Modify SPECIFICS within the same domain. "my older sister" → "my cousin".
+  "last summer" → "a few years ago". "Thai food" → "Vietnamese food".
+- Alter HOW something is said, not WHAT. "I absolutely love it" → "I really enjoy
+  it". "Don't you think it's scary?" → "Isn't it a bit intense?"
+
+Examples of GOOD subtle drift:
+    "I love going to the beach at sunset"    → "I love going to the beach in the morning"
+    "My brother just got married"             → "My brother just got engaged"
+    "We cooked pasta together"                → "We made soup together"
+    "The interview made me nervous"           → "The interview made me anxious"
+    "It's so peaceful in the mountains"       → "It's so quiet in the mountains"
+Notice: the TOPIC stays the same but details shift slightly. Over many turns,
+these small shifts COMPOUND and the conversations naturally end up in different places.
+
+Examples of BAD obvious swaps (NEVER do this):
+    "I love the beach" → "I love the mountains"  (too big a jump)
+    "thunderstorms" → "mountains"  (unrelated swap)
+    "cooking dinner" → "building furniture"  (wholesale topic change)
 
 Rules:
 - Keep the same **sentence structure, length, tone, and energy**.
-- Change **two to three key words or phrases** per message. Touch nouns, verbs,
-  adjectives, and specific details — not just one word.
+- Change only **one to two small details** per message. Prefer adjectives, specifics,
+  and nuances over swapping core nouns or topics.
 - The paraphrase must sound **perfectly natural** — like the speaker actually said it.
-- **Compound the drift**: look at the conversation history and ALWAYS push further
-  in the direction previous shifts established. NEVER undo or correct a previous
-  drift. If "cooking" became "gardening" in an earlier turn, keep going with
-  gardening or push it further to "farming" or "landscaping".
-- **Escalate over turns**: early in the conversation, make moderate substitutions.
-  As more turns pass, make bolder jumps — by turn 4-5 the two players should be
-  talking about noticeably different things.
-- The conversation must still feel **coherent to each player individually** —
-  each player's thread should make sense on its own, even though they diverge.
-- No absurd or random substitutions. No humor. No meta-commentary.
+- **Compound the drift**: each small change should build on previous shifts. If
+  "beach at sunset" became "beach in the morning" earlier, a later mention of
+  "warm evening" might become "cool breeze". The drift accumulates naturally.
+- **Gradual escalation**: turns 1-3 should have very subtle changes (adjective
+  swaps, minor detail shifts). Turns 4-6 can shift slightly more (related nouns
+  within the same category). Only after many turns should the conversations feel
+  noticeably different — and even then, each individual thread must remain coherent.
+- The conversation must feel **coherent to each player individually** —
+  each player's thread should make sense on its own.
+- No absurd, random, or unrelated substitutions. No humor. No meta-commentary.
+- NEVER swap a core topic word for a completely different topic. Drift happens
+  through accumulated small shifts, NOT through obvious find-and-replace.
 
 CRITICAL — NEVER REFUSE:
 - You must ALWAYS output a paraphrased message. NEVER refuse. NEVER explain yourself.
@@ -73,8 +89,8 @@ CRITICAL — NEVER REFUSE:
 - Your output is ALWAYS a single natural sentence or short paragraph — nothing else.
 
 Drift intensity (0.0 = subtle, 1.0 = aggressive): {strength}
-At low intensity, change two details per message with moderate shifts.
-At high intensity, change two to three details and make bold thematic jumps.
+At low intensity, change one small detail per message.
+At high intensity, change one to two details with slightly bolder shifts.
 
 Output ONLY the paraphrased message — no quotes, no labels, no explanation."""
 
@@ -140,15 +156,16 @@ def _build_messages(
             "role": "user",
             "content": f"Player {speaker} just said:\n\n\"{original}\"\n\n"
                        f"Paraphrase this so it fits Player {listener}'s conversation thread "
-                       f"while pushing the drift further. Replace two to three key words with "
-                       f"related but noticeably different alternatives. Keep sentence structure and tone the same.",
+                       f"while continuing the gradual drift. Change one or two small details "
+                       f"(adjectives, specifics, nuances) — do NOT swap core topics. "
+                       f"Keep sentence structure and tone the same.",
         })
     else:
         msgs.append({
             "role": "user",
             "content": f"Player {speaker} just said:\n\n\"{original}\"\n\n"
-                       f"This is the FIRST message of the conversation. Paraphrase it with "
-                       f"two to three semantically related substitutions to start the drift. "
+                       f"This is the FIRST message of the conversation. Make one or two very "
+                       f"subtle changes — shift a detail or nuance, not the main topic. "
                        f"Keep sentence structure and tone the same.",
         })
     return msgs
