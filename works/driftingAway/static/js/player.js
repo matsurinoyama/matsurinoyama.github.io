@@ -11,6 +11,7 @@
   const STORAGE_KEY = `drifting_mic_p${PLAYER_ID}`;
   const socket = new DriftSocket(`player${PLAYER_ID}`);
   const audio = new AudioCapture(socket);
+  const whiteNoise = new WhiteNoise();
 
   // ── DOM refs ──────────────────────────────────────────────────────
   const $timer = document.getElementById("timer");
@@ -287,6 +288,7 @@
 
     if (phase === "conversation") {
       $timer.classList.add("visible");
+      whiteNoise.start();
       // Only the player who chose the topic sees it
       if (isStartingPlayer && msg.prompt) {
         addTopicMessage(msg.prompt.topic);
@@ -295,17 +297,20 @@
 
     if (phase === "reveal") {
       $timer.classList.remove("visible");
+      whiteNoise.stop();
       renderReveal(msg);
     }
 
     if (phase === "reset") {
       $timer.classList.remove("visible", "warning", "danger");
+      whiteNoise.stop();
       clearMessages();
     }
 
     if (phase === "idle") {
       $timer.textContent = "3:00";
       $timer.classList.remove("visible", "warning", "danger");
+      whiteNoise.stop();
       clearMessages();
       isStartingPlayer = false;
       pttActive = false;
