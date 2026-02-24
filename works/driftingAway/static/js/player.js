@@ -16,7 +16,7 @@
   const $timer = document.getElementById("timer");
   const $cards = document.getElementById("prompt-cards");
   const $messages = document.getElementById("messages");
-  const $pttDot = document.getElementById("ptt-dot");
+  let $pttDot = document.getElementById("ptt-dot");
   const $pttLabel = document.getElementById("ptt-label");
   const $revealBody = document.getElementById("reveal-body");
 
@@ -235,9 +235,9 @@
     if ($pttLabel) {
       $pttLabel.innerHTML =
         i18n.t("ptt.label") + ' <span class="ptt-dot" id="ptt-dot"></span>';
-      // Re-bind dot ref
-      const newDot = document.getElementById("ptt-dot");
-      if (newDot && pttActive) newDot.classList.add("active");
+      // Re-bind dot ref — the old $pttDot is now detached from the DOM
+      $pttDot = document.getElementById("ptt-dot");
+      if ($pttDot && pttActive) $pttDot.classList.add("active");
     }
     // Mic setup
     const micTitle = document.querySelector(".mic-setup-card h2");

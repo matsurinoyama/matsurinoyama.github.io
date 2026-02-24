@@ -149,6 +149,7 @@ game_engine.py      State machine (idle → prompt → convo → reveal → rese
 transcription.py    mlx-whisper (Apple Silicon) speech-to-text
 misinterpreter.py   LLM-powered "telephone game" text mangling
 config.py           All tunable parameters
+test_conversation.py  Automated play tester (simulates two AI players)
 
 static/
   css/styles.css    Dark-themed installation UI
@@ -176,11 +177,33 @@ In `config.py`:
 | ------------------------ | ------------------- | ------------------------------------------------------- |
 | `DEFAULT_LANGUAGE`       | `"ja"`              | Default UI language ("ja" or "en")                      |
 | `ROUND_DURATION_SECONDS` | 180                 | Conversation length (seconds)                           |
-| `MISINTERPRET_STRENGTH`  | 0.7                 | 0 = faithful, 1 = wild misinterpretation                |
+| `MISINTERPRET_STRENGTH`  | 0.85                | 0 = faithful, 1 = wild misinterpretation                |
 | `WHISPER_LANGUAGE`       | `"ja"`              | Default speech-to-text language (overridden by UI lang) |
 | `WHISPER_MODEL`          | `whisper-small-mlx` | Speed vs accuracy tradeoff                              |
 | `AUDIO_CHUNK_MS`         | 10000               | How often audio is sent to server (ms)                  |
 | `MIN_DISPLAY_MS`         | 6000                | Minimum message display time on player screens (ms)     |
+
+---
+
+## Testing
+
+`test_conversation.py` simulates a full conversation between two AI players, running every message through the misinterpreter to observe how the drift develops over multiple turns. It prints both the turn-by-turn original/misheard pairs and each player's perceived conversation thread.
+
+```bash
+# Default: Japanese, 8 turns, random topic
+python test_conversation.py
+
+# English mode
+python test_conversation.py --lang en
+
+# More turns, custom topic
+python test_conversation.py --turns 12 --topic "子供の頃の思い出"
+
+# Multiple back-to-back runs
+python test_conversation.py --runs 3
+```
+
+The output shows each player's thread with `自分 ▶` (what they said) and `相手 ◀` (what they heard), making it easy to verify that the drift stays within the same conversational domain while shifting specific details.
 
 ---
 
@@ -195,9 +218,3 @@ The entire installation is bilingual:
 - **Real-time switching** — 'A' key broadcasts language change to all clients via WebSocket
 
 Add new languages by extending `i18n.js` and creating a new `prompts_xx.json` file.
-
----
-
-## License
-
-Part of the matsurinoyama portfolio.

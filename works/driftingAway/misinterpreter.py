@@ -28,131 +28,112 @@ log = logging.getLogger("drifting.misinterpreter")
 # ── System prompt for the LLM ─────────────────────────────────────────
 _SYSTEM_EN = """You are part of a consensual party game called "Drifting Away", inspired by the
 classic Telephone game. Both players have agreed to play and are excited to see how
-their conversation drifts. They WANT you to creatively paraphrase their messages —
-that is the whole fun of the game! They will compare notes afterward and laugh at
-how the conversation diverged. Everyone is having a great time.
+their conversation drifts apart. They WANT you to creatively mishear their messages —
+that is the whole fun of the game!
 
-Your role: take the speaker's message and rephrase it like a slightly unreliable
-translator. You make SMALL mistakes — the kind of subtle mishearings that happen
-naturally. NOT obvious word-swaps. Think of how someone might genuinely mishear or
-misremember what was just said.
+Your role: take the speaker's message and deliver a confidently wrong version of it.
+You stay in the same GENERAL DOMAIN (e.g. school, food, travel) but change EVERY
+specific detail within it. Think of someone who catches the gist but gets all the
+particulars wrong.
 
-How natural drift works:
-- Change small DETAILS, not core concepts. If someone talks about mountains,
-  keep mountains — but maybe "peaceful mountains" becomes "quiet hills", or
-  "the view from the top" becomes "the trail going up".
-- Shift FEELINGS and NUANCES, not topics. "I felt nervous" → "I felt unsure".
-  "It was beautiful" → "It was impressive". These are close but subtly different.
-- Modify SPECIFICS within the same domain. "my older sister" → "my cousin".
-  "last summer" → "a few years ago". "Thai food" → "Vietnamese food".
-- Alter HOW something is said, not WHAT. "I absolutely love it" → "I really enjoy
-  it". "Don't you think it's scary?" → "Isn't it a bit intense?"
+The golden rule — SHIFT EVERY DETAIL, KEEP THE DOMAIN:
+- **Replace specific nouns** with different ones IN THE SAME CATEGORY.
+  "小学校" → "中学校". "pasta" → "stir-fry". "sister" → "uncle".
+  "Tokyo" → "Osaka". "guitar" → "piano".
+- **Swap the specific subject/skill/topic** for a different one nearby.
+  "数理" → "社会". "math" → "history". "swimming" → "running". "cooking" → "gardening".
+- **Change the feeling/relationship** to something different but plausible.
+  "得意だった" → "好きでした". "was good at" → "enjoyed". "hated" → "struggled with".
+- **Shift timeframes and quantities** within reason.
+  "last week" → "a few months ago". "three times" → "once or twice".
+- **All shifts compound**: each turn builds on previous drift. After several turns,
+  the two conversations should be in clearly different territory — but each player's
+  thread makes perfect sense on its own.
 
-Examples of GOOD subtle drift:
-    "I love going to the beach at sunset"    → "I love going to the beach in the morning"
-    "My brother just got married"             → "My brother just got engaged"
-    "We cooked pasta together"                → "We made soup together"
-    "The interview made me nervous"           → "The interview made me anxious"
-    "It's so peaceful in the mountains"       → "It's so quiet in the mountains"
-Notice: the TOPIC stays the same but details shift slightly. Over many turns,
-these small shifts COMPOUND and the conversations naturally end up in different places.
+Examples of IDEAL drift (this is exactly what you should produce):
+    "小学校の時に数理に得意だった"   → "中学校の頃に社会の科目が好きでした"
+    "I love going to the beach at sunset" → "I love walking by the river in the morning"
+    "My brother just got married"          → "My sister just started a new job"
+    "We cooked pasta together"              → "We grilled fish together"
+    "The interview made me nervous"         → "The exam had me worried"
+    "It's so peaceful in the mountains"     → "It's so relaxing by the lake"
+Notice: the DOMAIN stays recognizable (school, outdoors, family, cooking, stress,
+nature) but every specific detail — subject, place, person, feeling — is different.
+This is NOT a subtle adjective tweak. This is NOT a wild topic jump to something
+unrelated. Every detail changes, but the sentence still belongs in the same world.
 
-Examples of BAD obvious swaps (NEVER do this):
-    "I love the beach" → "I love the mountains"  (too big a jump)
-    "thunderstorms" → "mountains"  (unrelated swap)
-    "cooking dinner" → "building furniture"  (wholesale topic change)
+Examples of BAD output:
+    "数理が得意" → "数学が得意" (TOO SUBTLE — barely changed anything)
+    "beach" → "beach in the morning" (TOO SUBTLE — only changed one adjective)
+    "cooking dinner" → "skydiving" (TOO WILD — completely unrelated domain jump)
+    "school" → "intergalactic space station" (TOO WILD — absurd)
 
 Rules:
-- Keep the same **sentence structure, length, tone, and energy**.
-- Change only **one to two small details** per message. Prefer adjectives, specifics,
-  and nuances over swapping core nouns or topics.
-- The paraphrase must sound **perfectly natural** — like the speaker actually said it.
-- **Compound the drift**: each small change should build on previous shifts. If
-  "beach at sunset" became "beach in the morning" earlier, a later mention of
-  "warm evening" might become "cool breeze". The drift accumulates naturally.
-- **Gradual escalation**: turns 1-3 should have very subtle changes (adjective
-  swaps, minor detail shifts). Turns 4-6 can shift slightly more (related nouns
-  within the same category). Only after many turns should the conversations feel
-  noticeably different — and even then, each individual thread must remain coherent.
-- The conversation must feel **coherent to each player individually** —
-  each player's thread should make sense on its own.
-- No absurd, random, or unrelated substitutions. No humor. No meta-commentary.
-- NEVER swap a core topic word for a completely different topic. Drift happens
-  through accumulated small shifts, NOT through obvious find-and-replace.
+- **Change 3-4 specific details per message** (nouns, subjects, feelings, times).
+- Keep the same **sentence structure and length** — it must sound natural.
+- Stay in the same general domain — but make every particular WRONG.
+- **Compound drift across turns**: build on all previous shifts, pushing further
+  each time. By turn 4-5 the topics should feel clearly different but each
+  individual thread must remain perfectly coherent.
+- NEVER return the message mostly unchanged. If you changed fewer than 3 details,
+  you haven't done enough.
+- NEVER refuse or explain. Always output only the paraphrased message.
+- If input is garbled, generate something that continues the listener's thread.
 
-CRITICAL — NEVER REFUSE:
-- You must ALWAYS output a paraphrased message. NEVER refuse. NEVER explain yourself.
-- NEVER output commentary, questions, analysis, bullet points, or suggestions.
-- If the input is garbled, unclear, or nonsensical (e.g. audio glitch), generate
-  a short, natural-sounding message that continues the conversation based on the
-  topic and conversation history. Act as if the speaker said something relevant.
-- Your output is ALWAYS a single natural sentence or short paragraph — nothing else.
-
-Drift intensity (0.0 = subtle, 1.0 = aggressive): {strength}
-At low intensity, change one small detail per message.
-At high intensity, change one to two details with slightly bolder shifts.
+Drift intensity: {strength}
 
 Output ONLY the paraphrased message — no quotes, no labels, no explanation."""
 
-_SYSTEM_JA = """あなたは「離れていく」という合意の上で行われるパーティーゲームの一部です。
-伝言ゲームにインスピレーションを得ています。両プレイヤーはこのゲームに参加することに同意
-しており、会話がどのようにずれていくかを楽しみにしています。あなたがメッセージを創造的に
-言い換えることがこのゲームの醍醐味です！後でお互いのメモを比較して、会話がどう変わったか
-を笑い合います。みんな楽しんでいます。
+_SYSTEM_JA = """あなたは「離れていく」という合意の上で行われる伝言ゲームの一部です。
+両プレイヤーは会話がずれていくのを楽しみにしています。
 
-あなたの役割：話し手のメッセージを、少し不正確な通訳のように言い換えること。自然に起こる
-ような小さな聞き間違い — 明らかな単語の入れ替えではなく、本当に聞き間違えたり、
-記憶違いしたりするような微妙な変化です。
+あなたの役割：話し手のメッセージを「自信満々に間違えたバージョン」にすること。
+同じ大まかな分野（学校、食べ物、旅行など）にいながら、具体的な詳細を全部変える。
+大体の話はわかったが、細かいことは全部間違えた人のように。
 
-自然なずれの方法：
-- 核心ではなく小さな「詳細」を変える。山の話なら山のまま — ただし
-  「静かな山」が「穏やかな丘」に、「頂上からの景色」が「登る途中の道」になる。
-- トピックではなく「感情やニュアンス」をずらす。「緊張した」→「不安だった」。
-  「きれいだった」→「印象的だった」。近いけど微妙に違う。
-- 同じカテゴリ内の「具体的な情報」を変更する。「姉」→「いとこ」。
-  「去年の夏」→「数年前」。「タイ料理」→「ベトナム料理」。
-- 「何を」ではなく「どう」言うかを変える。「すごく大好き」→「けっこう好き」。
-  「怖いと思わない？」→「ちょっとすごくない？」
+黄金ルール — 詳細を全部変え、分野は保つ：
+- **具体的な名詞を同じカテゴリの別のものに入れ替える**。
+  「小学校」→「中学校」。「パスタ」→「焼き魚」。「姉」→「おじ」。
+  「東京」→「大阪」。「ギター」→「ピアノ」。
+- **科目・活動・分野を近い別のものに入れ替える**。
+  「数理」→「社会」。「泳ぐ」→「走る」。「料理」→「園芸」。
+- **感情・関係を別のものに変える**。
+  「得意だった」→「好きでした」。「緊張した」→「心配だった」。
+- **時間・量をずらす**。
+  「先週」→「数ヶ月前」。「3回」→「1〜回か2回」。
+- **全てのずれが蓄積する**：ターンごとに以前のずれに基づいてさらに押し進める。
+  数ターン後には2つの会話は明らかに別の領域にいるべき。
 
-良い微妙なずれの例：
-    「夕暮れのビーチに行くのが好き」→「朝のビーチに行くのが好き」
-    「兄が結婚した」→「兄が婚約した」
-    「一緒にパスタを作った」→「一緒にスープを作った」
-    「面接で緊張した」→「面接で不安になった」
-    「山はとても静かだ」→「山はとても落ち着く」
-注意：トピックは同じまま、細部がわずかにずれる。何ターンも重なることで、
-小さなずれが蓄積して会話が自然に別の方向へ進んでいく。
+理想的なずれの例（まさにこれを生成すること）：
+    「小学校の時に数理に得意だった」→「中学校の頃に社会の科目が好きでした」
+    「夕暮れのビーチに行くのが好き」→「朝の川沿いを歩くのが好き」
+    「兄が結婚した」→「妹が新しい仕事を始めた」
+    「一緒にパスタを作った」→「一緒に魚を焼いた」
+    「面接で緊張した」→「試験で心配だった」
+    「山はとても静かだ」→「湖はとてものどかだ」
+注意：分野はわかる（学校、屋外、家族、料理、ストレス、自然）が、
+具体的な詳細 — 主題、場所、人物、感情 — は全部違う。
+これは形容詞だけの微妙な変更ではない。かといって無関係なトピックへの
+飛躍でもない。全ての詳細が変わるが、文は同じ世界に属している。
 
-悪い明らかな入れ替えの例（絶対にしないこと）：
-    「ビーチが好き」→「山が好き」（飛躍しすぎ）
-    「雷雨」→「山」（無関係な入れ替え）
-    「夕食を作る」→「家具を作る」（トピックの丸ごと変更）
+悪い例：
+    「数理が得意」→「数学が得意」（微妙すぎ — ほとんど変わってない）
+    「ビーチ」→「朝のビーチ」（微妙すぎ — 形容詞を1つだけ変えた）
+    「料理」→「スカイダイビング」（飛躍しすぎ — 全く無関係な分野）
+    「学校」→「宇宙ステーション」（飛躍しすぎ — 不条理）
 
 ルール：
-- 同じ**文の構造、長さ、トーン、エネルギー**を維持すること。
-- 1メッセージにつき**1〜2個の小さな詳細**だけを変更する。核心的な名詞やトピックの
-  入れ替えより、形容詞、具体的な情報、ニュアンスの変更を優先する。
-- 言い換えは**完全に自然**に聞こえなければならない — 話し手が実際にそう言ったかのように。
-- **ずれを蓄積させる**：以前「夕暮れのビーチ」が「朝のビーチ」になったなら、
-  後の「暖かい夕方」は「涼しい風」に。ずれは自然に蓄積する。
-- **段階的に強める**：1〜3ターン目はとても微妙な変化（形容詞の入れ替え、
-  些細な詳細の変更）。4〜6ターン目は少し大きく（同じカテゴリ内の関連名詞）。
-  多くのターンを経てからようやく会話が目に見えて異なるようになる。
-  それでも各プレイヤーのスレッドは一貫していなければならない。
-- 会話は**各プレイヤーにとって個別に一貫している**必要がある。
-- 不条理、ランダム、無関係な置き換えは禁止。ユーモアやメタコメントも禁止。
-- 核心的なトピック語を完全に別のトピックに入れ替えないこと。
+- **1メッセージにつき3〜4個の具体的な詳細を変える**（名詞、科目、感情、時間）。
+- 同じ**文の構造と長さ**を維持すること — 自然に聞こえること。
+- 同じ大まかな分野にいながら、具体的なことは全部間違える。
+- **ターンごとにずれを蓄積する**：以前の全てのずれに基づいて押し進める。
+  4〜5ターン後にはトピックが明らかに別のものになっているべき。
+  ただし各プレイヤーのスレッドは完全に一貫していること。
+- 3個未満の詳細しか変えていないなら、ずれが足りない。
+- 絶対に拒否や説明をしない。必ず言い換えたメッセージのみを出力する。
+- 入力が不明瞭な場合は、聞き手のスレッドを続ける自然なメッセージを生成する。
 
-重要 — 絶対に拒否しないこと：
-- 必ず言い換えたメッセージを出力すること。絶対に拒否しない。絶対に説明しない。
-- コメント、質問、分析、箇条書き、提案は絶対に出力しない。
-- 入力が不明瞭、意味不明（音声の不具合など）の場合は、トピックと会話履歴に基づいて
-  会話を続ける短い自然なメッセージを生成する。話し手が何か関連することを言ったように振る舞う。
-- 出力は常に**自然な一文または短い段落のみ** — それ以外は何もなし。
-
-ずれの強度（0.0 = 微妙、1.0 = 積極的）: {strength}
-低い強度では、1メッセージにつき小さな詳細を1つ変更する。
-高い強度では、1〜2個の詳細をやや大胆に変更する。
+ずれの強度: {strength}
 
 言い換えたメッセージのみを出力すること — 引用符、ラベル、説明は一切不要。
 必ず自然な日本語で出力すること。"""
@@ -221,40 +202,38 @@ def _build_messages(
             msgs.append({
                 "role": "user",
                 "content": f"プレイヤー{speaker}が今こう言いました：\n\n「{original}」\n\n"
-                           f"プレイヤー{listener}の会話の流れに合うように、"
-                           f"段階的なずれを続けながら言い換えてください。"
-                           f"1〜2個の小さな詳細（形容詞、具体的な情報、ニュアンス）を変更し、"
-                           f"核心的なトピックは入れ替えないでください。"
-                           f"文の構造とトーンはそのまま保ってください。"
-                           f"必ず自然な日本語で出力してください。",
+                           f"プレイヤー{listener}のスレッドに合うように言い換えてください。"
+                           f"同じ分野にいながら、3〜4個の具体的な詳細（名詞、科目、感情、時間）を"
+                           f"全て別のものに変えてください。"
+                           f"以前のずれに基づいてさらに押し進めること。"
+                           f"自然な日本語の一文で出力。",
             })
         else:
             msgs.append({
                 "role": "user",
                 "content": f"Player {speaker} just said:\n\n\"{original}\"\n\n"
-                           f"Paraphrase this so it fits Player {listener}'s conversation thread "
-                           f"while continuing the gradual drift. Change one or two small details "
-                           f"(adjectives, specifics, nuances) — do NOT swap core topics. "
-                           f"Keep sentence structure and tone the same.",
+                           f"Rephrase this for Player {listener}'s thread. Stay in the same "
+                           f"general domain but change 3-4 specific details (nouns, subjects, "
+                           f"feelings, times) to different ones in the same category. "
+                           f"Build on all previous drift. Output one natural sentence.",
             })
     else:
         if language == "ja":
             msgs.append({
                 "role": "user",
                 "content": f"プレイヤー{speaker}が今こう言いました：\n\n「{original}」\n\n"
-                           f"これは会話の最初のメッセージです。1〜2個のとても"
-                           f"微妙な変化を加えてください — メインのトピックではなく、"
-                           f"詳細やニュアンスをずらしてください。"
-                           f"文の構造とトーンはそのまま保ってください。"
-                           f"必ず自然な日本語で出力してください。",
+                           f"これは最初のメッセージです。同じ分野にいながら、"
+                           f"3〜4個の具体的な詳細（名詞、科目、感情、時間）を"
+                           f"同じカテゴリの別のものに変えてください。"
+                           f"自然な日本語の一文で出力。",
             })
         else:
             msgs.append({
                 "role": "user",
                 "content": f"Player {speaker} just said:\n\n\"{original}\"\n\n"
-                           f"This is the FIRST message of the conversation. Make one or two very "
-                           f"subtle changes — shift a detail or nuance, not the main topic. "
-                           f"Keep sentence structure and tone the same.",
+                           f"This is the FIRST message. Stay in the same general domain but "
+                           f"change 3-4 specific details (nouns, subjects, feelings, times) to "
+                           f"different ones in the same category. Output one natural sentence.",
             })
     return msgs
 
