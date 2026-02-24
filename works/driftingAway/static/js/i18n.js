@@ -29,14 +29,14 @@ const i18n = (() => {
         "相手の準備ができました！ボタンを押して始めましょう",
 
       // ── Player: Prompt Select ───────────────────────────────────
-      "prompt.otherChoosing": "相手がトピックを選んでいます",
+      "prompt.otherChoosing": "相手が話題を選んでいます",
       "prompt.hint":
-        "← 前のトピック\u00a0\u00a0\u00a0● トピック決定\u00a0\u00a0\u00a0新しいトピック →",
+        "← 前の話題\u00a0\u00a0\u00a0● 話題決定\u00a0\u00a0\u00a0新しい話題 →",
 
       // ── Player: Conversation ────────────────────────────────────
       "ptt.label": "長押しで話す",
       "ptt.holdDot": "●",
-      "topic.label": "元のトピック",
+      "topic.label": "元の話題",
 
       // ── Player: Reveal ──────────────────────────────────────────
       "reveal.title": "終了！",
@@ -61,18 +61,18 @@ const i18n = (() => {
       // ── Spectator ───────────────────────────────────────────────
       "spectator.title": "離れていく",
       "spectator.subtitle":
-        "ミスコミュニケーションについてのインタラクティブ・インスタレーション",
+        "ミスコミュニケーションについての体験型インスタレーション",
       "spectator.description":
-        "二人が会話をしています — でも、お互いの声は直接聞こえません。AIがメッセージを少しだけ変えてから相手に届けます。会話が少しずつずれていく様子をご覧ください。",
+        "二人が会話をしている。だが、お互いの声は直接聞こえない。AIがメッセージを少しだけ変えてから相手に届ける。会話が少しずつずれていく様子をご覧ください。",
       "spectator.waitingForPlayers": "プレイヤーの参加を待っています",
       "spectator.nextRound": "次のラウンドがまもなく始まります",
       "spectator.p1Ready": "プレイヤー1が準備完了、プレイヤー2を待っています",
       "spectator.p2Ready": "プレイヤー2が準備完了、プレイヤー1を待っています",
       "spectator.bothReady": "両プレイヤー準備完了",
-      "spectator.deciding": "プレイヤー{n}がトピックを選んでいます",
+      "spectator.deciding": "プレイヤー{n}が話題を選んでいます",
       "spectator.player1": "プレイヤー1",
       "spectator.player2": "プレイヤー2",
-      "spectator.originalTopic": "元のトピック",
+      "spectator.originalTopic": "元の話題",
 
       // ── Control Panel ───────────────────────────────────────────
       "control.title": "🎛 コントロールパネル",
