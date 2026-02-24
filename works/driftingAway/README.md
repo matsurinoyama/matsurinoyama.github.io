@@ -177,7 +177,7 @@ In `config.py`:
 | ------------------------ | ------------------- | ------------------------------------------------------- |
 | `DEFAULT_LANGUAGE`       | `"ja"`              | Default UI language ("ja" or "en")                      |
 | `ROUND_DURATION_SECONDS` | 180                 | Conversation length (seconds)                           |
-| `MISINTERPRET_STRENGTH`  | 0.85                | 0 = faithful, 1 = wild misinterpretation                |
+| `MISINTERPRET_STRENGTH`  | 0.8                 | 0 = faithful, 1 = wild misinterpretation                |
 | `WHISPER_LANGUAGE`       | `"ja"`              | Default speech-to-text language (overridden by UI lang) |
 | `WHISPER_MODEL`          | `whisper-small-mlx` | Speed vs accuracy tradeoff                              |
 | `AUDIO_CHUNK_MS`         | 10000               | How often audio is sent to server (ms)                  |
