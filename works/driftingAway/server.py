@@ -12,6 +12,7 @@ import base64
 import json
 import logging
 import time
+from collections import Counter
 from contextlib import asynccontextmanager
 from typing import Any
 
@@ -292,17 +293,30 @@ async def process_audio(role: str, msg: dict):
                               player_num, len(words), original_text.strip())
                     return
 
-            # Skip repetitive/spam input (audio glitch: same word repeated)
-            words = original_text.strip().split()
-            if len(words) >= 5:
-                from collections import Counter
-                word_counts = Counter(w.lower() for w in words)
-                most_common_count = word_counts.most_common(1)[0][1]
-                if most_common_count / len(words) > 0.6:
-                    log.warning("P%d: ignoring repetitive audio glitch (%d/%d same word): %s",
-                                player_num, most_common_count, len(words),
-                                original_text.strip()[:80])
-                    return
+            # Skip repetitive/spam input (audio glitch: same token repeated)
+            text_clean = original_text.strip()
+            if current_language == "ja":
+                # Japanese: check for repeated characters (no spaces)
+                # A single char repeated more than 60% of the text = glitch
+                char_counts = Counter(text_clean)
+                if char_counts:
+                    most_common_char, most_common_count = char_counts.most_common(1)[0]
+                    if len(text_clean) >= 10 and most_common_count / len(text_clean) > 0.4:
+                        log.warning("P%d: ignoring repetitive audio glitch (%d/%d same char '%s'): %s",
+                                    player_num, most_common_count, len(text_clean),
+                                    most_common_char, text_clean[:80])
+                        return
+            else:
+                # English: check for repeated words
+                words = text_clean.split()
+                if len(words) >= 5:
+                    word_counts = Counter(w.lower() for w in words)
+                    most_common_count = word_counts.most_common(1)[0][1]
+                    if most_common_count / len(words) > 0.6:
+                        log.warning("P%d: ignoring repetitive audio glitch (%d/%d same word): %s",
+                                    player_num, most_common_count, len(words),
+                                    text_clean[:80])
+                        return
 
             log.info("P%d said: %s", player_num, original_text)
 

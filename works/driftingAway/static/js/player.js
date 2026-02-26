@@ -289,6 +289,8 @@
     if (phase === "conversation") {
       $timer.classList.add("visible");
       whiteNoise.start();
+      pttActive = false;
+      if ($pttDot) $pttDot.classList.remove("active");
       // Only the player who chose the topic sees it
       if (isStartingPlayer && msg.prompt) {
         addTopicMessage(msg.prompt.topic);
@@ -466,6 +468,15 @@
   // ── Remote key events (universal keyboard relay) ──────────────────
   // All key presses go: any window → server → correct player via remote_key.
   // This ensures keys work even when this window is not focused.
+  let _pttWatchdog = null;
+
+  function releasePtt() {
+    pttActive = false;
+    if ($pttDot) $pttDot.classList.remove("active");
+    audio.stopCapture();
+    if (_pttWatchdog) { clearTimeout(_pttWatchdog); _pttWatchdog = null; }
+  }
+
   socket.on("remote_key", (msg) => {
     const k = msg.keyAction;
 
@@ -494,14 +505,15 @@
         pttActive = true;
         $pttDot.classList.add("active");
         audio.startCapture();
+        // Watchdog: auto-release if keyup never arrives (15s max)
+        if (_pttWatchdog) clearTimeout(_pttWatchdog);
+        _pttWatchdog = setTimeout(() => releasePtt(), 15000);
       }
     }
 
     if (msg.eventType === "keyup") {
       if (k === "select" && pttActive) {
-        pttActive = false;
-        $pttDot.classList.remove("active");
-        audio.stopCapture();
+        releasePtt();
       }
     }
   });
