@@ -279,12 +279,23 @@ async def process_audio(role: str, msg: dict):
             if not original_text.strip():
                 return
 
+
             # Skip fragments too short to be meaningful
             # For Japanese: < 4 characters; for English: < 3 words
             if current_language == "ja":
                 if len(original_text.strip()) < 4:
                     log.debug("P%d: ignoring short fragment (%d chars): %s",
                               player_num, len(original_text.strip()), original_text.strip())
+                    return
+                # Filter out polite stock phrases (treat as silence)
+                polite_stock = [
+                    "ご視聴ありがとうございました", "ご利用ありがとうございました", "ありがとうございました", "ご清聴ありがとうございました",
+                    "ご参加ありがとうございました", "ご来場ありがとうございました", "ご協力ありがとうございました", "ご注文ありがとうございました",
+                    "ご愛顧ありがとうございました", "ご予約ありがとうございました", "ご回答ありがとうございました", "ご応募ありがとうございました",
+                    "ご連絡ありがとうございました", "ご報告ありがとうございました", "ご指摘ありがとうございました", "ご案内ありがとうございました",
+                ]
+                if original_text.strip() in polite_stock:
+                    log.debug("P%d: ignoring polite stock phrase: %s", player_num, original_text.strip())
                     return
             else:
                 words = original_text.strip().split()
@@ -317,6 +328,22 @@ async def process_audio(role: str, msg: dict):
                                     player_num, most_common_count, len(words),
                                     text_clean[:80])
                         return
+
+            # Check for repeated substrings (length 2-4) that make up >60% of the text
+            def has_repeated_substring(s):
+                n = len(s)
+                for l in range(2, 5):
+                    if n < l * 2:
+                        continue
+                    for i in range(n - l + 1):
+                        sub = s[i:i+l]
+                        if sub * (n // l) == s[:l * (n // l)] and (l * (n // l)) / n > 0.6:
+                            return sub
+                return None
+            rep_sub = has_repeated_substring(text_clean)
+            if rep_sub:
+                log.warning("P%d: ignoring repeated substring glitch ('%s'): %s", player_num, rep_sub, text_clean[:80])
+                return
 
             log.info("P%d said: %s", player_num, original_text)
 

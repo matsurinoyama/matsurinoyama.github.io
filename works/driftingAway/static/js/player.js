@@ -6,7 +6,19 @@
  * URL: /player/1  or  /player/2
  */
 
+// Drifting Away — Player Screen Logic
 (function () {
+  // Check for ?reset_mic=1 in URL and clear mic settings if present
+  if (window.location.search.includes("reset_mic=1")) {
+    // Try both possible player keys (in case of mismatch)
+    localStorage.removeItem("drifting_mic_p1");
+    localStorage.removeItem("drifting_mic_p2");
+    // Optionally, reload without the query param to avoid loop
+    const url = new URL(window.location.href);
+    url.searchParams.delete("reset_mic");
+    window.location.replace(url.pathname + url.search);
+    return;
+  }
   const PLAYER_ID = parseInt(document.body.dataset.playerId, 10);
   const STORAGE_KEY = `drifting_mic_p${PLAYER_ID}`;
   const socket = new DriftSocket(`player${PLAYER_ID}`);
@@ -34,8 +46,14 @@
   let _testCtx = null;
   let _testAnimFrame = null;
 
-  // Minimum display time for messages (ms)
-  const MIN_DISPLAY_MS = 6000;
+  // Dynamic display time for messages (ms)
+  const MIN_DISPLAY_MS = 6000; // Minimum 6s
+  const MAX_DISPLAY_MS = 20000; // Maximum 20s
+  function getDisplayMs(text) {
+    // 100ms per character, clamped to min/max
+    const ms = Math.round(100 * (text ? text.length : 0));
+    return Math.max(MIN_DISPLAY_MS, Math.min(MAX_DISPLAY_MS, ms));
+  }
   let _lastMessageShown = 0;
   let _pendingMessage = null;
   let _pendingTimer = null;
@@ -390,11 +408,12 @@
   // All message display goes through the queue so the 8-second minimum
   // is always respected — no message can be replaced sooner.
 
-  function _enqueue(renderFn) {
+  function _enqueue(renderFn, textForTiming) {
     const now = Date.now();
+    const displayMs = getDisplayMs(textForTiming);
     const elapsed = now - _lastMessageShown;
 
-    if (_lastMessageShown > 0 && elapsed < MIN_DISPLAY_MS) {
+    if (_lastMessageShown > 0 && elapsed < displayMs) {
       if (_pendingTimer) clearTimeout(_pendingTimer);
       _pendingMessage = renderFn;
       _pendingTimer = setTimeout(() => {
@@ -402,7 +421,7 @@
         _pendingMessage = null;
         renderFn();
         _lastMessageShown = Date.now();
-      }, MIN_DISPLAY_MS - elapsed);
+      }, displayMs - elapsed);
       return;
     }
 
@@ -418,7 +437,7 @@
       div.textContent = text;
       $messages.appendChild(div);
       fitText(div, $messages);
-    });
+    }, text);
   }
 
   function addSystemMessage(text) {
@@ -429,7 +448,7 @@
       div.textContent = text;
       $messages.appendChild(div);
       fitText(div, $messages);
-    });
+    }, text);
   }
 
   function addTopicMessage(topic) {
@@ -440,14 +459,14 @@
       const label = document.createElement("div");
       label.className = "topic-label";
       label.textContent = i18n.t("topic.label");
-      const text = document.createElement("div");
-      text.className = "topic-text";
-      text.textContent = topic;
+      const textDiv = document.createElement("div");
+      textDiv.className = "topic-text";
+      textDiv.textContent = topic;
       wrapper.appendChild(label);
-      wrapper.appendChild(text);
+      wrapper.appendChild(textDiv);
       $messages.appendChild(wrapper);
-      fitText(text, $messages);
-    });
+      fitText(textDiv, $messages);
+    }, topic);
   }
 
   function clearMessages() {

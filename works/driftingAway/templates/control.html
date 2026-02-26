@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>離れていく — Control Panel</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png" />
     <link rel="stylesheet" href="/static/css/styles.css?v={{ cache_bust }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,8 +14,19 @@
     />
   </head>
   <body>
-    <div class="screen">
-      <div class="control-panel">
+    <div class="screen" style="overflow-y: auto; max-height: 100vh">
+      <div
+        class="control-panel"
+        style="
+          min-width: 320px;
+          max-width: 480px;
+          margin: auto;
+          padding-top: 2.5rem;
+          padding-bottom: 2.5rem;
+        "
+      >
+        > class="control-panel" style="min-width: 320px; max-width: 480px;
+        margin: auto" >
         <h1>🎛 コントロールパネル</h1>
 
         <button class="btn" id="btn-start">▶ ゲーム開始</button>
@@ -60,6 +72,25 @@
               >/spectator</a
             >
           </p>
+          <div style="margin-top: 1.2rem">
+            <button
+              class="btn"
+              id="btn-reset-mic-1"
+              style="margin-right: 0.5rem"
+            >
+              <span style="font-size: 1.1em; vertical-align: middle">↺</span>
+              Player 1 マイクリセット
+            </button>
+            <button class="btn" id="btn-reset-mic-2">
+              <span style="font-size: 1.1em; vertical-align: middle">↺</span>
+              Player 2 マイクリセット
+            </button>
+            <div
+              style="font-size: 0.8em; color: var(--fg-dim); margin-top: 0.3em"
+            >
+              ※ プレイヤーのマイク設定を初期化します
+            </div>
+          </div>
         </div>
 
         <!-- Debug transcript panel -->
@@ -102,6 +133,7 @@
 
     <script src="/static/js/i18n.js?v={{ cache_bust }}"></script>
     <script src="/static/js/common.js?v={{ cache_bust }}"></script>
+    <script src="/static/js/control.js?v={{ cache_bust }}"></script>
     <script>
       const socket = new DriftSocket("control");
 
