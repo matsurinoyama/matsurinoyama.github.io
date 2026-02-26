@@ -474,7 +474,10 @@
     pttActive = false;
     if ($pttDot) $pttDot.classList.remove("active");
     audio.stopCapture();
-    if (_pttWatchdog) { clearTimeout(_pttWatchdog); _pttWatchdog = null; }
+    if (_pttWatchdog) {
+      clearTimeout(_pttWatchdog);
+      _pttWatchdog = null;
+    }
   }
 
   socket.on("remote_key", (msg) => {
