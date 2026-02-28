@@ -31,7 +31,7 @@ const i18n = (() => {
       // ── Player: Prompt Select ───────────────────────────────────
       "prompt.otherChoosing": "相手が話題を選んでいます",
       "prompt.hint":
-        "← 前の候補\u00a0\u00a0\u00a0● で決定\u00a0\u00a0\u00a0次の候補 →",
+        "← 前の候補\u00a0\u00a0\u00a0● で押して決定\u00a0\u00a0\u00a0次の候補 →",
       "prompt.splash.label": "話題選択",
       "prompt.splash.text":
         "ボタンを使って、相手に聞きたい質問を選んでください",

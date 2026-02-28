@@ -75,8 +75,14 @@
     if (_revealTimer !== null || _revealIdleTimer !== null) {
       if (phase === "conversation") {
         // New round starting — cancel reveal and fall through normally
-        if (_revealTimer) { clearTimeout(_revealTimer); _revealTimer = null; }
-        if (_revealIdleTimer) { clearTimeout(_revealIdleTimer); _revealIdleTimer = null; }
+        if (_revealTimer) {
+          clearTimeout(_revealTimer);
+          _revealTimer = null;
+        }
+        if (_revealIdleTimer) {
+          clearTimeout(_revealIdleTimer);
+          _revealIdleTimer = null;
+        }
         hideRevealSplash();
       } else if (phase !== "reveal") {
         return; // Swallow idle / reset / waiting / prompt_select
@@ -172,8 +178,14 @@
       if (!_currentTopic && msg.topic) _currentTopic = msg.topic;
 
       // Guard against multiple stacked timers (reconnect / duplicate snapshots)
-      if (_revealTimer) { clearTimeout(_revealTimer); _revealTimer = null; }
-      if (_revealIdleTimer) { clearTimeout(_revealIdleTimer); _revealIdleTimer = null; }
+      if (_revealTimer) {
+        clearTimeout(_revealTimer);
+        _revealTimer = null;
+      }
+      if (_revealIdleTimer) {
+        clearTimeout(_revealIdleTimer);
+        _revealIdleTimer = null;
+      }
 
       showRevealSplash();
 
