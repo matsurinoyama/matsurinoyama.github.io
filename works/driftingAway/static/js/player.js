@@ -39,6 +39,14 @@
   const $micTestBtn = document.getElementById("mic-test-btn");
   const $micConfirmBtn = document.getElementById("mic-confirm-btn");
 
+  // Prompt chooser splash
+  const $promptSplash = document.getElementById("player-prompt-splash");
+  const $promptSplashLabel = document.getElementById("prompt-splash-label");
+  const $promptSplashText = document.getElementById("prompt-splash-text");
+  let _promptSplashActive = false;
+  let _promptSplashShown = false;
+  let _promptSplashTimer = null;
+
   let isStartingPlayer = false;
   let pttActive = false;
   let micReady = false;
@@ -46,15 +54,20 @@
   let _testCtx = null;
   let _testAnimFrame = null;
 
-  // Dynamic display time for messages (ms)
-  const MIN_DISPLAY_MS = 6000; // Minimum 6s
-  const MAX_DISPLAY_MS = 20000; // Maximum 20s
+  // How long each message stays on screen (ms): 50ms per char, min 5s, max 12s.
+  // The current message's computed duration is used as the replacement threshold —
+  // new messages wait for the remainder of the current message's time before
+  // appearing, so longer messages get proportionally more reading time.
+  const MIN_DISPLAY_MS = 5000;
+  const MAX_DISPLAY_MS = 15000;
   function getDisplayMs(text) {
-    // 100ms per character, clamped to min/max
-    const ms = Math.round(100 * (text ? text.length : 0));
-    return Math.max(MIN_DISPLAY_MS, Math.min(MAX_DISPLAY_MS, ms));
+    return Math.max(
+      MIN_DISPLAY_MS,
+      Math.min(MAX_DISPLAY_MS, (text ? text.length : 0) * 50),
+    );
   }
   let _lastMessageShown = 0;
+  let _currentDisplayMs = MIN_DISPLAY_MS;
   let _pendingMessage = null;
   let _pendingTimer = null;
 
@@ -253,7 +266,7 @@
     // PTT label
     if ($pttLabel) {
       $pttLabel.innerHTML =
-        i18n.t("ptt.label") + ' <span class="ptt-dot" id="ptt-dot"></span>';
+        '<span class="ptt-dot" id="ptt-dot"></span>' + i18n.t("ptt.label");
       // Re-bind dot ref — the old $pttDot is now detached from the DOM
       $pttDot = document.getElementById("ptt-dot");
       if ($pttDot && pttActive) $pttDot.classList.add("active");
@@ -268,6 +281,11 @@
     if ($micTestBtn && !_testStream)
       $micTestBtn.textContent = i18n.t("mic.test");
     if ($micConfirmBtn) $micConfirmBtn.textContent = i18n.t("mic.confirm");
+    // Prompt splash
+    if ($promptSplashLabel)
+      $promptSplashLabel.textContent = i18n.t("prompt.splash.label");
+    if ($promptSplashText)
+      $promptSplashText.textContent = i18n.t("prompt.splash.text");
   }
 
   function applyState(msg) {
@@ -301,7 +319,13 @@
     if (phase === "prompt_select") {
       isStartingPlayer = msg.startingPlayer === PLAYER_ID;
       const idx = msg.highlightIndex !== undefined ? msg.highlightIndex : 0;
-      renderPromptCards(msg.choices || msg.promptChoices || [], idx);
+      const choices = msg.choices || msg.promptChoices || [];
+      if (isStartingPlayer && !_promptSplashShown) {
+        _promptSplashShown = true;
+        showPromptSplash(() => renderPromptCards(choices, idx));
+      } else {
+        renderPromptCards(choices, idx);
+      }
     }
 
     if (phase === "conversation") {
@@ -325,6 +349,8 @@
       $timer.classList.remove("visible", "warning", "danger");
       whiteNoise.stop();
       clearMessages();
+      hidePromptSplash();
+      _promptSplashShown = false;
     }
 
     if (phase === "idle") {
@@ -334,7 +360,29 @@
       clearMessages();
       isStartingPlayer = false;
       pttActive = false;
+      hidePromptSplash();
+      _promptSplashShown = false;
     }
+  }
+
+  // ── Prompt chooser splash ─────────────────────────────────────────
+  function showPromptSplash(onDone) {
+    _promptSplashActive = true;
+    if ($promptSplash) $promptSplash.hidden = false;
+    _promptSplashTimer = setTimeout(() => {
+      _promptSplashTimer = null;
+      hidePromptSplash();
+      if (onDone) onDone();
+    }, 5000);
+  }
+
+  function hidePromptSplash() {
+    _promptSplashActive = false;
+    if (_promptSplashTimer) {
+      clearTimeout(_promptSplashTimer);
+      _promptSplashTimer = null;
+    }
+    if ($promptSplash) $promptSplash.hidden = true;
   }
 
   // ── Timer ─────────────────────────────────────────────────────────
@@ -408,12 +456,13 @@
   // All message display goes through the queue so the 8-second minimum
   // is always respected — no message can be replaced sooner.
 
-  function _enqueue(renderFn, textForTiming) {
-    const now = Date.now();
-    const displayMs = getDisplayMs(textForTiming);
-    const elapsed = now - _lastMessageShown;
+  function _enqueue(renderFn, text) {
+    const newDisplayMs = getDisplayMs(text);
+    const elapsed = Date.now() - _lastMessageShown;
 
-    if (_lastMessageShown > 0 && elapsed < displayMs) {
+    // Wait for the current message's remaining computed display time before
+    // replacing it with the new one.
+    if (_lastMessageShown > 0 && elapsed < _currentDisplayMs) {
       if (_pendingTimer) clearTimeout(_pendingTimer);
       _pendingMessage = renderFn;
       _pendingTimer = setTimeout(() => {
@@ -421,12 +470,14 @@
         _pendingMessage = null;
         renderFn();
         _lastMessageShown = Date.now();
-      }, displayMs - elapsed);
+        _currentDisplayMs = newDisplayMs;
+      }, _currentDisplayMs - elapsed);
       return;
     }
 
     renderFn();
     _lastMessageShown = Date.now();
+    _currentDisplayMs = newDisplayMs;
   }
 
   function addMessage(text, isOwn) {
@@ -474,6 +525,7 @@
     _pendingTimer = null;
     _pendingMessage = null;
     _lastMessageShown = 0;
+    _currentDisplayMs = MIN_DISPLAY_MS;
     $messages.innerHTML = "";
   }
 
@@ -512,7 +564,11 @@
         return;
       }
 
-      if (phase === "prompt_select" && isStartingPlayer) {
+      if (
+        phase === "prompt_select" &&
+        isStartingPlayer &&
+        !_promptSplashActive
+      ) {
         if (k === "prev") socket.send({ action: "prev_prompt" });
         if (k === "select") socket.send({ action: "select_prompt" });
         if (k === "next") socket.send({ action: "reroll_prompt" });

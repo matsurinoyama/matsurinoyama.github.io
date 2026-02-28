@@ -20,6 +20,8 @@
   const $idleStatus = document.getElementById("spectator-idle-status");
 
   let _splashTimer = null;
+  let _revealTimer = null;
+  let _revealIdleTimer = null;
   let _currentTopic = null;
 
   // ── Phase handling ────────────────────────────────────────────────
@@ -66,6 +68,20 @@
 
   function applyState(msg) {
     const phase = msg.phase;
+
+    // During the reveal sequence (splash + history display), ignore any phase
+    // transitions that would dismiss it prematurely.  Allow "conversation" through
+    // so a brand-new round can cancel the sequence cleanly.
+    if (_revealTimer !== null || _revealIdleTimer !== null) {
+      if (phase === "conversation") {
+        // New round starting — cancel reveal and fall through normally
+        if (_revealTimer) { clearTimeout(_revealTimer); _revealTimer = null; }
+        if (_revealIdleTimer) { clearTimeout(_revealIdleTimer); _revealIdleTimer = null; }
+        hideRevealSplash();
+      } else if (phase !== "reveal") {
+        return; // Swallow idle / reset / waiting / prompt_select
+      }
+    }
 
     if (phase === "idle") {
       $timer.classList.remove("warning", "danger");
@@ -150,13 +166,41 @@
     if (phase === "reveal") {
       $idle.hidden = true;
       hideSplash();
-      $spectatorMain.hidden = false;
-      if (_currentTopic) showTopicBar(_currentTopic);
-      // Render full history
-      if (msg.turns) {
-        clearPanels();
-        msg.turns.forEach((t) => addTurn(t));
-      }
+
+      // Grab topic from msg if not already stored (handles page-refresh mid-reveal)
+      if (!_currentTopic && msg.prompt) _currentTopic = msg.prompt.topic;
+      if (!_currentTopic && msg.topic) _currentTopic = msg.topic;
+
+      // Guard against multiple stacked timers (reconnect / duplicate snapshots)
+      if (_revealTimer) { clearTimeout(_revealTimer); _revealTimer = null; }
+      if (_revealIdleTimer) { clearTimeout(_revealIdleTimer); _revealIdleTimer = null; }
+
+      showRevealSplash();
+
+      const revealTurns = msg.turns ? [...msg.turns] : null;
+      _revealTimer = setTimeout(() => {
+        _revealTimer = null;
+        hideRevealSplash();
+        $spectatorMain.hidden = false;
+        if (_currentTopic) showTopicBar(_currentTopic);
+        // Render full history (from stored turns)
+        if (revealTurns && revealTurns.length > 0) {
+          clearPanels();
+          revealTurns.forEach((t) => addTurn(t));
+        }
+        // After 1 minute, return to idle
+        _revealIdleTimer = setTimeout(() => {
+          _revealIdleTimer = null;
+          $spectatorMain.hidden = true;
+          hideTopicBar();
+          $idle.hidden = false;
+          clearPanels();
+          _currentTopic = null;
+          $idleStatus.innerHTML =
+            i18n.t("spectator.waitingForPlayers") +
+            '<span class="waiting-dots"></span>';
+        }, 60000);
+      }, 15000);
     }
   }
 
@@ -179,6 +223,16 @@
       _splashTimer = null;
     }
     $topicSplash.hidden = true;
+  }
+
+  // ── Reveal splash ─────────────────────────────────────────────────
+  function showRevealSplash() {
+    document.getElementById("reveal-splash").hidden = false;
+    $spectatorMain.hidden = true;
+  }
+
+  function hideRevealSplash() {
+    document.getElementById("reveal-splash").hidden = true;
   }
 
   // ── Topic bar (persistent bottom strip) ───────────────────────────

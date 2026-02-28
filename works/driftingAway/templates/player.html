@@ -49,8 +49,8 @@
         <div class="messages" id="messages"></div>
         <div class="ptt-bar">
           <span class="ptt-label" id="ptt-label"
-            >長押しで話す <span class="ptt-dot" id="ptt-dot"></span
-          ></span>
+            ><span class="ptt-dot" id="ptt-dot"></span> を長押しで話す</span
+          >
         </div>
       </div>
     </div>
@@ -89,6 +89,14 @@
           この設定はこのブラウザに保存されます。変更するには/player/{{ player_id
           }}を再度開いてください。
         </p>
+      </div>
+    </div>
+
+    <!-- ── Prompt chooser splash (shown for 3s to the starting player) ── -->
+    <div id="player-prompt-splash" class="topic-splash" hidden>
+      <div class="topic-splash-label" id="prompt-splash-label">話題選択</div>
+      <div class="topic-splash-text" id="prompt-splash-text">
+        ボタンを使って、相手に聞きたい質問を選んでください
       </div>
     </div>
 

@@ -31,12 +31,15 @@ const i18n = (() => {
       // ── Player: Prompt Select ───────────────────────────────────
       "prompt.otherChoosing": "相手が話題を選んでいます",
       "prompt.hint":
-        "← 前の話題\u00a0\u00a0\u00a0● 話題決定\u00a0\u00a0\u00a0新しい話題 →",
+        "← 前の候補\u00a0\u00a0\u00a0● で決定\u00a0\u00a0\u00a0次の候補 →",
+      "prompt.splash.label": "話題選択",
+      "prompt.splash.text":
+        "ボタンを使って、相手に聞きたい質問を選んでください",
 
       // ── Player: Conversation ────────────────────────────────────
-      "ptt.label": "長押しで話す",
+      "ptt.label": " を長押しで話す",
       "ptt.holdDot": "●",
-      "topic.label": "元の話題",
+      "topic.label": "相手への質問",
 
       // ── Player: Reveal ──────────────────────────────────────────
       "reveal.title": "終了！",
@@ -111,9 +114,12 @@ const i18n = (() => {
       "prompt.otherChoosing": "The other player is choosing a topic",
       "prompt.hint":
         "\u2190 Previous prompt\u00a0\u00a0\u00a0\u25cf Select prompt\u00a0\u00a0\u00a0Generate new prompt \u2192",
+      "prompt.splash.label": "Choose a Topic",
+      "prompt.splash.text":
+        "Use the buttons to select a question to ask the other player",
 
       // ── Player: Conversation ────────────────────────────────────
-      "ptt.label": "Hold to talk",
+      "ptt.label": " Hold to talk",
       "ptt.holdDot": "●",
       "topic.label": "Original Topic",
 
