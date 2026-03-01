@@ -447,14 +447,73 @@ body {
   color: var(--danger);
 }
 
-/* ── Spectator layout (two-column panel grid) ──────────────────────── */
-.spectator-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* ── Spectator chat feed ─────────────────────────────────────────────── */
+.spectator-feed {
   flex: 1;
-  gap: 1.5rem;
-  padding: 0 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 0.75rem;
+  padding: 1.5rem 2rem 1rem;
   min-height: 0;
+}
+
+.spectator-turn {
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
+}
+.spectator-turn--p1 {
+  align-self: flex-start;
+}
+.spectator-turn--p2 {
+  align-self: flex-end;
+}
+
+.turn-player {
+  margin-bottom: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.spectator-turn--p1 .turn-player {
+  color: var(--p1);
+}
+.spectator-turn--p2 .turn-player {
+  color: var(--p2);
+  text-align: right;
+}
+
+.turn-bubble {
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 0.8rem 1rem;
+}
+.spectator-turn--p2 .turn-bubble {
+  text-align: right;
+}
+
+.spectator-turn .original {
+  margin-bottom: 0.3rem;
+  color: var(--fg-dim);
+  font-size: 0.85rem;
+}
+.spectator-turn--p1 .original::before {
+  content: "🎙 ";
+}
+.spectator-turn--p2 .original::after {
+  content: " 🎙";
+}
+.spectator-turn .misheard {
+  color: var(--fg);
+  font-size: 1rem;
+}
+.spectator-turn--p1 .misheard::before {
+  content: "👂 ";
+}
+.spectator-turn--p2 .misheard::after {
+  content: " 👂";
 }
 
 /* ── Topic bar (bottom of spectator screen) ────────────────────────── */
@@ -515,75 +574,6 @@ body {
   letter-spacing: 0.02em;
 }
 
-.spectator-panel {
-  display: flex;
-  flex-direction: column;
-  border: none;
-  background: transparent;
-  padding: 1.5rem;
-  overflow-y: auto;
-}
-.spectator-panel h3 {
-  display: flex;
-  position: sticky;
-  top: -1.5rem;
-  align-items: center;
-  gap: 0.5rem;
-  z-index: 1;
-  margin: -1.5rem -1.5rem 0 -1.5rem;
-  border-bottom: 1px solid #e0e0e0;
-  background: #ffffff;
-  padding: 1.5rem 1.5rem 0.75rem 1.5rem;
-  font-size: 1rem;
-}
-.spectator-panel > div:first-of-type {
-  padding-top: 1.5rem;
-}
-.spectator-panel--p1 h3 {
-  color: var(--p1);
-}
-.spectator-panel--p2 h3 {
-  justify-content: flex-end;
-  color: var(--p2);
-  text-align: right;
-}
-
-/* Right-align Player 2's messages */
-.spectator-panel--p2 .spectator-turn {
-  text-align: right;
-}
-.spectator-panel--p2 .spectator-turn .original::before,
-.spectator-panel--p2 .spectator-turn .misheard::before {
-  content: none;
-}
-.spectator-panel--p2 .spectator-turn .original::after {
-  content: " 🎙";
-}
-.spectator-panel--p2 .spectator-turn .misheard::after {
-  content: " 👂";
-}
-
-.spectator-turn {
-  margin: 0 -1.5rem 1rem -1.5rem;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.02);
-  padding: 0.8rem 1.5rem;
-}
-.spectator-turn .original {
-  margin-bottom: 0.3rem;
-  color: var(--fg-dim);
-  font-size: 0.85rem;
-}
-.spectator-turn .original::before {
-  content: "🎙 ";
-}
-.spectator-turn .misheard {
-  color: var(--fg);
-  font-size: 1rem;
-}
-.spectator-turn .misheard::before {
-  content: "👂 ";
-}
 
 /* ── Control panel (admin) ─────────────────────────────────────────── */
 .control-panel {

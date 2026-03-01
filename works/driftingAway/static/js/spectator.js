@@ -12,8 +12,7 @@
   const $topicSplash = document.getElementById("topic-splash");
   const $topicSplashText = document.getElementById("topic-splash-text");
   const $spectatorMain = document.getElementById("spectator-main");
-  const $p1Panel = document.getElementById("panel-p1");
-  const $p2Panel = document.getElementById("panel-p2");
+  const $feed = document.getElementById("spectator-feed");
   const $topicBar = document.getElementById("spectator-topic-bar");
   const $topicBarText = document.getElementById("spectator-topic-bar-text");
   const $idle = document.getElementById("spectator-idle");
@@ -41,11 +40,6 @@
     if (sub) sub.textContent = i18n.t("spectator.subtitle");
     const desc = document.querySelector(".spectator-idle-desc");
     if (desc) desc.textContent = i18n.t("spectator.description");
-    // Player headers
-    const p1H = document.querySelector(".spectator-panel--p1 h3");
-    if (p1H) p1H.textContent = i18n.t("spectator.player1");
-    const p2H = document.querySelector(".spectator-panel--p2 h3");
-    if (p2H) p2H.textContent = i18n.t("spectator.player2");
     // Topic splash label (ID-targeted to avoid matching reveal splash)
     const topicSplashLabel = document.getElementById("topic-splash-label");
     if (topicSplashLabel)
@@ -261,6 +255,7 @@
   const _turnQueue = []; // queued turn objects
   let _turnBusy = false; // true while waiting for min display
   let _lastTurnShown = 0; // timestamp of last rendered turn
+  let _lastRenderedPlayer = null; // for consecutive-label suppression
 
   socket.on("turn", (msg) => _enqueueTurn(msg));
 
@@ -304,21 +299,26 @@
   }
 
   function _renderTurn(t) {
-    const panel = t.player === 1 ? $p1Panel : $p2Panel;
     const div = document.createElement("div");
-    div.className = "spectator-turn";
+    div.className = `spectator-turn spectator-turn--p${t.player}`;
+    const showLabel = t.player !== _lastRenderedPlayer;
+    const playerLabel = t.player === 1
+      ? i18n.t("spectator.player1")
+      : i18n.t("spectator.player2");
     div.innerHTML = `
-      <div class="original">${escHtml(t.original)}</div>
-      <div class="misheard">${escHtml(t.misheard)}</div>
+      ${showLabel ? `<div class="turn-player">${escHtml(playerLabel)}</div>` : ""}
+      <div class="turn-bubble">
+        <div class="original">${escHtml(t.original)}</div>
+        <div class="misheard">${escHtml(t.misheard)}</div>
+      </div>
     `;
-    panel.appendChild(div);
-    // Scroll the parent .spectator-panel (which has overflow-y: auto)
-    const scrollable = panel.closest(".spectator-panel");
-    if (scrollable) scrollable.scrollTop = scrollable.scrollHeight;
+    _lastRenderedPlayer = t.player;
+    $feed.appendChild(div);
+    $feed.scrollTop = $feed.scrollHeight;
   }
 
   function clearPanels() {
-    $p1Panel.innerHTML = "";
-    $p2Panel.innerHTML = "";
+    $feed.innerHTML = "";
+    _lastRenderedPlayer = null;
   }
 })();
