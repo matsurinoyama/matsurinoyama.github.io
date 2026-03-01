@@ -25,9 +25,7 @@
           padding-bottom: 2.5rem;
         "
       >
-        > class="control-panel" style="min-width: 320px; max-width: 480px;
-        margin: auto" >
-        <h1>🎛 コントロールパネル</h1>
+        <h1 id="ctrl-title">🎛 コントロールパネル</h1>
 
         <button class="btn" id="btn-start">▶ ゲーム開始</button>
         <button class="btn" id="btn-reveal">
@@ -39,8 +37,8 @@
 
         <!-- ── Language toggle ───────────────────────────────────── -->
         <div style="margin-top: 1.5rem">
-          <p style="font-weight: 600; margin-bottom: 0.5rem">
-            🌐 言語 / Language
+          <p id="ctrl-lang-label" style="font-weight: 600; margin-bottom: 0.5rem">
+            🌐 言語
           </p>
           <button class="btn" id="btn-lang-ja" style="margin-right: 0.5rem">
             日本語
@@ -53,7 +51,7 @@
         </div>
 
         <div style="margin-top: 2rem; color: var(--fg-dim); font-size: 0.85rem">
-          <p><strong>スクリーンURL：</strong></p>
+          <p id="ctrl-urls-label"><strong>スクリーンURL：</strong></p>
           <p>
             Player 1:
             <a href="/player/1" target="_blank" style="color: var(--p1)"
@@ -79,13 +77,14 @@
               style="margin-right: 0.5rem"
             >
               <span style="font-size: 1.1em; vertical-align: middle">↺</span>
-              Player 1 マイクリセット
+              <span id="reset-mic-1-label">Player 1 マイクリセット</span>
             </button>
             <button class="btn" id="btn-reset-mic-2">
               <span style="font-size: 1.1em; vertical-align: middle">↺</span>
-              Player 2 マイクリセット
+              <span id="reset-mic-2-label">Player 2 マイクリセット</span>
             </button>
             <div
+              id="ctrl-reset-mic-hint"
               style="font-size: 0.8em; color: var(--fg-dim); margin-top: 0.3em"
             >
               ※ プレイヤーのマイク設定を初期化します
@@ -96,6 +95,7 @@
         <!-- Debug transcript panel -->
         <div class="debug-panel" style="margin-top: 2rem">
           <h2
+            id="ctrl-debug-title"
             style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent)"
           >
             🐛 デバッグ・トランスクリプト
@@ -114,7 +114,9 @@
               padding: 0.75rem;
             "
           >
-            <p style="color: var(--fg-dim)">発話を待っています…</p>
+            <p id="debug-placeholder" style="color: var(--fg-dim)">
+              発話を待っています…
+            </p>
           </div>
           <button
             class="btn"
@@ -143,6 +145,8 @@
       const $reset = document.getElementById("btn-reset");
       const $langJa = document.getElementById("btn-lang-ja");
       const $langEn = document.getElementById("btn-lang-en");
+      const $debugLog = document.getElementById("debug-log");
+      const $clearLog = document.getElementById("btn-clear-log");
 
       $start.addEventListener("click", () =>
         socket.send({ action: "start_game" }),
@@ -165,10 +169,42 @@
         $langEn.style.opacity = lang === "en" ? "1" : "0.5";
       }
       updateLangButtons("ja"); // default
+      refreshStaticText(); // sync initial text with i18n on load
+
+      function refreshStaticText() {
+        document.getElementById("ctrl-title").textContent =
+          i18n.t("control.title");
+        $start.textContent = i18n.t("control.start");
+        $reveal.textContent = i18n.t("control.reveal");
+        $reset.textContent = i18n.t("control.reset");
+        const langLabel = document.getElementById("ctrl-lang-label");
+        if (langLabel) langLabel.textContent = i18n.t("control.language");
+        $langJa.textContent = i18n.t("control.langJa");
+        $langEn.textContent = i18n.t("control.langEn");
+        const urlsLabel = document.getElementById("ctrl-urls-label");
+        if (urlsLabel)
+          urlsLabel.innerHTML =
+            "<strong>" + i18n.t("control.screenUrls") + "</strong>";
+        const mic1Label = document.getElementById("reset-mic-1-label");
+        if (mic1Label)
+          mic1Label.textContent = i18n.t("control.resetMic", { id: 1 });
+        const mic2Label = document.getElementById("reset-mic-2-label");
+        if (mic2Label)
+          mic2Label.textContent = i18n.t("control.resetMic", { id: 2 });
+        const micHint = document.getElementById("ctrl-reset-mic-hint");
+        if (micHint) micHint.textContent = i18n.t("control.resetMicHint");
+        document.getElementById("ctrl-debug-title").textContent =
+          i18n.t("control.debugTitle");
+        $clearLog.textContent = i18n.t("control.clearLog");
+        const placeholder = document.getElementById("debug-placeholder");
+        if (placeholder)
+          placeholder.textContent = i18n.t("control.waitingForSpeech");
+      }
 
       socket.on("language_change", (msg) => {
         i18n.setLang(msg.language);
         updateLangButtons(msg.language);
+        refreshStaticText();
       });
 
       socket.on("snapshot", (msg) => {
@@ -178,6 +214,7 @@
         if (msg.language) {
           i18n.setLang(msg.language);
           updateLangButtons(msg.language);
+          refreshStaticText();
         }
       });
       socket.on("phase", (msg) => {
@@ -190,24 +227,10 @@
       });
 
       // ── Debug transcript log ────────────────────────────────────
-      const $debugLog = document.getElementById("debug-log");
-      const $clearLog = document.getElementById("btn-clear-log");
-
-      function escHtml(s) {
-        const d = document.createElement("span");
-        d.textContent = s;
-        return d.innerHTML;
-      }
-
       socket.on("debug_turn", (msg) => {
-        // Remove placeholder if present
-        const placeholder = $debugLog.querySelector("p");
-        if (placeholder && placeholder.textContent.includes("待って")) {
-          placeholder.remove();
-        }
-        if (placeholder && placeholder.textContent.includes("Waiting")) {
-          placeholder.remove();
-        }
+        // Remove placeholder if present (identified by ID, not text content)
+        const placeholder = document.getElementById("debug-placeholder");
+        if (placeholder) placeholder.remove();
 
         const pColor = msg.player === 1 ? "var(--p1)" : "var(--p2)";
         const entry = document.createElement("div");
@@ -230,8 +253,9 @@
       });
 
       $clearLog.addEventListener("click", () => {
-        $debugLog.innerHTML =
-          '<p style="color: var(--fg-dim);">発話を待っています…</p>';
+        $debugLog.innerHTML = `<p id="debug-placeholder" style="color: var(--fg-dim);">${i18n.t(
+          "control.waitingForSpeech",
+        )}</p>`;
       });
     </script>
   </body>

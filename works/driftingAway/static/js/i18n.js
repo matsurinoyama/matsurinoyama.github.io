@@ -3,7 +3,7 @@
  * Default language: Japanese (ja). English (en) available via 'A' key.
  *
  * Usage:
- *   i18n.t("idle.title")          → current-language string
+ *   i18n.t("title")               → current-language string
  *   i18n.setLang("en")            → switch to English
  *   i18n.lang                     → current language code
  */
@@ -11,14 +11,10 @@
 const i18n = (() => {
   const strings = {
     ja: {
-      // ── Titles ──────────────────────────────────────────────────
-      title: "離れていく",
-      "title.player": "離れていく",
-      "title.spectator": "離れていく",
-      "title.control": "離れていく — コントロールパネル",
+      // ── Shared ──────────────────────────────────────────────────
+      "title": "離れていく",
 
       // ── Player: Idle ────────────────────────────────────────────
-      "idle.title": "離れていく",
       "idle.putOnEarmuffs": "イヤーマフをつけてください",
       "idle.pressButton": "準備ができたらボタンを押してください",
 
@@ -38,7 +34,6 @@ const i18n = (() => {
 
       // ── Player: Conversation ────────────────────────────────────
       "ptt.label": " を長押しで話す",
-      "ptt.holdDot": "●",
       "topic.label": "相手への質問",
 
       // ── Player: Reveal ──────────────────────────────────────────
@@ -62,7 +57,10 @@ const i18n = (() => {
         "この設定はこのブラウザに保存されます。変更するには/player/{id}を再度開いてください。",
 
       // ── Spectator ───────────────────────────────────────────────
-      "spectator.title": "離れていく",
+      "spectator.revealLabel": "会話終了",
+      "spectator.revealBody":
+        "会話が終了しました。<br>これから二人で話題について<br>直接話し合ってください。",
+      "spectator.revealSub": "15秒後に履歴と元の話題が表示されます",
       "spectator.subtitle":
         "ミスコミュニケーションについての体験型インスタレーション",
       "spectator.description":
@@ -82,8 +80,9 @@ const i18n = (() => {
       "control.start": "▶ ゲーム開始",
       "control.reveal": "⏭ 強制リビール（タイマースキップ）",
       "control.reset": "↺ ラウンドリセット",
-      "control.status": "フェーズ: idle ｜ クライアント: 0",
       "control.screenUrls": "スクリーンURL：",
+      "control.resetMic": "Player {id} マイクリセット",
+      "control.resetMicHint": "※ プレイヤーのマイク設定を初期化します",
       "control.debugTitle": "🐛 デバッグ・トランスクリプト",
       "control.waitingForSpeech": "発話を待っています…",
       "control.clearLog": "ログをクリア",
@@ -93,14 +92,10 @@ const i18n = (() => {
     },
 
     en: {
-      // ── Titles ──────────────────────────────────────────────────
-      title: "Drifting Away",
-      "title.player": "Drifting Away",
-      "title.spectator": "Drifting Away",
-      "title.control": "Drifting Away — Control Panel",
+      // ── Shared ──────────────────────────────────────────────────
+      "title": "Drifting Away",
 
       // ── Player: Idle ────────────────────────────────────────────
-      "idle.title": "Drifting Away",
       "idle.putOnEarmuffs": "Put on your earmuffs",
       "idle.pressButton": "Press any button when you are ready",
 
@@ -120,7 +115,6 @@ const i18n = (() => {
 
       // ── Player: Conversation ────────────────────────────────────
       "ptt.label": " Hold to talk",
-      "ptt.holdDot": "●",
       "topic.label": "Original Topic",
 
       // ── Player: Reveal ──────────────────────────────────────────
@@ -144,7 +138,11 @@ const i18n = (() => {
         "This choice is saved for this browser. Reopen /player/{id} to change it.",
 
       // ── Spectator ───────────────────────────────────────────────
-      "spectator.title": "Drifting Away",
+      "spectator.revealLabel": "Conversation Over",
+      "spectator.revealBody":
+        "The conversation has ended.<br>Please discuss about the conversation together directly.",
+      "spectator.revealSub":
+        "Chat history and original topic will appear in 15 seconds",
       "spectator.subtitle":
         "An interactive installation about miscommunication",
       "spectator.description":
@@ -164,8 +162,9 @@ const i18n = (() => {
       "control.start": "▶ Start Game",
       "control.reveal": "⏭ Force Reveal (skip timer)",
       "control.reset": "↺ Reset Round",
-      "control.status": "Phase: idle  |  Clients: 0",
       "control.screenUrls": "Screen URLs:",
+      "control.resetMic": "Reset Player {id} Mic",
+      "control.resetMicHint": "Resets the player's mic settings",
       "control.debugTitle": "🐛 Debug Transcripts",
       "control.waitingForSpeech": "Waiting for speech…",
       "control.clearLog": "Clear log",

@@ -111,11 +111,12 @@ class AudioCapture {
   }
 
   startCapture() {
-    if (!this._initialized) return;
+    if (!this._initialized || this.isCapturing) return;
     this.isCapturing = true;
     this._buffer = [];
 
     // Send a chunk every 10 seconds while PTT is held
+    if (this._sendInterval) clearInterval(this._sendInterval);
     this._sendInterval = setInterval(() => this._flush(), 10000);
   }
 

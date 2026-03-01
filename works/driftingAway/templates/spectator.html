@@ -31,15 +31,17 @@
 
     <!-- ── Topic splash (shown for 5s at conversation start) ─────── -->
     <div id="topic-splash" class="topic-splash" hidden>
-      <div class="topic-splash-label">元の話題</div>
+      <div class="topic-splash-label" id="topic-splash-label">元の話題</div>
       <div class="topic-splash-text" id="topic-splash-text"></div>
     </div>
 
     <!-- ── Reveal splash (shown for 15s after timer ends) ─────── -->
     <div id="reveal-splash" class="topic-splash" hidden>
-      <div class="topic-splash-label">会話終了</div>
+      <div class="topic-splash-label" id="reveal-splash-label">会話終了</div>
       <div class="topic-splash-text" id="reveal-splash-text" style="font-size: clamp(1.5rem, 4.5vw, 3.75rem)">
-        会話が終了しました。<br />これから二人で話題について直接話し合ってください。<br /><span
+        <span id="reveal-splash-body">会話が終了しました。<br />これから二人で話題について直接話し合ってください。</span><br />
+        <span
+          id="reveal-splash-sub"
           style="color: var(--fg-dim); font-size: 1.1rem; font-family: var(--font)"
           >15秒後に履歴と元の話題が表示されます</span
         >

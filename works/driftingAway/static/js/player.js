@@ -68,7 +68,6 @@
   }
   let _lastMessageShown = 0;
   let _currentDisplayMs = MIN_DISPLAY_MS;
-  let _pendingMessage = null;
   let _pendingTimer = null;
 
   // ══════════════════════════════════════════════════════════════════
@@ -100,6 +99,8 @@
   }
 
   async function renderMicList() {
+    $micList.innerHTML =
+      '<p class="mic-loading">' + i18n.t("mic.requesting") + "</p>";
     const devices = await AudioCapture.getAudioDevices();
 
     if (devices.length === 0) {
@@ -221,20 +222,14 @@
   socket.on("phase", (msg) => applyState(msg));
 
   // ── Language change ─────────────────────────────────────────────
-  socket.on("language_change", (msg) => {
-    i18n.setLang(msg.language);
-    document.documentElement.lang = msg.language;
-    document.title = i18n.t("title.player") + " — " + PLAYER_ID;
+  function applyLanguage(lang) {
+    i18n.setLang(lang);
+    document.documentElement.lang = lang;
+    document.title = i18n.t("title") + " — Player " + PLAYER_ID;
     refreshStaticText();
-  });
-  socket.on("snapshot", (msg) => {
-    if (msg.language) {
-      i18n.setLang(msg.language);
-      document.documentElement.lang = msg.language;
-      document.title = i18n.t("title.player") + " — " + PLAYER_ID;
-      refreshStaticText();
-    }
-  });
+  }
+
+  socket.on("language_change", (msg) => applyLanguage(msg.language));
 
   /** Update all static text elements with current i18n strings */
   function refreshStaticText() {
@@ -243,7 +238,7 @@
       '[data-phase="idle"] .idle-screen',
     );
     if (idleScreen) {
-      idleScreen.querySelector("h1").textContent = i18n.t("idle.title");
+      idleScreen.querySelector("h1").textContent = i18n.t("title");
       idleScreen.querySelectorAll("p")[0].textContent =
         i18n.t("idle.putOnEarmuffs");
       const instrP = idleScreen.querySelector(".idle-instruction");
@@ -260,6 +255,9 @@
         p.innerHTML =
           i18n.t("reset.preparing") + '<span class="waiting-dots"></span>';
     }
+    // Waiting screen
+    const waitH1 = document.querySelector('[data-phase="waiting"] h1');
+    if (waitH1) waitH1.textContent = i18n.t("waiting.title");
     // Reveal
     const revealH2 = document.querySelector('[data-phase="reveal"] h2');
     if (revealH2) revealH2.textContent = i18n.t("reveal.title");
@@ -289,6 +287,7 @@
   }
 
   function applyState(msg) {
+    if (msg.language) applyLanguage(msg.language);
     const phase = msg.phase;
     showPhase(phase);
 
@@ -342,7 +341,7 @@
     if (phase === "reveal") {
       $timer.classList.remove("visible");
       whiteNoise.stop();
-      renderReveal(msg);
+      renderReveal();
     }
 
     if (phase === "reset") {
@@ -406,7 +405,7 @@
       el.className = "idle-screen";
       el.innerHTML =
         "<h1>" +
-        i18n.t("idle.title") +
+        i18n.t("title") +
         "</h1><p>" +
         i18n.t("prompt.otherChoosing") +
         '<span class="waiting-dots"></span></p>';
@@ -464,10 +463,8 @@
     // replacing it with the new one.
     if (_lastMessageShown > 0 && elapsed < _currentDisplayMs) {
       if (_pendingTimer) clearTimeout(_pendingTimer);
-      _pendingMessage = renderFn;
       _pendingTimer = setTimeout(() => {
         _pendingTimer = null;
-        _pendingMessage = null;
         renderFn();
         _lastMessageShown = Date.now();
         _currentDisplayMs = newDisplayMs;
@@ -485,17 +482,6 @@
       $messages.innerHTML = "";
       const div = document.createElement("div");
       div.className = `message ${isOwn ? "message--own" : "message--other"}`;
-      div.textContent = text;
-      $messages.appendChild(div);
-      fitText(div, $messages);
-    }, text);
-  }
-
-  function addSystemMessage(text) {
-    _enqueue(() => {
-      $messages.innerHTML = "";
-      const div = document.createElement("div");
-      div.className = "message message--system";
       div.textContent = text;
       $messages.appendChild(div);
       fitText(div, $messages);
@@ -523,14 +509,13 @@
   function clearMessages() {
     if (_pendingTimer) clearTimeout(_pendingTimer);
     _pendingTimer = null;
-    _pendingMessage = null;
     _lastMessageShown = 0;
     _currentDisplayMs = MIN_DISPLAY_MS;
     $messages.innerHTML = "";
   }
 
   // ── Reveal rendering ──────────────────────────────────────────────
-  function renderReveal(msg) {
+  function renderReveal() {
     $revealBody.innerHTML = `<p class="subtitle">${i18n.t(
       "reveal.subtitle",
     )}</p>`;
@@ -581,7 +566,7 @@
         micReady
       ) {
         pttActive = true;
-        $pttDot.classList.add("active");
+        if ($pttDot) $pttDot.classList.add("active");
         audio.startCapture();
         // Watchdog: auto-release if keyup never arrives (15s max)
         if (_pttWatchdog) clearTimeout(_pttWatchdog);

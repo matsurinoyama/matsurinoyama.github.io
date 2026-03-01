@@ -39,6 +39,8 @@ class DriftSocket {
     DriftSocket._keyRelaySocket = this;
 
     document.addEventListener("keydown", (e) => {
+      if (e.repeat) return; // key-repeat events cause stale in-flight messages
+
       // 'A' key → toggle language to English (one-shot)
       if (e.code === "KeyA") {
         e.preventDefault();
@@ -138,16 +140,6 @@ function showPhase(phaseId) {
   });
 }
 
-// ── Key mapping helper ────────────────────────────────────────────────
-function mapKey(code, playerId) {
-  const keys = playerId ? PLAYER_KEYS[playerId] : null;
-  if (!keys) return null;
-  if (keys.prev.includes(code)) return "prev";
-  if (keys.select.includes(code)) return "select";
-  if (keys.next.includes(code)) return "next";
-  return null;
-}
-
 // ── Universal key mapping (any key → {player, action}) ───────────────
 function mapKeyUniversal(code) {
   for (const pid of [1, 2]) {
@@ -157,4 +149,11 @@ function mapKeyUniversal(code) {
     if (keys.next.includes(code)) return { player: pid, action: "next" };
   }
   return null;
+}
+
+// ── HTML escaping utility ─────────────────────────────────────────────
+function escHtml(s) {
+  const d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
 }

@@ -29,7 +29,7 @@
     <!-- ── WAITING ─────────────────────────────────────────────────── -->
     <div class="screen screen--player" data-phase="waiting" hidden>
       <div class="idle-screen">
-        <h1>準備完了！</h1>
+        <h1>準備中</h1>
         <p id="waiting-text">
           もう一人のプレイヤーを待っています<span class="waiting-dots"></span>
         </p>
@@ -92,10 +92,10 @@
       </div>
     </div>
 
-    <!-- ── Prompt chooser splash (shown for 3s to the starting player) ── -->
+    <!-- ── Prompt chooser splash (shown for 5s to the starting player) ── -->
     <div id="player-prompt-splash" class="topic-splash" hidden>
       <div class="topic-splash-label" id="prompt-splash-label">話題選択</div>
-      <div class="topic-splash-text" id="prompt-splash-text">
+      <div class="topic-splash-text" id="prompt-splash-text" style="font-size: clamp(1.5rem, 4.5vw, 3.75rem)">
         ボタンを使って、相手に聞きたい質問を選んでください
       </div>
     </div>

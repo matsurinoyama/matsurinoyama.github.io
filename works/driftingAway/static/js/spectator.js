@@ -18,6 +18,7 @@
   const $topicBarText = document.getElementById("spectator-topic-bar-text");
   const $idle = document.getElementById("spectator-idle");
   const $idleStatus = document.getElementById("spectator-idle-status");
+  const $revealSplash = document.getElementById("reveal-splash");
 
   let _splashTimer = null;
   let _revealTimer = null;
@@ -29,26 +30,13 @@
   socket.on("phase", applyState);
 
   // ── Language change ─────────────────────────────────────────────
-  socket.on("language_change", (msg) => {
-    i18n.setLang(msg.language);
-    document.documentElement.lang = msg.language;
-    document.title = i18n.t("title.spectator") + " — Spectator";
-    refreshStaticText();
-  });
-  socket.on("snapshot", (msg) => {
-    if (msg.language) {
-      i18n.setLang(msg.language);
-      document.documentElement.lang = msg.language;
-      document.title = i18n.t("title.spectator") + " — Spectator";
-      refreshStaticText();
-    }
-  });
+  socket.on("language_change", (msg) => applyLanguage(msg.language));
 
   /** Update all static text elements with current i18n strings */
   function refreshStaticText() {
     // Idle screen
     const h1 = document.querySelector(".spectator-idle h1");
-    if (h1) h1.textContent = i18n.t("spectator.title");
+    if (h1) h1.textContent = i18n.t("title");
     const sub = document.querySelector(".spectator-idle-sub");
     if (sub) sub.textContent = i18n.t("spectator.subtitle");
     const desc = document.querySelector(".spectator-idle-desc");
@@ -58,15 +46,45 @@
     if (p1H) p1H.textContent = i18n.t("spectator.player1");
     const p2H = document.querySelector(".spectator-panel--p2 h3");
     if (p2H) p2H.textContent = i18n.t("spectator.player2");
-    // Topic labels
-    const splashLabel = document.querySelector(".topic-splash-label");
-    if (splashLabel)
-      splashLabel.textContent = i18n.t("spectator.originalTopic");
+    // Topic splash label (ID-targeted to avoid matching reveal splash)
+    const topicSplashLabel = document.getElementById("topic-splash-label");
+    if (topicSplashLabel)
+      topicSplashLabel.textContent = i18n.t("spectator.originalTopic");
     const barLabel = document.querySelector(".spectator-topic-bar-label");
     if (barLabel) barLabel.textContent = i18n.t("spectator.originalTopic");
+    // Reveal splash
+    const revealLabel = document.getElementById("reveal-splash-label");
+    if (revealLabel) revealLabel.textContent = i18n.t("spectator.revealLabel");
+    const revealBody = document.getElementById("reveal-splash-body");
+    if (revealBody) revealBody.innerHTML = i18n.t("spectator.revealBody");
+    const revealSub = document.getElementById("reveal-splash-sub");
+    if (revealSub) revealSub.textContent = i18n.t("spectator.revealSub");
+  }
+
+  function applyLanguage(lang) {
+    i18n.setLang(lang);
+    document.documentElement.lang = lang;
+    document.title = i18n.t("title") + " — Spectator";
+    refreshStaticText();
+  }
+
+  function _showIdlePanel() {
+    hideSplash();
+    hideTopicBar();
+    $spectatorMain.hidden = true;
+    $idle.hidden = false;
+    clearPanels();
+  }
+
+  function _resetRound() {
+    $timer.classList.remove("warning", "danger");
+    $timer.textContent = "3:00";
+    _showIdlePanel();
+    _currentTopic = null;
   }
 
   function applyState(msg) {
+    if (msg.language) applyLanguage(msg.language);
     const phase = msg.phase;
 
     // During the reveal sequence (splash + history display), ignore any phase
@@ -90,41 +108,20 @@
     }
 
     if (phase === "idle") {
-      $timer.classList.remove("warning", "danger");
-      $timer.textContent = "3:00";
-      hideSplash();
-      hideTopicBar();
-      $spectatorMain.hidden = true;
-      $idle.hidden = false;
-      clearPanels();
-      _currentTopic = null;
+      _resetRound();
       $idleStatus.innerHTML =
         i18n.t("spectator.waitingForPlayers") +
         '<span class="waiting-dots"></span>';
     }
 
     if (phase === "reset") {
-      $timer.classList.remove("warning", "danger");
-      $timer.textContent = "3:00";
-      hideSplash();
-      hideTopicBar();
-      $spectatorMain.hidden = true;
-      $idle.hidden = false;
-      clearPanels();
-      _currentTopic = null;
+      _resetRound();
       $idleStatus.innerHTML =
         i18n.t("spectator.nextRound") + '<span class="waiting-dots"></span>';
     }
 
     if (phase === "waiting") {
-      $timer.classList.remove("warning", "danger");
-      $timer.textContent = "3:00";
-      hideSplash();
-      hideTopicBar();
-      $spectatorMain.hidden = true;
-      $idle.hidden = false;
-      clearPanels();
-      _currentTopic = null;
+      _resetRound();
       const ready = msg.playersReady || [];
       if (ready.length === 0) {
         $idleStatus.innerHTML =
@@ -143,11 +140,7 @@
     }
 
     if (phase === "prompt_select") {
-      hideSplash();
-      hideTopicBar();
-      $spectatorMain.hidden = true;
-      $idle.hidden = false;
-      clearPanels();
+      _showIdlePanel();
       const starter = msg.startingPlayer || 0;
       $idleStatus.innerHTML =
         i18n.t("spectator.deciding", { n: starter }) +
@@ -203,15 +196,12 @@
         // After 1 minute, return to idle
         _revealIdleTimer = setTimeout(() => {
           _revealIdleTimer = null;
-          $spectatorMain.hidden = true;
-          hideTopicBar();
-          $idle.hidden = false;
-          clearPanels();
+          _showIdlePanel();
           _currentTopic = null;
           $idleStatus.innerHTML =
             i18n.t("spectator.waitingForPlayers") +
             '<span class="waiting-dots"></span>';
-        }, 60000);
+        }, 300000);
       }, 15000);
     }
   }
@@ -239,12 +229,12 @@
 
   // ── Reveal splash ─────────────────────────────────────────────────
   function showRevealSplash() {
-    document.getElementById("reveal-splash").hidden = false;
+    $revealSplash.hidden = false;
     $spectatorMain.hidden = true;
   }
 
   function hideRevealSplash() {
-    document.getElementById("reveal-splash").hidden = true;
+    $revealSplash.hidden = true;
   }
 
   // ── Topic bar (persistent bottom strip) ───────────────────────────
@@ -330,11 +320,5 @@
   function clearPanels() {
     $p1Panel.innerHTML = "";
     $p2Panel.innerHTML = "";
-  }
-
-  function escHtml(s) {
-    const d = document.createElement("div");
-    d.textContent = s;
-    return d.innerHTML;
   }
 })();
