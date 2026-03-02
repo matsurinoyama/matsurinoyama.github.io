@@ -23,6 +23,9 @@
   let _revealTimer = null;
   let _revealIdleTimer = null;
   let _currentTopic = null;
+  let _autoscrollInterval = null;
+  let _autoscrollPauseTimeout = null;
+  let _autoscrollDir = 1; // 1 = down, -1 = up
 
   // ── Phase handling ────────────────────────────────────────────────
   socket.on("snapshot", applyState);
@@ -186,6 +189,7 @@
         if (revealTurns && revealTurns.length > 0) {
           clearPanels();
           revealTurns.forEach((t) => addTurn(t));
+          startAutoscroll();
         }
         // After 1 minute, return to idle
         _revealIdleTimer = setTimeout(() => {
@@ -318,7 +322,51 @@
   }
 
   function clearPanels() {
+    stopAutoscroll();
     $feed.innerHTML = "";
     _lastRenderedPlayer = null;
+  }
+
+  // ── Autoscroll (used during 5-minute reveal window) ───────────────
+  const AUTOSCROLL_PX_PER_TICK = 1;
+  const AUTOSCROLL_TICK_MS = 20;   // 50 px/s
+  const AUTOSCROLL_PAUSE_MS = 3000; // pause at each end
+
+  function startAutoscroll() {
+    stopAutoscroll();
+    _autoscrollDir = 1;
+    $feed.scrollTop = 0;
+    _autoscrollInterval = setInterval(_autoscrollTick, AUTOSCROLL_TICK_MS);
+  }
+
+  function stopAutoscroll() {
+    if (_autoscrollPauseTimeout) {
+      clearTimeout(_autoscrollPauseTimeout);
+      _autoscrollPauseTimeout = null;
+    }
+    if (_autoscrollInterval) {
+      clearInterval(_autoscrollInterval);
+      _autoscrollInterval = null;
+    }
+  }
+
+  function _autoscrollTick() {
+    const maxScroll = $feed.scrollHeight - $feed.clientHeight;
+    if (maxScroll <= 0) return;
+
+    $feed.scrollTop += _autoscrollDir * AUTOSCROLL_PX_PER_TICK;
+
+    const atBottom = _autoscrollDir === 1 && $feed.scrollTop >= maxScroll;
+    const atTop = _autoscrollDir === -1 && $feed.scrollTop <= 0;
+
+    if (atBottom || atTop) {
+      clearInterval(_autoscrollInterval);
+      _autoscrollInterval = null;
+      _autoscrollPauseTimeout = setTimeout(() => {
+        _autoscrollPauseTimeout = null;
+        _autoscrollDir *= -1;
+        _autoscrollInterval = setInterval(_autoscrollTick, AUTOSCROLL_TICK_MS);
+      }, AUTOSCROLL_PAUSE_MS);
+    }
   }
 })();
