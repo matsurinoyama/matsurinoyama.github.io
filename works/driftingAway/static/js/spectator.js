@@ -329,7 +329,7 @@
 
   // ── Autoscroll (used during 5-minute reveal window) ───────────────
   const AUTOSCROLL_PX_PER_TICK = 1;
-  const AUTOSCROLL_TICK_MS = 20;   // 50 px/s
+  const AUTOSCROLL_TICK_MS = 27;   // ~37 px/s
   const AUTOSCROLL_PAUSE_MS = 3000; // pause at each end
 
   function startAutoscroll() {
