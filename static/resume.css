@@ -1,0 +1,270 @@
+/* Resume-specific styles — builds on top of main.css */
+
+body {
+  align-items: flex-start;
+  padding: 5vh 0;
+}
+
+.resume-wrap {
+  margin: 0 auto;
+  padding: 0 5vw;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Back nav */
+.back-nav {
+  display: block;
+  margin-bottom: 4vh;
+  color: var(--mYELLOW);
+  font-weight: 400;
+  font-size: 14px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+}
+
+/* Header */
+.resume-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 2vh 4vw;
+  margin-bottom: 3vh;
+}
+
+.resume-name {
+  color: var(--mYELLOW);
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 1;
+  font-family: "IBM Plex Sans JP", sans-serif;
+  writing-mode: horizontal-tb;
+}
+
+.resume-address {
+  margin-top: 1vh;
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.7;
+  font-family: "IBM Plex Sans JP", sans-serif;
+}
+
+.resume-logo {
+  display: block;
+  margin-bottom: 1vh;
+  margin-left: auto;
+  width: auto;
+  height: 15vh;
+}
+
+.resume-contact {
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.7;
+  font-family: "IBM Plex Sans JP", sans-serif;
+  text-align: right;
+}
+
+.resume-contact a {
+  color: white;
+  font-size: 14px;
+}
+
+.resume-contact a:hover {
+  color: var(--mGREEN);
+}
+
+.entry a {
+  color: inherit;
+}
+
+.entry a:hover {
+  color: var(--mGREEN);
+}
+
+/* Dividers */
+hr.divider {
+  margin: 3vh 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Section title */
+.section-title {
+  margin-bottom: 2.5vh;
+  color: var(--mYELLOW);
+  font-weight: 700;
+  font-size: 28px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+  writing-mode: horizontal-tb;
+}
+
+/* Entry block */
+.entry {
+  margin-bottom: 3vh;
+}
+
+.entry:not(:has(ul)) {
+  margin-bottom: 1.5vh;
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.entry-company {
+  color: var(--mYELLOW);
+  font-weight: 700;
+  font-size: 16px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+}
+
+.entry-date {
+  flex-shrink: 0;
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+  white-space: nowrap;
+}
+
+.entry-location {
+  margin: 2px 0 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  font-size: 13px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+}
+
+.entry-role {
+  margin-bottom: 6px;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+}
+
+.entry ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 1.4em;
+}
+
+.entry ul li {
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: "IBM Plex Sans JP", sans-serif;
+  text-align: justify;
+}
+
+/* Education cert entries (no role, just degree + institution) */
+.entry-degree {
+  color: var(--mYELLOW);
+  font-weight: 700;
+  font-size: 16px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+}
+
+.entry-institution {
+  margin-top: 2px;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+}
+
+.entry-result {
+  margin-top: 2px;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+}
+
+/* Subsection label (within a section, e.g. "Group Exhibitions" under "Exhibitions & Achievements") */
+.subsection-label {
+  margin-top: 3vh;
+  margin-bottom: 1vh;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 700;
+  font-size: 13px;
+  font-family: "IBM Plex Sans JP", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Profile picture */
+.resume-picture-wrap {
+  position: relative;
+  margin-top: 1.5vh;
+  width: 100%;
+}
+
+.resume-picture-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-image: url("gradient_128-B.svg");
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  width: 100%;
+  height: calc(45vh * 0.25);
+  pointer-events: none;
+}
+
+.resume-picture {
+  display: block;
+  width: 100%;
+  height: 45vh;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.resume-picture:not([src]),
+.resume-picture[src=""] {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Paragraph spacing inside overview */
+.resume-overview div + div {
+  margin-top: 0.5em;
+}
+
+/* Overview text below picture */
+.resume-overview {
+  margin-top: 2vh;
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.7;
+  font-family: "IBM Plex Sans JP", sans-serif;
+  text-align: justify;
+}
+
+/* Bottom padding so last section doesn't clip */
+.resume-wrap {
+  padding-bottom: 5vh;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .resume-name {
+    font-size: 48px;
+  }
+
+  .entry-header {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .entry-date {
+    font-size: 13px;
+  }
+}
