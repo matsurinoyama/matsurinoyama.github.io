@@ -20,27 +20,33 @@
     <div class="resume-wrap">
       <a class="back-nav" href="../">← Back</a>
 
-      <!-- Header -->
-      <div class="resume-header">
-        <div>
-          <div class="resume-name">(A) RIZAN</div>
+      <!-- Hero: picture and header share the same top; back nav sits above -->
+      <div class="resume-hero">
+        <div class="resume-picture-wrap">
+          <img
+            src="../../static/profile.jpg"
+            alt="profile picture"
+            class="resume-picture"
+          />
+          <div class="resume-picture-gradient" aria-hidden="true"></div>
         </div>
-        <div class="resume-contact">
-          <img src="../../static/temp-h.svg" alt="logo" class="resume-logo" />
+        <div class="resume-hero-content">
+          <div class="resume-header">
+            <div>
+              <div class="resume-name">(A) RIZAN</div>
+            </div>
+            <div class="resume-contact">
+              <img
+                src="../../static/temp-h.svg"
+                alt="logo"
+                class="resume-logo"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Profile picture: replace src with your image path -->
-      <div class="resume-picture-wrap">
-        <img
-          src="../../static/profile.jpg"
-          alt="profile picture"
-          class="resume-picture"
-        />
-        <div class="resume-picture-gradient" aria-hidden="true"></div>
-      </div>
-
-      <!-- Overview text: replace with your bio/summary -->
+      <!-- Overview text -->
       <div class="resume-overview">
         <div>
           He is a media artist whose work explores forms of art that emerge
@@ -60,7 +66,7 @@
           He previously studied at Universiti Teknologi MARA, College of
           Computing, Informatics and Mathematics, and is currently majoring in
           Image Creation at the Faculty of Media Creation, Kyoto Seika
-          University, under Prof. Scott Allen’s Latent Media Lab.
+          University, under Prof. Scott Allen's Latent Media Lab.
         </div>
       </div>
 
@@ -72,8 +78,8 @@
       <div class="subsection-label">Group Exhibitions</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">1st SEIKA UMU Exhibition</span>
+        <div class="entry-row">
+          <span class="entry-title">1st SEIKA UMU Exhibition</span>
           <span class="entry-date">2025.01.22 – 01.30</span>
         </div>
         <div class="entry-location">
@@ -82,8 +88,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://www.instagram.com/p/DKXISNlhvh9"
               >UNVEILED</a
             ></span
@@ -96,8 +102,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://www.kyoto-seika.ac.jp/news/2025/pr0929_1.html"
               >"Future of Eiden" Art Project</a
             ></span
@@ -110,8 +116,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://gallery.kyoto-seika.ac.jp/exhibition/260227/"
               >Water Cooler Conversations @Sakyo-ku</a
             ></span
@@ -126,27 +132,27 @@
       <div class="subsection-label">Awards</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://www.instagram.com/p/DJEKOB-ppFj"
               >ASEAN-China Design Convergence 2025</a
             ></span
           >
           <span class="entry-date">2025.04</span>
         </div>
-        <div class="entry-result">Top 100 Selected Works</div>
+        <div class="entry-detail">Top 100 Selected Works</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://www.kyoto-seika.ac.jp/news/2026/0306_3.html"
               >2025 Kyoto Seika University President's Award</a
             ></span
           >
           <span class="entry-date">2026.03</span>
         </div>
-        <div class="entry-result">
+        <div class="entry-detail">
           President's Special Prize (Jointly awarded under the "Future of Eiden"
           Art Project)
         </div>
@@ -155,8 +161,8 @@
       <div class="subsection-label">Scholarships</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             >Nitori International Scholarship Foundation</span
           >
           <span class="entry-date">2025.10 – PRESENT</span>
@@ -168,29 +174,29 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://maps.app.goo.gl/jMD9gFz99J3qB3d27"
               >Warna-Warni Shah Alam</a
             ></span
           >
           <span class="entry-date">2022.01</span>
         </div>
+        <div class="entry-detail">Painted Flyover Mural Installation</div>
         <div class="entry-location">
           In front of Shah Alam City Hall, Shah Alam
         </div>
-        <div class="entry-result">Painted Flyover Mural Installation</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">Mamorigami no Me (Guardian Eye)</span>
+        <div class="entry-row">
+          <span class="entry-title">Mamorigami no Me (Guardian Eye)</span>
           <span class="entry-date">2025.01</span>
         </div>
-        <div class="entry-location">Kyoto Seika University, Kyoto</div>
-        <div class="entry-result">
+        <div class="entry-detail">
           Anti-voyeurism Public Awareness Poster Installation
         </div>
+        <div class="entry-location">Kyoto Seika University, Kyoto</div>
       </div>
 
       <hr class="divider" />
@@ -199,8 +205,8 @@
       <div class="section-title">Work Experience</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Qualia Design Office Inc.</span>
+        <div class="entry-row">
+          <span class="entry-title">Qualia Design Office Inc.</span>
           <span class="entry-date">2024.07 – PRESENT</span>
         </div>
         <div class="entry-location">Sakyo-ku, Kyoto</div>
@@ -212,8 +218,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Dipapansembilan Studio</span>
+        <div class="entry-row">
+          <span class="entry-title">Dipapansembilan Studio</span>
           <span class="entry-date">2020.10 – 2024.03</span>
         </div>
         <div class="entry-location">Shah Alam, Selangor</div>
@@ -247,8 +253,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Anima Vitae Point Sdn. Bhd.</span>
+        <div class="entry-row">
+          <span class="entry-title">Anima Vitae Point Sdn. Bhd.</span>
           <span class="entry-date">2021.05 – 2021.07</span>
         </div>
         <div class="entry-location">Petaling Jaya, Selangor</div>
@@ -266,8 +272,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Blindspot Studios Sdn. Bhd.</span>
+        <div class="entry-row">
+          <span class="entry-title">Blindspot Studios Sdn. Bhd.</span>
           <span class="entry-date">2019.03 – 2019.07</span>
         </div>
         <div class="entry-location">Shah Alam, Selangor</div>
@@ -285,8 +291,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Gancho Studios Sdn. Bhd.</span>
+        <div class="entry-row">
+          <span class="entry-title">Gancho Studios Sdn. Bhd.</span>
           <span class="entry-date">2017.08 – 2017.10</span>
         </div>
         <div class="entry-location">Shah Alam, Selangor</div>
@@ -311,67 +317,67 @@
       <div class="subsection-label">Diplomas</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">Bachelor of Media Creation</span>
+        <div class="entry-row">
+          <span class="entry-title">Bachelor of Media Creation</span>
           <span class="entry-date">2024.04 – 2028.03</span>
         </div>
-        <div class="entry-institution">Kyoto Seika University</div>
+        <div class="entry-subtitle">Kyoto Seika University</div>
         <div class="entry-location">Sakyo-ku, Kyoto</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             >Malaysian Skills Dip., 3D Animation Production Operation</span
           >
           <span class="entry-date">2018.04 – 2019.07</span>
         </div>
-        <div class="entry-institution">KRU Academy</div>
+        <div class="entry-subtitle">KRU Academy</div>
         <div class="entry-location">Bukit Jalil, Kuala Lumpur</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             >Malaysian Skills Cert., 3D Production Supporting Operation</span
           >
           <span class="entry-date">2017.01 – 2017.10</span>
         </div>
-        <div class="entry-institution">GIATMARA Kota Raja</div>
+        <div class="entry-subtitle">GIATMARA Kota Raja</div>
         <div class="entry-location">Shah Alam, Selangor</div>
       </div>
 
       <div class="subsection-label">Qualifications</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             >Malaysia Board of Technologists Registered Qualified
             Technician</span
           >
           <span class="entry-date">2024.04</span>
         </div>
-        <div class="entry-result">
+        <div class="entry-detail">
           Art Design &amp; Creative Multimedia Technology (AM)
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             >Japanese-Language Proficiency Test N2</span
           >
           <span class="entry-date">2023.07</span>
         </div>
-        <div class="entry-result">PASS</div>
+        <div class="entry-detail">PASS</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">Malaysian University English Test</span>
+        <div class="entry-row">
+          <span class="entry-title">Malaysian University English Test</span>
           <span class="entry-date">2023.09 – 2028.09</span>
         </div>
-        <div class="entry-result">BAND 4.5</div>
+        <div class="entry-detail">BAND 4.5</div>
       </div>
     </div>
     <script src="../../static/transitions.js"></script>

@@ -20,27 +20,33 @@
     <div class="resume-wrap">
       <a class="back-nav" href="../">← 戻る</a>
 
-      <!-- ヘッダー -->
-      <div class="resume-header">
-        <div>
-          <div class="resume-name">莉山 (A)</div>
+      <!-- ヒーロー：写真とヘッダーが同じ天端に揃う。back-navは上に通常フローで配置 -->
+      <div class="resume-hero">
+        <div class="resume-picture-wrap">
+          <img
+            src="../../static/profile.jpg"
+            alt="プロフィール写真"
+            class="resume-picture"
+          />
+          <div class="resume-picture-gradient" aria-hidden="true"></div>
         </div>
-        <div class="resume-contact">
-          <img src="../../static/temp-h.svg" alt="logo" class="resume-logo" />
+        <div class="resume-hero-content">
+          <div class="resume-header">
+            <div>
+              <div class="resume-name">莉山 (A)</div>
+            </div>
+            <div class="resume-contact">
+              <img
+                src="../../static/temp-h.svg"
+                alt="logo"
+                class="resume-logo"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- プロフィール写真：srcに画像パスを入力 -->
-      <div class="resume-picture-wrap">
-        <img
-          src="../../static/profile.jpg"
-          alt="プロフィール写真"
-          class="resume-picture"
-        />
-        <div class="resume-picture-gradient" aria-hidden="true"></div>
-      </div>
-
-      <!-- 概要テキスト：自己紹介・概要を入力 -->
+      <!-- 概要テキスト -->
       <div class="resume-overview">
         <div>
           2001年マレーシア生まれ。幼少期をイギリスで過ごし、複数の言語・文化環境の中で育つ。一時期Universiti
@@ -56,21 +62,21 @@
       <hr class="divider" />
 
       <!-- 展示・活動歴 -->
-      <div class="section-title">展示・活動歴</div>
+      <div class="section-title">展 示 ・ 活 動 歴</div>
 
       <div class="subsection-label">グループ展</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">第1回 SEIKA UMU展</span>
+        <div class="entry-row">
+          <span class="entry-title">第1回 SEIKA UMU展</span>
           <span class="entry-date">2025.01.22 – 01.30</span>
         </div>
         <div class="entry-location">京都精華大学 春秋館（京都）</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://www.instagram.com/p/DKXISNlhvh9"
               >UNVEILED</a
             ></span
@@ -81,8 +87,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://www.kyoto-seika.ac.jp/news/2025/pr0929_1.html"
               >「未来のえいでん」アートプロジェクト</a
             ></span
@@ -93,8 +99,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://gallery.kyoto-seika.ac.jp/exhibition/260227/"
               >冷水機での対話 @左京区</a
             ></span
@@ -107,27 +113,27 @@
       <div class="subsection-label">受賞歴</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://www.instagram.com/p/DJEKOB-ppFj"
               >ASEAN-China Design Convergence 2025</a
             ></span
           >
           <span class="entry-date">2025.04</span>
         </div>
-        <div class="entry-result">入選</div>
+        <div class="entry-detail">入選</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://www.kyoto-seika.ac.jp/news/2026/0306_3.html"
               >2025年度京都精華大学学長表彰 学長特別賞</a
             ></span
           >
           <span class="entry-date">2026.03</span>
         </div>
-        <div class="entry-result">
+        <div class="entry-detail">
           受賞（「未来のえいでん」アートプロジェクトにて共同受賞）
         </div>
       </div>
@@ -135,8 +141,8 @@
       <div class="subsection-label">奨学金</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">似鳥国際奨学財団 来日留学生奨学金</span>
+        <div class="entry-row">
+          <span class="entry-title">似鳥国際奨学財団 来日留学生奨学金</span>
           <span class="entry-date">2025.10 – 現在</span>
         </div>
       </div>
@@ -144,35 +150,35 @@
       <div class="subsection-label">恒久・半恒久設置作品</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             ><a href="https://maps.app.goo.gl/jMD9gFz99J3qB3d27"
               >Warna-Warni Shah Alam</a
             ></span
           >
           <span class="entry-date">2022.01</span>
         </div>
+        <div class="entry-detail">高架橋壁画設置</div>
         <div class="entry-location">シャーアラム市役所前（シャーアラム）</div>
-        <div class="entry-result">高架橋壁画設置</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">守神の目</span>
+        <div class="entry-row">
+          <span class="entry-title">守神の目</span>
           <span class="entry-date">2025.01</span>
         </div>
+        <div class="entry-detail">盗撮警戒公共広告設置</div>
         <div class="entry-location">京都精華大学内（京都）</div>
-        <div class="entry-result">盗撮警戒公共広告設置</div>
       </div>
 
       <hr class="divider" />
 
       <!-- 職歴 -->
-      <div class="section-title">職歴</div>
+      <div class="section-title">職 歴</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">株式会社クオリアデザイン事務所</span>
+        <div class="entry-row">
+          <span class="entry-title">株式会社クオリアデザイン事務所</span>
           <span class="entry-date">2024.07 – 現在</span>
         </div>
         <div class="entry-location">京都市 左京区</div>
@@ -184,8 +190,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Dipapansembilan Studio</span>
+        <div class="entry-row">
+          <span class="entry-title">Dipapansembilan Studio</span>
           <span class="entry-date">2020.10 – 2024.03</span>
         </div>
         <div class="entry-location">Shah Alam, Selangor</div>
@@ -217,8 +223,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Anima Vitae Point Sdn. Bhd.</span>
+        <div class="entry-row">
+          <span class="entry-title">Anima Vitae Point Sdn. Bhd.</span>
           <span class="entry-date">2021.05 – 2021.07</span>
         </div>
         <div class="entry-location">Petaling Jaya, Selangor</div>
@@ -234,8 +240,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Blindspot Studios Sdn. Bhd.</span>
+        <div class="entry-row">
+          <span class="entry-title">Blindspot Studios Sdn. Bhd.</span>
           <span class="entry-date">2019.03 – 2019.07</span>
         </div>
         <div class="entry-location">Shah Alam, Selangor</div>
@@ -249,8 +255,8 @@
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-company">Gancho Studios Sdn. Bhd.</span>
+        <div class="entry-row">
+          <span class="entry-title">Gancho Studios Sdn. Bhd.</span>
           <span class="entry-date">2017.08 – 2017.10</span>
         </div>
         <div class="entry-location">Shah Alam, Selangor</div>
@@ -266,67 +272,67 @@
       <hr class="divider" />
 
       <!-- 学歴・資格 -->
-      <div class="section-title">学歴・資格</div>
+      <div class="section-title">学 歴 ・ 資 格</div>
 
       <div class="subsection-label">学位・ディプロマ</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">京都精華大学</span>
+        <div class="entry-row">
+          <span class="entry-title">京都精華大学</span>
           <span class="entry-date">2024.04 – 2028.03</span>
         </div>
-        <div class="entry-institution">
+        <div class="entry-subtitle">
           メディア表現学部 メディア表現学科 イメージ表現専攻
         </div>
         <div class="entry-location">京都市 左京区</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">KRU Academy（専門学校）</span>
+        <div class="entry-row">
+          <span class="entry-title">KRU Academy（専門学校）</span>
           <span class="entry-date">2018.04 – 2019.07</span>
         </div>
-        <div class="entry-institution">3DCG アニメーション課程</div>
+        <div class="entry-subtitle">3DCG アニメーション課程</div>
         <div class="entry-location">Bukit Jalil, Kuala Lumpur</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">GIATMARA Kota Raja（専門学校）</span>
+        <div class="entry-row">
+          <span class="entry-title">GIATMARA Kota Raja（専門学校）</span>
           <span class="entry-date">2017.01 – 2017.10</span>
         </div>
-        <div class="entry-institution">デジタルアニメーション技術課程</div>
+        <div class="entry-subtitle">デジタルアニメーション技術課程</div>
         <div class="entry-location">Shah Alam, Selangor</div>
       </div>
 
       <div class="subsection-label">資格・語学試験</div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree"
+        <div class="entry-row">
+          <span class="entry-title"
             >マレーシアテクノロジスト委員会登録技術者</span
           >
           <span class="entry-date">2024.04</span>
         </div>
-        <div class="entry-result">
+        <div class="entry-detail">
           デザイン芸術及び創造メディア技術部門（AM）
         </div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">日本語能力試験 N2</span>
+        <div class="entry-row">
+          <span class="entry-title">日本語能力試験 N2</span>
           <span class="entry-date">2023.07</span>
         </div>
-        <div class="entry-result">合格</div>
+        <div class="entry-detail">合格</div>
       </div>
 
       <div class="entry">
-        <div class="entry-header">
-          <span class="entry-degree">Malaysian University English Test</span>
+        <div class="entry-row">
+          <span class="entry-title">Malaysian University English Test</span>
           <span class="entry-date">2023.09 – 2028.09</span>
         </div>
-        <div class="entry-result">BAND 4.5（英検准1級と同等）</div>
+        <div class="entry-detail">BAND 4.5（英検准1級と同等）</div>
       </div>
     </div>
     <script src="../../static/transitions.js"></script>
