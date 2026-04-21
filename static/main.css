@@ -12,13 +12,13 @@
   position: fixed;
   top: 0;
   left: 0;
+  opacity: 0;
+  z-index: 9999;
+  transition: opacity 0.35s ease;
+  background-color: var(--mRED);
   width: 100%;
   height: 100%;
-  background-color: var(--mRED);
-  z-index: 9999;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease;
 }
 
 #page-transition.active {
@@ -260,8 +260,9 @@ p {
     gap: 0vh 2vh;
   }
   .slideText {
+    right: 2.5vh;
     bottom: 2.5vh;
-    left: 2.5vh;
+    left: auto;
   }
   .slideNav {
     opacity: 0;
@@ -290,7 +291,9 @@ p {
     gap: 0vh 1vh;
   }
   .slideText {
+    right: 1vh;
     bottom: 1vh;
-    left: 1vh;
+    text-align: right;
+    width: 20vh;
   }
 }
