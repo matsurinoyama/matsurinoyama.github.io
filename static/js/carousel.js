@@ -8,7 +8,7 @@
     const div = document.createElement("div");
     div.className = "slide";
     div.dataset.folder = s.folder;
-    div.style.backgroundImage = "url(cdn.03080.jp/" + s.image + ")";
+    div.style.backgroundImage = "url(https://cdn.03080.jp/" + s.image + ")";
     const caption = lang === "ja" && s.caption_ja ? s.caption_ja : s.caption;
     div.innerHTML = '<div class="slideText"><p>' + caption + "</p></div>";
     container.appendChild(div);
@@ -47,7 +47,9 @@
     if (wasLast) {
       slideEls.forEach(function (slide) {
         slide.style.backgroundImage =
-          "url(cdn.03080.jp/" + getRandomImage(slide.dataset.folder) + ")";
+          "url(https://cdn.03080.jp/" +
+          getRandomImage(slide.dataset.folder) +
+          ")";
       });
     }
     updateSlides();
