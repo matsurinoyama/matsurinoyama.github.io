@@ -9,8 +9,8 @@
     const div = document.createElement("div");
     div.className = "slide";
     div.dataset.folder = s.folder;
-    div.style.backgroundImage = "url(" + base + "/" + s.image + ")";
-    const caption = (lang === "ja" && s.caption_ja) ? s.caption_ja : s.caption;
+    div.style.backgroundImage = "url(/" + s.image + ")";
+    const caption = lang === "ja" && s.caption_ja ? s.caption_ja : s.caption;
     div.innerHTML = '<div class="slideText"><p>' + caption + "</p></div>";
     container.appendChild(div);
   });
@@ -20,7 +20,9 @@
   slideEls.forEach(function (_, i) {
     const dot = document.createElement("div");
     dot.className = "slideNav" + (i === 0 ? " active" : "");
-    dot.addEventListener("click", function () { goToSlide(i); });
+    dot.addEventListener("click", function () {
+      goToSlide(i);
+    });
     navContainer.appendChild(dot);
   });
 
@@ -45,7 +47,8 @@
     currentIndex = (currentIndex + 1) % slideEls.length;
     if (wasLast) {
       slideEls.forEach(function (slide) {
-        slide.style.backgroundImage = "url(" + base + "/" + getRandomImage(slide.dataset.folder) + ")";
+        slide.style.backgroundImage =
+          "url(" + base + "/" + getRandomImage(slide.dataset.folder) + ")";
       });
     }
     updateSlides();
