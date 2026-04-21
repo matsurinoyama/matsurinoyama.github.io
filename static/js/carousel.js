@@ -1,5 +1,4 @@
 (function () {
-  const base = document.documentElement.dataset.staticBase || "/static";
   const lang = document.documentElement.lang === "ja" ? "ja" : "en";
   const container = document.querySelector(".slide_Container");
   const navContainer = document.querySelector(".slideNav_Container");
@@ -48,7 +47,7 @@
     if (wasLast) {
       slideEls.forEach(function (slide) {
         slide.style.backgroundImage =
-          "url(" + base + "/" + getRandomImage(slide.dataset.folder) + ")";
+          "url(/" + getRandomImage(slide.dataset.folder) + ")";
       });
     }
     updateSlides();
