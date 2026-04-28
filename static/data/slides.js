@@ -47,6 +47,7 @@ const SLIDES = [
   },
   {
     folder: "2024/001",
+    youtube: "kILViMrcVxc",
     caption: "untitled video experiment, 2024",
     caption_ja: "無題映像実験、2024年",
   },
@@ -57,16 +58,19 @@ const SLIDES = [
   },
   {
     folder: "2025/EER/001",
+    youtube: "zMRSkZTDqsc",
     caption: "the people we have (not) met @Demachiyanagi Station, 2025",
     caption_ja: "巡り合った（ことのない）人々 @出町柳駅、2025年",
   },
   {
     folder: "2025/EER/002",
+    youtube: "sisdm85d3yc",
     caption: "Everyone's Stationmaster, 2025",
     caption_ja: "みんなの駅長、2025年",
   },
   {
     folder: "2026/WCC",
+    youtube: "pVvXyHu8RCY",
     caption: "Drifting Away, 2026",
     caption_ja: "離れていく、2026年",
   },

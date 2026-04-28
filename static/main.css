@@ -183,6 +183,19 @@ p {
   height: 100%;
 }
 
+.slide iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 0;
+  width: 100vw;
+  min-width: 177.77vh; /* 16:9 inverted */
+  height: 56.25vw; /* 16:9 */
+  min-height: 100vh;
+  pointer-events: none;
+}
+
 .slide.active {
   opacity: 1;
 }
@@ -293,7 +306,7 @@ p {
   .slideText {
     right: 1vh;
     bottom: 1vh;
-    text-align: right;
     width: 20vh;
+    text-align: right;
   }
 }

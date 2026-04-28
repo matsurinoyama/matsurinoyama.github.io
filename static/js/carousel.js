@@ -4,6 +4,14 @@
   const navContainer = document.querySelector(".slideNav_Container");
   let currentIndex = 0;
 
+  function youtubeUrl(id) {
+    return (
+      "https://www.youtube.com/embed/" + id +
+      "?autoplay=1&mute=1&loop=1&playlist=" + id +
+      "&controls=0&rel=0&iv_load_policy=3&disablekb=1&playsinline=1"
+    );
+  }
+
   slidesWithImages.forEach(function (s) {
     const div = document.createElement("div");
     div.className = "slide";
@@ -11,6 +19,16 @@
     div.style.backgroundImage = "url(https://cdn.03080.jp/" + s.image + ")";
     const caption = lang === "ja" && s.caption_ja ? s.caption_ja : s.caption;
     div.innerHTML = '<div class="slideText"><p>' + caption + "</p></div>";
+
+    if (s.youtube) {
+      div.dataset.youtube = s.youtube;
+      const iframe = document.createElement("iframe");
+      iframe.setAttribute("frameborder", "0");
+      iframe.setAttribute("allow", "autoplay; encrypted-media");
+      iframe.setAttribute("allowfullscreen", "");
+      div.insertBefore(iframe, div.firstChild);
+    }
+
     container.appendChild(div);
   });
 
@@ -29,7 +47,18 @@
 
   function updateSlides() {
     slideEls.forEach(function (s, i) {
-      s.classList.toggle("active", i === currentIndex);
+      const wasActive = s.classList.contains("active");
+      const isActive = i === currentIndex;
+      s.classList.toggle("active", isActive);
+
+      const iframe = s.querySelector("iframe");
+      if (iframe) {
+        if (isActive && !wasActive) {
+          iframe.src = youtubeUrl(s.dataset.youtube);
+        } else if (!isActive && wasActive) {
+          iframe.src = "";
+        }
+      }
     });
     dots.forEach(function (d, i) {
       d.classList.toggle("active", i === currentIndex);
