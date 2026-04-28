@@ -4,10 +4,16 @@
   const navContainer = document.querySelector(".slideNav_Container");
   let currentIndex = 0;
 
-  function youtubeUrl(id) {
+  function youtubeUrl(id, duration) {
+    const startParam = duration
+      ? "&start=" + Math.floor(Math.random() * duration)
+      : "";
     return (
-      "https://www.youtube.com/embed/" + id +
-      "?autoplay=1&mute=1&loop=1&playlist=" + id +
+      "https://www.youtube.com/embed/" +
+      id +
+      "?autoplay=1&mute=1&loop=1&playlist=" +
+      id +
+      startParam +
       "&controls=0&rel=0&iv_load_policy=3&disablekb=1&playsinline=1"
     );
   }
@@ -22,6 +28,7 @@
 
     if (s.youtube) {
       div.dataset.youtube = s.youtube;
+      if (s.duration) div.dataset.duration = s.duration;
       const iframe = document.createElement("iframe");
       iframe.setAttribute("frameborder", "0");
       iframe.setAttribute("allow", "autoplay; encrypted-media");
@@ -54,7 +61,9 @@
       const iframe = s.querySelector("iframe");
       if (iframe) {
         if (isActive && !wasActive) {
-          iframe.src = youtubeUrl(s.dataset.youtube);
+          if (Math.random() < 0.5) {
+            iframe.src = youtubeUrl(s.dataset.youtube, s.dataset.duration);
+          }
         } else if (!isActive && wasActive) {
           iframe.src = "";
         }
