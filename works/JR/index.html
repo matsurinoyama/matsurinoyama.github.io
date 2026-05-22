@@ -218,30 +218,6 @@
         font-size: 0.66rem;
         letter-spacing: 0.12em;
       }
-      .slide-dots {
-        display: flex;
-        position: absolute;
-        bottom: 1.6rem;
-        left: 50%;
-        align-items: center;
-        gap: 0.5rem;
-        transform: translateX(-50%);
-      }
-      .slide-dot {
-        flex-shrink: 0;
-        transition: all 0.35s ease;
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.32);
-        width: 8px;
-        height: 8px;
-      }
-      .slide-dot.active {
-        border-color: var(--jr-orange);
-        border-radius: 4px;
-        background: var(--jr-orange);
-        width: 26px;
-      }
       .hero-inner {
         display: grid;
         position: relative;
@@ -1054,6 +1030,105 @@
         font-family: "Shippori Mincho B1", serif;
         letter-spacing: 0.1em;
       }
+      /* ── LINE TABLE ── */
+      .line-data-section {
+        margin-top: 3rem;
+      }
+      .line-data-head {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 1.2rem;
+        color: var(--jr-orange);
+        font-weight: 700;
+        font-size: 0.68rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .line-data-head::before {
+        flex-shrink: 0;
+        background: var(--jr-orange);
+        width: 18px;
+        height: 2px;
+        content: "";
+      }
+      .line-table-wrap {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow-x: auto;
+      }
+      .line-table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.82rem;
+      }
+      .line-table thead th {
+        background: rgba(255, 255, 255, 0.07);
+        padding: 0.7rem 1rem;
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 700;
+        font-size: 0.63rem;
+        letter-spacing: 0.22em;
+        text-align: left;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .line-table tbody td {
+        vertical-align: middle;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 0.6rem 1rem;
+        color: rgba(255, 255, 255, 0.65);
+        white-space: nowrap;
+      }
+      .line-table tbody tr:hover td {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .lt-line {
+        color: var(--white);
+        font-weight: 600;
+      }
+      .lt-campaign {
+        vertical-align: super;
+        margin-left: 0.2em;
+        color: var(--jr-orange);
+        font-weight: 700;
+        font-size: 0.62rem;
+      }
+      .lt-max {
+        color: var(--jr-orange);
+        font-weight: 700;
+        font-family: "Shippori Mincho B1", serif;
+        text-align: right;
+      }
+      .lt-min {
+        color: rgba(255, 255, 255, 0.4);
+        font-family: "Shippori Mincho B1", serif;
+        text-align: right;
+      }
+      .lt-ratio {
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.75rem;
+        text-align: right;
+        white-space: nowrap;
+      }
+      .lt-ratio.hot {
+        color: var(--jr-orange);
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+      .line-data-note {
+        margin-top: 0.8rem;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.68rem;
+        letter-spacing: 0.05em;
+      }
+      @media (max-width: 900px) {
+        .line-table thead th,
+        .line-table tbody td {
+          padding: 0.5rem 0.7rem;
+          font-size: 0.75rem;
+        }
+      }
       .station-img-wrap {
         margin: -2rem -2rem 1.5rem;
         background: var(--jr-gray);
@@ -1522,22 +1597,10 @@
             >JR山陰本線・京都府</span
           >
         </div>
-        <div class="slide-dots" id="slideDots">
-          <span class="slide-dot active"></span>
-          <span class="slide-dot"></span>
-          <span class="slide-dot"></span>
-          <span class="slide-dot"></span>
-          <span class="slide-dot"></span>
-          <span class="slide-dot"></span>
-          <span class="slide-dot"></span>
-          <span class="slide-dot"></span>
-          <span class="slide-dot"></span>
-        </div>
       </div>
       <div class="hero-inner">
         <div class="hero-content">
           <div class="hero-badge">【JR西日本】2027–2028 公式キャンペーン</div>
-          <div class="hero-eyebrow latin">Rediscover Local Japan</div>
           <h1 class="mincho">
             地方の<span class="accent">魅力</span>、<br />再発見の旅へ。
           </h1>
@@ -1587,7 +1650,7 @@
     <!-- PHILOSOPHY -->
     <section id="philosophy" class="section">
       <div class="section-wrap">
-        <div class="section-eyebrow latin">No. 01 — Philosophy</div>
+        <div class="section-eyebrow">第一章：理念</div>
         <h2 class="section-title">旅のあり方を、もう一度。</h2>
         <div class="philosophy-grid">
           <blockquote class="philosophy-quote mincho reveal">
@@ -1609,31 +1672,277 @@
     <!-- PROBLEM -->
     <section id="problem" class="section section--dark">
       <div class="section-wrap">
-        <div class="section-eyebrow latin">No. 02 — Current Issue</div>
+        <div class="section-eyebrow">第二章：現状</div>
         <h2 class="section-title">
-          JR西日本管内でも、乗降客は上位わずかな駅にしか集まっていない。
+          旅客は、5駅のために動く。残り数百の駅は、取り残されている。
         </h2>
         <div class="section-lead">
-          JR西日本の乗降客数データを見ると、その集中ぶりは一目瞭然です。大阪・京都・天王寺など上位駅に需要が集中する一方、地方の通過駅には誰も降りない。この格差こそが、JR西日本が地方向けフリーパスを始めた理由です。
+          JR西日本管内26路線のデータを路線ごとに分析すると、ある構造が繰り返し浮かび上がります。どの路線でも、ごく一部の駅が旅客の大半を独占している。その裏側で、数百もの小駅が毎日ほぼ誰にも使われることなく、静かに列車を見送り続けています。
         </div>
         <div class="data-grid">
           <div class="data-card featured reveal">
-            <div class="dc-tag latin">No.1 Station — 大阪駅（令和5年度）</div>
-            <div class="big-num mincho">69.4<span class="unit">万人/日</span></div>
+            <div class="dc-tag">都市集中：5駅 vs 紀勢本線54駅</div>
+            <div class="big-num mincho">24<span class="unit">倍</span></div>
             <p class="dc-desc">
-              JR西日本内で最も乗降客が多い大阪駅の1日平均乗降客数（694,156人）。2位の京都駅（298,812人）、3位の天王寺駅（255,496人）と合わせた上位3駅だけで、膨大な需要が集中し続けています。
+              大阪・京都・天王寺・三ノ宮・京橋の中心5駅が束ねる旅客は1日計168万人超。これはJR紀勢本線の全54駅（約7万人/日）の24倍にのぼる。都市の5駅が、紀伊半島を一周する路線全体より多くの人を毎日動かしている。
             </p>
           </div>
           <div class="data-card reveal">
-            <div class="dc-tag latin">Rank 100 — 塚口駅</div>
-            <div class="big-num mincho">21,612<span class="unit">人/日</span></div>
+            <div class="dc-tag">路線の現実：JR芸備線（41駅）</div>
+            <div class="big-num mincho">88.5<span class="unit">%</span></div>
             <p class="dc-desc">
-              乗降客数ランキング100位の塚口駅でも21,612人。大阪駅の1/32以下。JR西日本には、ランキング圏外の通過駅が数多く存在し、それぞれ豊かな歴史と自然を抱えています。
+              広島駅1駅だけで、JR芸備線全41駅の旅客数の88.5%を占有。残り40駅を全部合わせても広島駅の12%に届かない。この構造はJR西日本管内のほぼすべての路線で繰り返されており、格差は個別の問題ではなくネットワーク全体の構造です。
             </p>
           </div>
         </div>
         <div class="problem-conclusion mincho reveal">
-          JR西日本の乗降客データが示すように、需要の集中は止まっていません。大阪・京都・天王寺など上位駅への集中を崩すために、JR西日本は列車に乗る人の流れそのものを、もう一度、地方の小さな駅へと向けたいと考えています。
+          26路線のデータが示すのは、単なる格差ではなく「構造的な放置」です。フリーパスという選択肢を若者に届けることで、JR西日本は旅客の流れそのものを、もう一度、地方の小さな駅へと向けたいと考えています。
+        </div>
+
+        <div class="line-data-section reveal">
+          <div class="line-data-head">
+            路線データ：JR西日本 管内26路線（令和5年度）
+          </div>
+          <div class="line-table-wrap">
+            <table class="line-table">
+              <thead>
+                <tr>
+                  <th>路線</th>
+                  <th>最多乗降駅</th>
+                  <th style="text-align: right">最多（人/日）</th>
+                  <th>最少乗降駅</th>
+                  <th style="text-align: right">最少（人/日）</th>
+                  <th style="text-align: right">格差</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="lt-line">JR大阪環状線</td>
+                  <td>大阪</td>
+                  <td class="lt-max">694,156</td>
+                  <td>今宮</td>
+                  <td class="lt-min">8,172</td>
+                  <td class="lt-ratio">85×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR東西線</td>
+                  <td>京橋</td>
+                  <td class="lt-max">218,388</td>
+                  <td>大阪城北詰</td>
+                  <td class="lt-min">8,522</td>
+                  <td class="lt-ratio">26×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR桜島線</td>
+                  <td>ユニバーサルシティ</td>
+                  <td class="lt-max">61,230</td>
+                  <td>安治川口</td>
+                  <td class="lt-min">24,360</td>
+                  <td class="lt-ratio">3×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JRおおさか東線</td>
+                  <td>久宝寺</td>
+                  <td class="lt-max">32,766</td>
+                  <td>新加美</td>
+                  <td class="lt-min">4,580</td>
+                  <td class="lt-ratio">7×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR神戸線</td>
+                  <td>大阪</td>
+                  <td class="lt-max">694,156</td>
+                  <td>東姫路</td>
+                  <td class="lt-min">3,084</td>
+                  <td class="lt-ratio">225×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR京都線</td>
+                  <td>大阪</td>
+                  <td class="lt-max">694,156</td>
+                  <td>山崎</td>
+                  <td class="lt-min">10,010</td>
+                  <td class="lt-ratio">69×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR関西本線</td>
+                  <td>大阪</td>
+                  <td class="lt-max">694,156</td>
+                  <td>加太</td>
+                  <td class="lt-min">80</td>
+                  <td class="lt-ratio hot">8,677×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR大和路線</td>
+                  <td>天王寺</td>
+                  <td class="lt-max">255,496</td>
+                  <td>河内堅上</td>
+                  <td class="lt-min">570</td>
+                  <td class="lt-ratio">448×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR学研都市線</td>
+                  <td>京橋</td>
+                  <td class="lt-max">218,388</td>
+                  <td>西木津</td>
+                  <td class="lt-min">786</td>
+                  <td class="lt-ratio">278×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR草津線</td>
+                  <td>草津</td>
+                  <td class="lt-max">54,892</td>
+                  <td>油日</td>
+                  <td class="lt-min">398</td>
+                  <td class="lt-ratio">138×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">
+                    JR山陰本線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>京都</td>
+                  <td class="lt-max">298,812</td>
+                  <td>下府</td>
+                  <td class="lt-min">124</td>
+                  <td class="lt-ratio hot">2,410×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">
+                    JR嵯峨野線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>京都</td>
+                  <td class="lt-max">298,812</td>
+                  <td>保津峡</td>
+                  <td class="lt-min">356</td>
+                  <td class="lt-ratio">840×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR湖西線</td>
+                  <td>京都</td>
+                  <td class="lt-max">298,812</td>
+                  <td>永原</td>
+                  <td class="lt-min">174</td>
+                  <td class="lt-ratio hot">1,718×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR桜井線</td>
+                  <td>奈良</td>
+                  <td class="lt-max">30,606</td>
+                  <td>香久山</td>
+                  <td class="lt-min">342</td>
+                  <td class="lt-ratio">89×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">
+                    JR紀勢本線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>和歌山</td>
+                  <td class="lt-max">30,038</td>
+                  <td>紀伊有田・田子</td>
+                  <td class="lt-min">4</td>
+                  <td class="lt-ratio hot">7,510×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR加古川線</td>
+                  <td>加古川</td>
+                  <td class="lt-max">42,766</td>
+                  <td>久下村</td>
+                  <td class="lt-min">4</td>
+                  <td class="lt-ratio hot">10,692×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">
+                    JR芸備線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>広島</td>
+                  <td class="lt-max">126,430</td>
+                  <td>道後山</td>
+                  <td class="lt-min">2</td>
+                  <td class="lt-ratio hot">63,215×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">
+                    JR呉線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>広島</td>
+                  <td class="lt-max">126,430</td>
+                  <td>須波</td>
+                  <td class="lt-min">120</td>
+                  <td class="lt-ratio hot">1,054×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR可部線</td>
+                  <td>横川</td>
+                  <td class="lt-max">29,124</td>
+                  <td>上八木</td>
+                  <td class="lt-min">882</td>
+                  <td class="lt-ratio">33×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR山陽本線</td>
+                  <td>岡山</td>
+                  <td class="lt-max">119,262</td>
+                  <td>三石</td>
+                  <td class="lt-min">302</td>
+                  <td class="lt-ratio">395×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR吉備線</td>
+                  <td>岡山</td>
+                  <td class="lt-max">119,262</td>
+                  <td>大安寺</td>
+                  <td class="lt-min">672</td>
+                  <td class="lt-ratio">177×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR津山線</td>
+                  <td>岡山</td>
+                  <td class="lt-max">119,262</td>
+                  <td>皿山</td>
+                  <td class="lt-min">18</td>
+                  <td class="lt-ratio hot">6,626×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR越美北線</td>
+                  <td>福井</td>
+                  <td class="lt-max">18,024</td>
+                  <td>下唯野</td>
+                  <td class="lt-min">2</td>
+                  <td class="lt-ratio hot">9,012×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR舞鶴線</td>
+                  <td>東舞鶴</td>
+                  <td class="lt-max">2,806</td>
+                  <td>真倉</td>
+                  <td class="lt-min">30</td>
+                  <td class="lt-ratio">94×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">JR境線</td>
+                  <td>米子</td>
+                  <td class="lt-max">5,528</td>
+                  <td>大篠津町</td>
+                  <td class="lt-min">68</td>
+                  <td class="lt-ratio">81×</td>
+                </tr>
+                <tr>
+                  <td class="lt-line">
+                    JR木次線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>宍道</td>
+                  <td class="lt-max">1,002</td>
+                  <td>八川</td>
+                  <td class="lt-min">2</td>
+                  <td class="lt-ratio">501×</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="line-data-note">
+            出典：国土数値情報（駅別乗降客数データ）令和5年度 ／ ★ =
+            このキャンペーン掲載駅のある路線
+          </div>
         </div>
       </div>
     </section>
@@ -1641,7 +1950,7 @@
     <!-- PASS -->
     <section id="pass" class="section section--gray">
       <div class="section-wrap">
-        <div class="section-eyebrow latin">No. 03 — Free Pass</div>
+        <div class="section-eyebrow">第三章：フリーパス</div>
         <h2 class="section-title">
           JR西日本の通過駅に、自由に降りられる切符を。
         </h2>
@@ -1654,26 +1963,26 @@
             <h3 class="pass-card-title mincho">
               地方向け<span class="pop">フリーパス</span>
             </h3>
-            <div class="pass-card-badge">REDISCOVER LOCAL JAPAN FREE PASS</div>
+            <div class="pass-card-badge">地方の魅力再発見 フリーパス</div>
           </div>
           <p class="pass-desc">
             JR西日本管内（近畿・北陸・山陰・山陽・紀伊半島・中国地方全域）の対象列車に自由に途中下車・乗降できる若者限定フリーパス。いつもの路線が、まだ誰も体験したことのない冒険のルートに変わります。山陽新幹線は<strong>自由席</strong>のみ対象です（指定席・グリーン車は別途料金）。
           </p>
           <div class="pass-meta">
             <div class="pass-meta-item">
-              <div class="meta-label">Eligibility</div>
+              <div class="meta-label">応募資格</div>
               <div class="meta-value mincho">30歳未満</div>
               <div class="meta-sub">
                 JR西日本エリア在住・身分証明書の提示が必要
               </div>
             </div>
             <div class="pass-meta-item">
-              <div class="meta-label">Validity</div>
+              <div class="meta-label">有効期間</div>
               <div class="meta-value mincho">2027.4 – 2028.3</div>
               <div class="meta-sub">1年間有効・いつでも利用可</div>
             </div>
             <div class="pass-meta-item">
-              <div class="meta-label">Coverage</div>
+              <div class="meta-label">対象範囲</div>
               <div class="meta-value mincho">JR西日本全線</div>
               <div class="meta-sub">
                 管内の通過駅で途中下車可。<br />新幹線は<strong
@@ -1683,7 +1992,7 @@
               </div>
             </div>
             <div class="pass-meta-item">
-              <div class="meta-label">Price</div>
+              <div class="meta-label">定価</div>
               <div class="meta-value mincho" style="color: var(--jr-orange)">
                 ¥50,000
               </div>
@@ -1738,8 +2047,8 @@
     <!-- LOTTERY -->
     <section id="lottery" class="section section--blue">
       <div class="lottery-wrap">
-        <div class="section-eyebrow latin" style="justify-content: center">
-          No. 04 — Lottery
+        <div class="section-eyebrow" style="justify-content: center">
+          第四章：抽選
         </div>
         <div class="lottery-stamp">先着ではなく抽選です</div>
         <div class="lottery-bignum mincho reveal">
@@ -1749,7 +2058,7 @@
           JR西日本エリア在住・30歳未満の方を対象に、抽選でフリーパスをお届けします。
         </div>
         <div class="lottery-period reveal">
-          <div class="period-label">APPLICATION PERIOD ／ 応募期間</div>
+          <div class="period-label">応募期間</div>
           <div class="lottery-dates">
             <div class="date-block">
               <div class="date-label-t">応募開始</div>
@@ -1775,7 +2084,7 @@
     <!-- STATIONS -->
     <section id="stations" class="section">
       <div class="section-wrap">
-        <div class="section-eyebrow latin">No. 05 — Hidden Stations</div>
+        <div class="section-eyebrow">第五章：おすすめ駅</div>
         <h2 class="section-title">たとえば、こんな駅で降りてみる。</h2>
         <div class="section-lead">
           1日の乗降客数3万人以下の、まだ知られていない駅を厳選しました。はじめての秘境旅は経験レベルに合わせてお選びください。
@@ -2012,7 +2321,6 @@
     <!-- OVERVIEW -->
     <section id="overview" class="section section--gray">
       <div class="section-wrap">
-        <div class="section-eyebrow latin">No. 06 — Outline</div>
         <h2 class="section-title">キャンペーンの詳細</h2>
         <div class="overview-table reveal">
           <div class="overview-row">
@@ -2110,9 +2418,6 @@
     <!-- CTA -->
     <section class="section section--dark">
       <div class="cta-inner">
-        <div class="section-eyebrow latin" style="justify-content: center">
-          Final
-        </div>
         <h2 class="mincho">
           まだ誰も体験したことのない<br /><span class="accent">秘境の旅</span
           >を楽しみましょう。
@@ -2177,17 +2482,14 @@
     <script>
       // ── SLIDESHOW ──
       const heroSlides = document.querySelectorAll(".hero-slide");
-      const slideDots = document.querySelectorAll(".slide-dot");
       const capName = document.getElementById("slideCaptionName");
       const capLine = document.getElementById("slideCaptionLine");
       let currentSlide = 0;
 
       function goToSlide(n) {
         heroSlides[currentSlide].classList.remove("active");
-        slideDots[currentSlide].classList.remove("active");
         currentSlide = (n + heroSlides.length) % heroSlides.length;
         heroSlides[currentSlide].classList.add("active");
-        slideDots[currentSlide].classList.add("active");
         const s = heroSlides[currentSlide];
         capName.textContent = s.dataset.station || "";
         capLine.textContent = s.dataset.line || "";
