@@ -578,7 +578,7 @@ nav {
    * stagger; nearest-neighbour gap ≈ 100√2 − 80 ≈ 61px ≈ 0.75× logo width.
    */
   position: absolute;
-  opacity: 0.1;
+  opacity: 3.5%;
   z-index: 0;
   mix-blend-mode: multiply;
   inset: 0;
@@ -1214,6 +1214,7 @@ nav {
   font-size: 0.82rem;
 }
 .line-table thead th {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.07);
   padding: 0.7rem 1rem;
   color: rgba(255, 255, 255, 0.4);
@@ -1224,12 +1225,19 @@ nav {
   text-transform: uppercase;
   white-space: nowrap;
 }
+.line-table thead th:last-child {
+  border-right: none;
+}
 .line-table tbody td {
   vertical-align: middle;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0.6rem 1rem;
   color: rgba(255, 255, 255, 0.65);
   white-space: nowrap;
+}
+.line-table tbody td:last-child {
+  border-right: none;
 }
 .line-table tbody tr:hover td {
   background: rgba(255, 255, 255, 0.03);
@@ -1245,27 +1253,16 @@ nav {
   font-weight: 700;
   font-size: 0.62rem;
 }
-.lt-max {
-  color: var(--jr-orange);
+.lt-ratio {
   font-weight: 700;
-  font-family: "Shippori Mincho B1", serif;
   text-align: right;
+}
+.lt-ratio.accent {
+  color: var(--jr-orange);
 }
 .lt-min {
   color: rgba(255, 255, 255, 0.4);
-  font-family: "Shippori Mincho B1", serif;
   text-align: right;
-}
-.lt-ratio {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 0.75rem;
-  text-align: right;
-  white-space: nowrap;
-}
-.lt-ratio.hot {
-  color: var(--jr-orange);
-  font-weight: 700;
-  font-size: 0.8rem;
 }
 .line-data-note {
   margin-top: 0.8rem;
