@@ -601,20 +601,20 @@ nav {
   z-index: 1;
   height: 100%;
 }
-.ticket-top {
+.ticket-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 1rem;
   padding: 2rem 4rem 1.4rem;
 }
-.ticket-top-left {
+.ticket-header-left {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1.5rem;
 }
-.ticket-circle-mark {
+.ticket-type-mark {
   display: inline-flex;
   flex-shrink: 0;
   justify-content: center;
@@ -627,7 +627,7 @@ nav {
   font-size: 2rem;
   line-height: 1;
 }
-.ticket-badge {
+.ticket-type-badge {
   display: inline-block;
   flex-shrink: 0;
   border: 2px solid #111;
@@ -637,23 +637,23 @@ nav {
   line-height: 1.15;
   letter-spacing: 0.04em;
 }
-.ticket-title-block {
+.ticket-name-block {
   display: flex;
   flex-direction: column;
   line-height: 1.3;
 }
-.ticket-title-main {
+.ticket-name {
   color: #111;
   font-weight: 700;
   font-size: 1.95rem;
   letter-spacing: 0.06em;
 }
-.ticket-title-sub {
+.ticket-name-sub {
   color: #333;
   font-size: 1.4rem;
   letter-spacing: 0.04em;
 }
-.ticket-serial-top {
+.ticket-serial {
   flex-shrink: 0;
   color: #333;
   font-size: 1.5rem;
@@ -662,7 +662,7 @@ nav {
   text-align: right;
   white-space: nowrap;
 }
-.ticket-main {
+.ticket-body {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -670,7 +670,7 @@ nav {
   gap: 0.65rem;
   padding: 0.8rem 5rem 1.6rem;
 }
-.ticket-stations {
+.ticket-route {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -678,7 +678,7 @@ nav {
   transform: scaleX(0.8);
   transform-origin: center;
 }
-.ticket-station {
+.ticket-route-station {
   color: #060606;
   font-weight: 800;
   font-size: clamp(3rem, 5.8vw, 3.6rem);
@@ -687,7 +687,14 @@ nav {
   text-align: center;
   white-space: nowrap;
 }
-.ticket-arrow-char {
+.ticket-route-ref {
+  vertical-align: super;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0;
+}
+.ticket-route-arrow {
   flex-shrink: 0;
   padding: 0 0.4em;
   color: #111;
@@ -696,31 +703,31 @@ nav {
   letter-spacing: 0;
   white-space: nowrap;
 }
-.ticket-via {
+.ticket-route-via {
   margin-top: 1.2rem;
   color: #222;
   font-size: 1.3rem;
   line-height: 1.6;
   letter-spacing: 0.05em;
 }
-.ticket-valid-row {
+.ticket-validity {
   margin-bottom: 0.35rem;
   color: #111;
   font-size: 0.95rem;
   line-height: 1.6;
   letter-spacing: 0.03em;
 }
-.ticket-valid-row strong {
+.ticket-validity strong {
   font-weight: 800;
   font-size: 1.1rem;
 }
-.ticket-note-row {
+.ticket-note {
   color: #2a2a2a;
   font-size: 1.25rem;
   line-height: 1.6;
   letter-spacing: 0.04em;
 }
-.ticket-mag-stripe {
+.ticket-stripe {
   position: absolute;
   right: 0;
   bottom: 30%;
@@ -731,7 +738,7 @@ nav {
   background: #7ecfc0;
   height: 52px;
 }
-.ticket-bottom {
+.ticket-footer {
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -744,14 +751,14 @@ nav {
   line-height: 1.75;
   letter-spacing: 0.04em;
 }
-.ticket-bottom-codes {
+.ticket-codes {
   flex-shrink: 0;
   color: #333;
   font-size: 1.2rem;
   text-align: right;
   white-space: nowrap;
 }
-.ticket-price {
+.ticket-fare {
   font-weight: 800;
   font-size: clamp(1.8rem, 2.5vw, 2.4rem);
   letter-spacing: 0.02em;
@@ -1567,6 +1574,23 @@ footer {
   animation: fadeUp 0.9s ease 1.1s forwards;
 }
 
+/* ── TICKET MID-RANGE (901–1150px: no aspect-ratio, tighter padding) ── */
+@media (min-width: 901px) and (max-width: 1150px) {
+  .pass-card {
+    aspect-ratio: unset;
+  }
+  .ticket-header {
+    padding: 1.5rem 2rem 1rem;
+  }
+  .ticket-body {
+    padding: 0.6rem 2rem 1rem;
+  }
+  .ticket-footer {
+    padding: 0.8rem 2rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .hero-inner {
@@ -1589,24 +1613,29 @@ footer {
   .pass-card {
     aspect-ratio: unset;
   }
-  .ticket-top {
+  .ticket-header {
     gap: 0.7rem;
     padding: 1.2rem 2rem 0.8rem;
   }
-  .ticket-top-left {
+  .ticket-header-left {
     gap: 0.7rem;
   }
-  .ticket-main {
+  .ticket-body {
     gap: 0.5rem;
     padding: 0.6rem 2rem 1rem;
   }
-  .ticket-bottom {
+  .ticket-footer {
     flex-direction: column;
+    align-items: stretch;
     margin-top: 0;
     padding: 0.8rem 2rem 1.2rem;
+    font-size: 0.78rem;
+    line-height: 1.6;
   }
-  .ticket-bottom-codes {
-    text-align: left;
+  .ticket-codes {
+    text-align: right;
+    font-size: 0.78rem;
+    white-space: normal;
   }
   .overview-row {
     grid-template-columns: 1fr;
@@ -1655,5 +1684,50 @@ footer {
   }
   .lottery-period {
     padding: 2rem 1.5rem;
+  }
+
+  /* Ticket section */
+  .pass-card {
+    margin: 2rem 0;
+  }
+  .ticket-type-mark {
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: 1.2rem;
+  }
+  .ticket-type-badge {
+    font-size: 1.2rem;
+  }
+  .ticket-name {
+    font-size: 1rem;
+  }
+  .ticket-name-sub {
+    font-size: 0.8rem;
+  }
+  .ticket-serial {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  .ticket-route {
+    transform: scaleX(0.8);
+  }
+  .ticket-route-station {
+    font-size: 1.2rem;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .ticket-route-ref {
+    font-size: 0.8rem;
+  }
+  .ticket-route-via {
+    margin-top: 0.4rem;
+    font-size: 0.82rem;
+  }
+  .ticket-note {
+    font-size: 0.78rem;
+  }
+  .ticket-fare {
+    font-size: 1.3rem;
   }
 }
