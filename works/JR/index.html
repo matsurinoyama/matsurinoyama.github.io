@@ -8,9 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho+B1:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho+B1:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont/dist/tabler-icons.min.css"
+    />
+    <link rel="stylesheet" href="main.css" />
     <style>
       :root {
         --jr-dark: #002f6c;
@@ -49,8 +54,7 @@
         font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
       }
       .latin {
-        font-style: italic;
-        font-family: "Cormorant Garamond", serif;
+        font-family: "Shippori Mincho B1", serif;
       }
 
       /* ── TOP BAR ── */
@@ -674,8 +678,13 @@
         width: 28px;
         height: 28px;
         color: var(--white);
-        font-weight: 700;
-        font-size: 0.75rem;
+        font-size: 1rem;
+      }
+      .res-rule-head .ti {
+        vertical-align: -0.1em;
+        margin-right: 0.35em;
+        color: var(--jr-orange);
+        font-size: 0.95rem;
       }
       .res-body {
         margin-bottom: 1.8rem;
@@ -729,6 +738,32 @@
         color: var(--text-sub);
         font-size: 0.78rem;
         line-height: 1.65;
+      }
+      .res-rules {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        margin: 0 0 1.8rem;
+      }
+      .res-rule-item {
+        border-left: 3px solid var(--jr-orange);
+        border-radius: 0 6px 6px 0;
+        background: rgba(0, 0, 0, 0.025);
+        padding: 0.6rem 0.9rem;
+      }
+      .res-rule-head {
+        margin-bottom: 0.2rem;
+        color: var(--jr-dark);
+        font-weight: 700;
+        font-size: 0.83rem;
+      }
+      .res-rule-body {
+        color: var(--text-sub);
+        font-size: 0.8rem;
+        line-height: 1.75;
+      }
+      .res-rule-body strong {
+        color: var(--jr-dark);
       }
 
       /* ── LOTTERY ── */
@@ -942,6 +977,8 @@
         gap: 1.5rem;
       }
       .station-card {
+        display: flex;
+        flex-direction: column;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         border: 1px solid var(--border);
         border-top: 3px solid var(--jr-dark);
@@ -1017,6 +1054,7 @@
         color: var(--white);
       }
       .station-desc {
+        flex: 1;
         border-top: 1px dashed var(--border);
         padding-top: 1rem;
         color: var(--text-sub);
@@ -1024,11 +1062,13 @@
         line-height: 1.95;
       }
       .station-attr {
-        margin-top: 1rem;
+        margin-top: auto;
+        padding-top: 1rem;
         color: var(--jr-blue);
-        font-size: 0.82rem;
-        font-family: "Shippori Mincho B1", serif;
-        letter-spacing: 0.1em;
+        font-weight: 600;
+        font-size: 0.73rem;
+        line-height: 1.9;
+        letter-spacing: 0.02em;
       }
       /* ── LINE TABLE ── */
       .line-data-section {
@@ -1513,7 +1553,7 @@
         <div
           class="hero-slide"
           data-station="新倉敷駅"
-          data-line="山陽新幹線（自由席）・岡山県"
+          data-line="山陽新幹線 (自由席)・岡山県"
         >
           <img
             src="https://www.kurashiki-tabi.jp/wp-content/uploads/2023/12/standard_01_01.jpg"
@@ -1579,7 +1619,7 @@
         <div
           class="hero-slide"
           data-station="厚狭駅（秋芳洞）"
-          data-line="山陽新幹線（自由席）・山口県"
+          data-line="山陽新幹線 (自由席)・山口県"
         >
           <img
             src="https://www.ana.co.jp/japan-travel-planner/area/kyushu/yamaguchi/0000003/img005.jpg"
@@ -1605,14 +1645,14 @@
             地方の<span class="accent">魅力</span>、<br />再発見の旅へ。
           </h1>
           <div class="hero-subtitle mincho">
-            地方向けフリーパス／抽選で1万名様にプレゼント
+            地方向けフリーパス／抽選で1万名様に発行
           </div>
           <p class="hero-lead">
             大阪・福岡へ向かう列車の窓から、ほんの一瞬で過ぎ去ってしまうあの駅。ちょっと降りてみる、その一歩が、まだ誰も知らない旅の始まりです。JR西日本サービスエリア在住の30歳未満を対象に実施します。
           </p>
           <div class="hero-stats">
             <div class="hero-stat">
-              <div class="num">10,000<span class="small">名</span></div>
+              <div class="num">30,000<span class="small">名</span></div>
               <div class="label">当選人数</div>
             </div>
             <div class="hero-stat">
@@ -1701,7 +1741,7 @@
 
         <div class="line-data-section reveal">
           <div class="line-data-head">
-            路線データ：JR西日本 管内26路線（令和5年度）
+            格差上位路線：JR西日本 管内より抜粋（令和5年度）
           </div>
           <div class="line-table-wrap">
             <table class="line-table">
@@ -1717,52 +1757,30 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="lt-line">JR大阪環状線</td>
-                  <td>大阪</td>
-                  <td class="lt-max">694,156</td>
-                  <td>今宮</td>
-                  <td class="lt-min">8,172</td>
-                  <td class="lt-ratio">85×</td>
+                  <td class="lt-line">
+                    JR芸備線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>広島</td>
+                  <td class="lt-max">126,430</td>
+                  <td>道後山</td>
+                  <td class="lt-min">2</td>
+                  <td class="lt-ratio hot">63,215×</td>
                 </tr>
                 <tr>
-                  <td class="lt-line">JR東西線</td>
-                  <td>京橋</td>
-                  <td class="lt-max">218,388</td>
-                  <td>大阪城北詰</td>
-                  <td class="lt-min">8,522</td>
-                  <td class="lt-ratio">26×</td>
+                  <td class="lt-line">JR加古川線</td>
+                  <td>加古川</td>
+                  <td class="lt-max">42,766</td>
+                  <td>久下村</td>
+                  <td class="lt-min">4</td>
+                  <td class="lt-ratio hot">10,692×</td>
                 </tr>
                 <tr>
-                  <td class="lt-line">JR桜島線</td>
-                  <td>ユニバーサルシティ</td>
-                  <td class="lt-max">61,230</td>
-                  <td>安治川口</td>
-                  <td class="lt-min">24,360</td>
-                  <td class="lt-ratio">3×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JRおおさか東線</td>
-                  <td>久宝寺</td>
-                  <td class="lt-max">32,766</td>
-                  <td>新加美</td>
-                  <td class="lt-min">4,580</td>
-                  <td class="lt-ratio">7×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR神戸線</td>
-                  <td>大阪</td>
-                  <td class="lt-max">694,156</td>
-                  <td>東姫路</td>
-                  <td class="lt-min">3,084</td>
-                  <td class="lt-ratio">225×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR京都線</td>
-                  <td>大阪</td>
-                  <td class="lt-max">694,156</td>
-                  <td>山崎</td>
-                  <td class="lt-min">10,010</td>
-                  <td class="lt-ratio">69×</td>
+                  <td class="lt-line">JR越美北線</td>
+                  <td>福井</td>
+                  <td class="lt-max">18,024</td>
+                  <td>下唯野</td>
+                  <td class="lt-min">2</td>
+                  <td class="lt-ratio hot">9,012×</td>
                 </tr>
                 <tr>
                   <td class="lt-line">JR関西本線</td>
@@ -1773,28 +1791,22 @@
                   <td class="lt-ratio hot">8,677×</td>
                 </tr>
                 <tr>
-                  <td class="lt-line">JR大和路線</td>
-                  <td>天王寺</td>
-                  <td class="lt-max">255,496</td>
-                  <td>河内堅上</td>
-                  <td class="lt-min">570</td>
-                  <td class="lt-ratio">448×</td>
+                  <td class="lt-line">
+                    JR紀勢本線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>和歌山</td>
+                  <td class="lt-max">30,038</td>
+                  <td>紀伊有田・田子</td>
+                  <td class="lt-min">4</td>
+                  <td class="lt-ratio hot">7,510×</td>
                 </tr>
                 <tr>
-                  <td class="lt-line">JR学研都市線</td>
-                  <td>京橋</td>
-                  <td class="lt-max">218,388</td>
-                  <td>西木津</td>
-                  <td class="lt-min">786</td>
-                  <td class="lt-ratio">278×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR草津線</td>
-                  <td>草津</td>
-                  <td class="lt-max">54,892</td>
-                  <td>油日</td>
-                  <td class="lt-min">398</td>
-                  <td class="lt-ratio">138×</td>
+                  <td class="lt-line">JR津山線</td>
+                  <td>岡山</td>
+                  <td class="lt-max">119,262</td>
+                  <td>皿山</td>
+                  <td class="lt-min">18</td>
+                  <td class="lt-ratio hot">6,626×</td>
                 </tr>
                 <tr>
                   <td class="lt-line">
@@ -1808,60 +1820,6 @@
                 </tr>
                 <tr>
                   <td class="lt-line">
-                    JR嵯峨野線<span class="lt-campaign">★</span>
-                  </td>
-                  <td>京都</td>
-                  <td class="lt-max">298,812</td>
-                  <td>保津峡</td>
-                  <td class="lt-min">356</td>
-                  <td class="lt-ratio">840×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR湖西線</td>
-                  <td>京都</td>
-                  <td class="lt-max">298,812</td>
-                  <td>永原</td>
-                  <td class="lt-min">174</td>
-                  <td class="lt-ratio hot">1,718×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR桜井線</td>
-                  <td>奈良</td>
-                  <td class="lt-max">30,606</td>
-                  <td>香久山</td>
-                  <td class="lt-min">342</td>
-                  <td class="lt-ratio">89×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">
-                    JR紀勢本線<span class="lt-campaign">★</span>
-                  </td>
-                  <td>和歌山</td>
-                  <td class="lt-max">30,038</td>
-                  <td>紀伊有田・田子</td>
-                  <td class="lt-min">4</td>
-                  <td class="lt-ratio hot">7,510×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR加古川線</td>
-                  <td>加古川</td>
-                  <td class="lt-max">42,766</td>
-                  <td>久下村</td>
-                  <td class="lt-min">4</td>
-                  <td class="lt-ratio hot">10,692×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">
-                    JR芸備線<span class="lt-campaign">★</span>
-                  </td>
-                  <td>広島</td>
-                  <td class="lt-max">126,430</td>
-                  <td>道後山</td>
-                  <td class="lt-min">2</td>
-                  <td class="lt-ratio hot">63,215×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">
                     JR呉線<span class="lt-campaign">★</span>
                   </td>
                   <td>広島</td>
@@ -1871,60 +1829,14 @@
                   <td class="lt-ratio hot">1,054×</td>
                 </tr>
                 <tr>
-                  <td class="lt-line">JR可部線</td>
-                  <td>横川</td>
-                  <td class="lt-max">29,124</td>
-                  <td>上八木</td>
-                  <td class="lt-min">882</td>
-                  <td class="lt-ratio">33×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR山陽本線</td>
-                  <td>岡山</td>
-                  <td class="lt-max">119,262</td>
-                  <td>三石</td>
-                  <td class="lt-min">302</td>
-                  <td class="lt-ratio">395×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR吉備線</td>
-                  <td>岡山</td>
-                  <td class="lt-max">119,262</td>
-                  <td>大安寺</td>
-                  <td class="lt-min">672</td>
-                  <td class="lt-ratio">177×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR津山線</td>
-                  <td>岡山</td>
-                  <td class="lt-max">119,262</td>
-                  <td>皿山</td>
-                  <td class="lt-min">18</td>
-                  <td class="lt-ratio hot">6,626×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR越美北線</td>
-                  <td>福井</td>
-                  <td class="lt-max">18,024</td>
-                  <td>下唯野</td>
-                  <td class="lt-min">2</td>
-                  <td class="lt-ratio hot">9,012×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR舞鶴線</td>
-                  <td>東舞鶴</td>
-                  <td class="lt-max">2,806</td>
-                  <td>真倉</td>
-                  <td class="lt-min">30</td>
-                  <td class="lt-ratio">94×</td>
-                </tr>
-                <tr>
-                  <td class="lt-line">JR境線</td>
-                  <td>米子</td>
-                  <td class="lt-max">5,528</td>
-                  <td>大篠津町</td>
-                  <td class="lt-min">68</td>
-                  <td class="lt-ratio">81×</td>
+                  <td class="lt-line">
+                    JR嵯峨野線<span class="lt-campaign">★</span>
+                  </td>
+                  <td>京都</td>
+                  <td class="lt-max">298,812</td>
+                  <td>保津峡</td>
+                  <td class="lt-min">356</td>
+                  <td class="lt-ratio">840×</td>
                 </tr>
                 <tr>
                   <td class="lt-line">
@@ -1940,8 +1852,8 @@
             </table>
           </div>
           <div class="line-data-note">
-            出典：国土数値情報（駅別乗降客数データ）令和5年度 ／ ★ =
-            このキャンペーン掲載駅のある路線
+            格差（最多÷最少）の大きい路線を上位10路線表示。出典：国土数値情報（駅別乗降客数データ）令和5年度
+            ／ ★ = このキャンペーン掲載駅のある路線
           </div>
         </div>
       </div>
@@ -1963,7 +1875,6 @@
             <h3 class="pass-card-title mincho">
               地方向け<span class="pop">フリーパス</span>
             </h3>
-            <div class="pass-card-badge">地方の魅力再発見 フリーパス</div>
           </div>
           <p class="pass-desc">
             JR西日本管内（近畿・北陸・山陰・山陽・紀伊半島・中国地方全域）の対象列車に自由に途中下車・乗降できる若者限定フリーパス。いつもの路線が、まだ誰も体験したことのない冒険のルートに変わります。山陽新幹線は<strong>自由席</strong>のみ対象です（指定席・グリーン車は別途料金）。
@@ -2004,39 +1915,68 @@
         <!-- RESERVATION BOX -->
         <div class="reservation-box reveal">
           <div class="res-title">
-            <span class="res-icon">i</span>
-            <span class="mincho">ご利用の際は事前予約が必要です</span>
+            <span class="res-icon"><i class="ti ti-info-circle"></i></span>
+            <span class="mincho">配分システムの仕組みと利用ルール</span>
           </div>
           <p class="res-body">
-            このフリーパスは<strong>大阪・関西万博のシーズンパスと同様の仕組み</strong>を採用しています。パスは1年間いつでも使用可能ですが、乗車当日の利用には事前の日程予約が必要です。当日は専用アプリのQRコードを提示するだけで改札を通ることができます。予約は乗車日の1ヶ月前から受付。混雑期は早めのご予約をおすすめします。
+            このフリーパスは<strong>観光配分システム</strong>です。プレゼントや特典ではなく、混雑する都市駅から地方の小駅へ観光需要を分散させることを目的に設計されています。各駅には1日あたりの利用上限が設けられており、定員に達した駅・日程への予約は締め切られます。利用に際しては事前の下車駅予約が必要です。
           </p>
+          <div class="res-rules">
+            <div class="res-rule-item">
+              <div class="res-rule-head">
+                <i class="ti ti-circle-off"></i>下車対象外駅（除外駅）
+              </div>
+              <div class="res-rule-body">
+                1日平均乗降客数が<strong>35,000人を超える駅</strong>は下車対象外です。ただし、目的地への経路上で乗り換えが必要な通過駅、または登録済みの自宅最寄駅（帰宅時）については、例外的に下車が認められます。<strong
+                  >乗車（入場）はすべての駅で自由です。</strong
+                >
+              </div>
+            </div>
+            <div class="res-rule-item">
+              <div class="res-rule-head">
+                <i class="ti ti-home-2"></i>自宅最寄駅の登録と変更
+              </div>
+              <div class="res-rule-body">
+                フリーパス取得時に自宅最寄駅を1駅登録する必要があります。登録駅の変更には<strong>転居を証明する書類（住民票等）の提出</strong>が必要です。帰宅のための予約（例：厚狭駅
+                → 大阪駅）は除外駅であっても予約可能です。
+              </div>
+            </div>
+            <div class="res-rule-item">
+              <div class="res-rule-head">
+                <i class="ti ti-qrcode"></i>改札の通り方（QR非対応駅も利用可）
+              </div>
+              <div class="res-rule-body">
+                QRコード対応自動改札の駅：アプリのQRコードをかざすだけ。有人改札のある駅：係員にアプリ画面を提示。<strong>無人駅・ワンマン列車</strong>：乗務員にアプリを提示し、スキャンまたは目視確認を受けてください。
+              </div>
+            </div>
+          </div>
           <div class="res-steps">
             <div class="res-step">
               <div class="step-num">1</div>
-              <div class="step-head">抽選当選</div>
+              <div class="step-head">当選・最寄駅登録</div>
               <div class="step-text">
-                当選結果はメールでご連絡。専用URLからパスを受け取ります。
+                当選メール内のURLから自宅最寄駅を登録してパスを受け取ります。
               </div>
             </div>
             <div class="res-step">
               <div class="step-num">2</div>
               <div class="step-head">アプリ登録</div>
               <div class="step-text">
-                JR西日本公式アプリにパスを登録。いつでも利用状況を確認できます。
+                JR西日本公式アプリにパスを登録。残枠・予約状況を随時確認できます。
               </div>
             </div>
             <div class="res-step">
               <div class="step-num">3</div>
-              <div class="step-head">乗車日を予約</div>
+              <div class="step-head">下車駅・日程を予約</div>
               <div class="step-text">
-                アプリから乗車日を予約（1ヶ月前〜前日まで）。人気の連休は早めに。
+                アプリで下車駅と乗車日を選択（1ヶ月前〜当日まで）。定員に達した駅・日程は予約不可。
               </div>
             </div>
             <div class="res-step">
               <div class="step-num">4</div>
-              <div class="step-head">QRで乗車</div>
+              <div class="step-head">QR・有人・乗務員で乗降</div>
               <div class="step-text">
-                当日はアプリのQRコードを改札にかざすだけ。何度でも乗り降りOK。
+                QR改札・有人改札・乗務員提示に対応。乗車はどの駅からでも自由です。
               </div>
             </div>
           </div>
@@ -2050,12 +1990,12 @@
         <div class="section-eyebrow" style="justify-content: center">
           第四章：抽選
         </div>
-        <div class="lottery-stamp">先着ではなく抽選です</div>
+        <div class="lottery-stamp">抽選による、観光配分システム</div>
         <div class="lottery-bignum mincho reveal">
-          <span class="accent">10,000</span><span class="small">名様</span>
+          <span class="accent">30,000</span><span class="small">名様</span>
         </div>
         <div class="lottery-tagline mincho reveal">
-          JR西日本エリア在住・30歳未満の方を対象に、抽選でフリーパスをお届けします。
+          JR西日本エリア在住・30歳未満の方を対象に抽選で発行します。観光需要を都市から地方へ分散させるための配分システムです。
         </div>
         <div class="lottery-period reveal">
           <div class="period-label">応募期間</div>
@@ -2117,7 +2057,6 @@
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-beginner">初心者</div>
               <h3 class="station-name mincho">保津峡駅</h3>
               <div class="station-yomi">HOZUKYŌ</div>
               <div class="station-info">
@@ -2127,7 +2066,9 @@
               <p class="station-desc">
                 渓谷の上に架かる鉄橋に立つ、空中駅。改札を出れば即座に保津川の深い緑に包まれる。京都駅からわずか20分の別世界。保津川下りの上陸地点でもあり、嵐山まで川沿いを歩くルートも人気。
               </p>
-              <div class="station-attr">— 渓谷に立つ、空中駅 —</div>
+              <div class="station-attr">
+                #渓谷ウォーク #空中駅 #保津川下り #嵐山へ徒歩
+              </div>
             </article>
             <article class="station-card reveal">
               <div class="station-img-wrap">
@@ -2137,7 +2078,6 @@
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-beginner">初心者</div>
               <h3 class="station-name mincho">忠海駅</h3>
               <div class="station-yomi">TADANOUMI</div>
               <div class="station-info">
@@ -2147,7 +2087,9 @@
               <p class="station-desc">
                 大久野島（うさぎ島）への玄関口。フェリーで15分、桟橋に降り立つと無数のウサギが出迎える。かつての化学兵器工場の歴史も静かに語りかける島。広島市から1時間半、岡山からもアクセスしやすい。
               </p>
-              <div class="station-attr">— うさぎ島へ、渡る入口 —</div>
+              <div class="station-attr">
+                #うさぎ島 #フェリー15分 #大久野島 #近代史
+              </div>
             </article>
             <article class="station-card reveal">
               <div class="station-img-wrap">
@@ -2157,18 +2099,82 @@
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-beginner">初心者</div>
               <h3 class="station-name mincho">新倉敷駅</h3>
               <div class="station-yomi">SHIN-KURASHIKI</div>
               <div class="station-info">
                 <span class="station-tag pref">岡山県</span>
-                <span class="station-tag shinkansen">新幹線（自由席）</span>
+                <span class="station-tag shinkansen">新幹線 (自由席)</span>
                 <span class="station-tag">JR山陽本線</span>
               </div>
               <p class="station-desc">
                 のぞみが通過する、山陽新幹線の小さな駅。ひかり・こだまで降りてJR山陽本線に乗り換えれば、約20分で倉敷駅へ。白壁の土蔵と柳並木が続く美観地区に大原美術館（国内初の西洋美術館）が佇む。デニムとクラフトビールの路地探しも楽しい。
               </p>
-              <div class="station-attr">— のぞみが通過する、美の街の入口 —</div>
+              <div class="station-attr">
+                #美観地区 #デニム #倉敷 #新幹線から途中下車
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://kinosaki-spa.gr.jp/core/wp-content/themes/kinosakionsen/img/home_sotoyu_01.jpg"
+                  alt="城崎温泉・外湯"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">城崎温泉駅</h3>
+              <div class="station-yomi">KINOSAKI ONSEN</div>
+              <div class="station-info">
+                <span class="station-tag pref">兵庫県</span>
+                <span class="station-tag">JR山陰本線</span>
+              </div>
+              <p class="station-desc">
+                大阪から特急きのさきで約2時間半。外湯と呼ばれる7か所の公衆浴場を浴衣で渡り歩く「外湯めぐり」が名物。旅館の縁側と柳並木に揺れる提灯の灯り——日本の温泉街の原風景がここにある。カニのシーズン（11〜3月）は特に賑わう。
+              </p>
+              <div class="station-attr">
+                #外湯めぐり #浴衣散歩 #カニの旅 #温泉街
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://www.ononavi.jp/onomichiya/upload/photos/1377844945l.jpg"
+                  alt="尾道・千光寺公園からの眺め"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">尾道駅</h3>
+              <div class="station-yomi">ONOMICHI</div>
+              <div class="station-info">
+                <span class="station-tag pref">広島県</span>
+                <span class="station-tag">JR山陽本線</span>
+              </div>
+              <p class="station-desc">
+                海と急斜面の間に寺と路地が積み重なる街。猫が住む階段、映画監督たちが愛した路地、しまなみ海道サイクリングの本州側起点。広島から電車で30分。坂を登るごとに違う景色が現れる、垂直の街歩き。
+              </p>
+              <div class="station-attr">
+                #坂道と猫 #しまなみ海道 #映画の舞台 #路地裏
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://www.kurokabe.co.jp/xadmins/wp-content/uploads/2022/03/ca4ac97d08f56b1132363993b4fc82f5.jpg"
+                  alt="長浜・黒壁スクエア"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">長浜駅</h3>
+              <div class="station-yomi">NAGAHAMA</div>
+              <div class="station-info">
+                <span class="station-tag pref">滋賀県</span>
+                <span class="station-tag">JR琵琶湖線</span>
+              </div>
+              <p class="station-desc">
+                豊臣秀吉が初めて城主となった城下町。江戸時代の商家を改装した「黒壁スクエア」はガラス工芸の発信地として今も息づく。京都から快速で約1時間。冬の雪景色と鴨料理も旅の目的になる。
+              </p>
+              <div class="station-attr">
+                #黒壁スクエア #ガラスアート #城下町 #秀吉の街
+              </div>
             </article>
           </div>
         </div>
@@ -2188,7 +2194,6 @@
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-medium">中級者</div>
               <h3 class="station-name mincho">餘部駅</h3>
               <div class="station-yomi">AMARUBE</div>
               <div class="station-info">
@@ -2198,7 +2203,9 @@
               <p class="station-desc">
                 日本海を見下ろす高架橋の上に立つ駅。展望施設「空の駅」からの景色は、夕暮れ時にひときわ静かに輝く。保存されたかつての鉄骨橋のトラスが鉄道遺産の重みを伝える。大阪から約3時間。
               </p>
-              <div class="station-attr">— 海を眺める、空の駅 —</div>
+              <div class="station-attr">
+                #絶景橋梁 #空の駅 #日本海 #夕暮れ時
+              </div>
             </article>
             <article class="station-card reveal">
               <div class="station-img-wrap">
@@ -2208,7 +2215,6 @@
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-medium">中級者</div>
               <h3 class="station-name mincho">温泉津駅</h3>
               <div class="station-yomi">YUNOTSU</div>
               <div class="station-info">
@@ -2218,17 +2224,16 @@
               <p class="station-desc">
                 石見銀山の積み出し港として栄えた、ユネスコ世界遺産の構成資産。駅から徒歩圏に江戸時代の面影を残す温泉街が広がり、泉質の良さは全国屈指。石畳を歩くたびに歴史の厚みが感じられる。
               </p>
-              <div class="station-attr">— 世界遺産の、湯の街 —</div>
+              <div class="station-attr">#世界遺産 #石見銀山 #古湯 #石畳</div>
             </article>
             <article class="station-card reveal">
               <div class="station-img-wrap">
                 <img
-                  src="https://cdn-ak.f.st-hatena.com/images/fotolife/b/beatsjungle/20260411/20260411201940.jpg"
-                  alt="古座駅"
+                  src="https://www.wakayama-kanko.or.jp/lsc/upfile/spot/0000/1205/1205_1_l.jpg"
+                  alt="古座・一枚岩"
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-medium">中級者</div>
               <h3 class="station-name mincho">古座駅</h3>
               <div class="station-yomi">KOZA</div>
               <div class="station-info">
@@ -2238,7 +2243,73 @@
               <p class="station-desc">
                 紀伊半島南端近く、太平洋を望む小さな駅。古座川を遡れば日本最大の一枚岩の絶景、海へ出れば波音だけの静かな夜。「何もない」を贅沢に過ごす場所。宿は事前予約必須。
               </p>
-              <div class="station-attr">— 太平洋の、静かな入口 —</div>
+              <div class="station-attr">
+                #一枚岩 #太平洋 #何もない贅沢 #静寂の宿
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://www.okayama-kanko.jp/lsc/upfile/spot/0001/1018/11018_1_l.jpg"
+                  alt="伊部・備前焼の街並み"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">伊部駅</h3>
+              <div class="station-yomi">IMBE</div>
+              <div class="station-info">
+                <span class="station-tag pref">岡山県</span>
+                <span class="station-tag">JR赤穂線</span>
+              </div>
+              <p class="station-desc">
+                1,000年以上の歴史を持つ備前焼の産地。駅を出ると周囲に窯元とギャラリーが立ち並び、土と炎の香りが街中に漂う。半日で窯元見学、1日で陶芸体験まで。岡山から快速で約30分のアクセス。
+              </p>
+              <div class="station-attr">
+                #備前焼 #陶芸体験 #窯元めぐり #土の香り
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://www.kankou-shimane.com/jp/wp-content/uploads/2024/12/363-tamazukurionsen_012.jpg"
+                  alt="玉造温泉"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">玉造温泉駅</h3>
+              <div class="station-yomi">TAMATSUKURI ONSEN</div>
+              <div class="station-info">
+                <span class="station-tag pref">島根県</span>
+                <span class="station-tag">JR山陰本線</span>
+              </div>
+              <p class="station-desc">
+                奈良時代の文献にも記された日本最古の温泉のひとつ。「一浴すれば美しくなる」と伝わる神秘の湯。駅から徒歩15分の温泉街には宝石店が並び、出雲文化の縁結びパワーが漂う。
+              </p>
+              <div class="station-attr">
+                #縁結びの湯 #日本最古の温泉 #翡翠 #出雲
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://kankou.iwakuni-city.net/wp-content/uploads/2020/02/dd849b186e98962a449af941827ea174.jpg"
+                  alt="錦帯橋・秋"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">新岩国駅</h3>
+              <div class="station-yomi">SHIN-IWAKUNI</div>
+              <div class="station-info">
+                <span class="station-tag pref">山口県</span>
+                <span class="station-tag shinkansen">新幹線 (自由席)</span>
+                <span class="station-tag">JR山陽本線</span>
+              </div>
+              <p class="station-desc">
+                こだま・ひかりで降りると、日本三名橋のひとつ・錦帯橋まで路線バスで約15分。5連の木造アーチが錦川に映える光景は、何度見ても息をのむ。城山ロープウェイで岩国城へ登り、白蛇の里と武士の街を半日で巡れる。新幹線を使う旅の「寄り道」に最適。
+              </p>
+              <div class="station-attr">
+                #錦帯橋 #日本三名橋 #岩国城 #こだまで途中下車
+              </div>
             </article>
           </div>
         </div>
@@ -2258,19 +2329,18 @@
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-expert">上級者</div>
               <h3 class="station-name mincho">厚狭駅</h3>
               <div class="station-yomi">ASA</div>
               <div class="station-info">
                 <span class="station-tag pref">山口県</span>
-                <span class="station-tag shinkansen">新幹線（自由席）</span>
+                <span class="station-tag shinkansen">新幹線 (自由席)</span>
                 <span class="station-tag">JR山陽本線</span>
               </div>
               <p class="station-desc">
                 のぞみが通過する、山口県の静かな新幹線駅。路線バスで約40分、日本最大のカルスト台地・秋吉台と全長10kmを超える大鍾乳洞「秋芳洞」が待つ。バスの時刻と帰路は必ず事前確認。平日は観光客も少なく、洞窟をほぼ貸し切りで歩けることも。
               </p>
               <div class="station-attr">
-                — のぞみが通過する、秘境鍾乳洞の入口 —
+                #秋芳洞 #カルスト台地 #洞窟 #のぞみ通過駅
               </div>
             </article>
             <article class="station-card reveal">
@@ -2281,7 +2351,6 @@
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-expert">上級者</div>
               <h3 class="station-name mincho">備後落合駅</h3>
               <div class="station-yomi">BINGO-OCHIAI</div>
               <div class="station-info">
@@ -2291,7 +2360,9 @@
               <p class="station-desc">
                 芸備線と木次線が交わる秘境の分岐駅。かつて賑わった広いホームに今は1日数本の列車が静かに来ては去る。「汽車の墓場」とも呼ばれ、鉄道史の光と影を肌で感じられる唯一の場所。
               </p>
-              <div class="station-attr">— 秘境の分岐点、時間が止まる駅 —</div>
+              <div class="station-attr">
+                #秘境分岐駅 #芸備線 #木次線 #鉄道遺産
+              </div>
             </article>
             <article class="station-card reveal">
               <div class="station-img-wrap">
@@ -2301,7 +2372,6 @@
                   loading="lazy"
                 />
               </div>
-              <div class="diff-badge badge-expert">上級者</div>
               <h3 class="station-name mincho">周参見駅</h3>
               <div class="station-yomi">SUSAMIBE</div>
               <div class="station-info">
@@ -2311,7 +2381,72 @@
               <p class="station-desc">
                 和歌山県南部、太平洋に面した絶海の集落への玄関口。周辺の海は日本屈指の透明度を誇りダイビングの聖地。宿は漁師民宿のみ。日が暮れると人工の光がなく、満天の星が空を埋め尽くす。
               </p>
-              <div class="station-attr">— 絶海の集落、星と海の宿 —</div>
+              <div class="station-attr">
+                #満天の星 #漁師民宿 #ダイビング #絶海の集落
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://img-cdn.guide.travel.co.jp/article/114/20130912164926/6E559C06456946C7B4E0724E0A289D58_L.jpg"
+                  alt="出雲坂根駅・三段スイッチバック"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">出雲坂根駅</h3>
+              <div class="station-yomi">IZUMO-SAKANE</div>
+              <div class="station-info">
+                <span class="station-tag pref">島根県</span>
+                <span class="station-tag">JR木次線</span>
+              </div>
+              <p class="station-desc">
+                急峻な奥出雲の山中を縫う三段スイッチバックの核心部。1日3本しか列車が来ないホームの一角に「延命水」と呼ばれる湧き水がある。前後の列車の接続に完全に依存した旅は、現代の時間感覚を根本から変える。
+              </p>
+              <div class="station-attr">
+                #三段スイッチバック #延命水 #1日3本 #奥出雲深部
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/JRW_dougoyama_sta.jpg/640px-JRW_dougoyama_sta.jpg"
+                  alt="道後山駅"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">道後山駅</h3>
+              <div class="station-yomi">DOGOYAMA</div>
+              <div class="station-info">
+                <span class="station-tag pref">広島県</span>
+                <span class="station-tag">JR芸備線</span>
+              </div>
+              <p class="station-desc">
+                乗降客数1日2人。中国山地の山頂近くに無人で立つ、データの上では日本でも有数の「誰も来ない駅」のひとつ。スキー場近くのため冬季は多少賑わうが、それ以外の季節に降り立つと、本当の静寂がある。前後の乗り継ぎは必ず確認。
+              </p>
+              <div class="station-attr">
+                #1日2人 #中国山地 #芸備線最深部 #誰も来ない駅
+              </div>
+            </article>
+            <article class="station-card reveal">
+              <div class="station-img-wrap">
+                <img
+                  src="https://takashima-kanko.jp/spot/uploads/metase03.jpg"
+                  alt="マキノ・メタセコイア並木（秋）"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="station-name mincho">永原駅</h3>
+              <div class="station-yomi">NAGAHARA</div>
+              <div class="station-info">
+                <span class="station-tag pref">滋賀県</span>
+                <span class="station-tag">JR湖西線</span>
+              </div>
+              <p class="station-desc">
+                琵琶湖の最北端に近い、湖西線の静かな駅。周辺には世界的に有名なマキノのメタセコイア並木（2.4km）があり、晩秋は炎のような紅葉が続く。バス・自転車での周遊が必須。夏は人工光のない闇と静寂の湖が広がる。
+              </p>
+              <div class="station-attr">
+                #メタセコイア並木 #琵琶湖北岸 #紅葉 #湖の孤独
+              </div>
             </article>
           </div>
         </div>
@@ -2348,7 +2483,7 @@
           <div class="overview-row">
             <div class="ot-label">当選人数</div>
             <div class="ot-value">
-              <strong>抽選で10,000名様</strong>にフリーパスをプレゼント
+              抽選で<strong>30,000名様</strong>にフリーパスを発行
             </div>
           </div>
           <div class="overview-row">
@@ -2372,7 +2507,7 @@
           <div class="overview-row">
             <div class="ot-label">予約方法</div>
             <div class="ot-value">
-              JR西日本公式アプリで乗車日を事前予約（乗車1ヶ月前〜前日まで）。当日はQRコードを改札にご提示ください。
+              JR西日本公式アプリで下車駅・乗車日を予約（1ヶ月前〜当日まで、残枠がある場合）。QRコード対応改札、有人改札での提示、無人駅・ワンマン列車での乗務員スキャンに対応。
             </div>
           </div>
           <div class="overview-row">
@@ -2393,7 +2528,7 @@
           <div class="overview-row">
             <div class="ot-label">内　容</div>
             <div class="ot-value">
-              対象駅での途中下車・乗降自由。1日乗降客数約3万人以下の通過駅が対象。<br /><span
+              観光配分システムとして機能するフリーパス。1日平均乗降客数35,000人以下の駅が下車対象（除外駅でも乗り換え・帰宅目的の場合は下車可）。各駅に1日あたりの利用上限あり、定員に達した日程は予約不可。乗車（入場）はすべての駅で自由。<br /><span
                 style="font-size: 0.85rem"
                 >※山陽新幹線は<strong>自由席のみ</strong>ご利用いただけます。指定席・グリーン車は別途料金が必要です。</span
               >
@@ -2527,6 +2662,16 @@
       document
         .querySelectorAll(".reveal")
         .forEach((el) => observer.observe(el));
+
+      // Shuffle station cards on each load
+      document.querySelectorAll(".station-grid").forEach((grid) => {
+        const cards = Array.from(grid.children);
+        for (let i = cards.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
+        cards.forEach((card) => grid.appendChild(card));
+      });
     </script>
   </body>
 </html>
