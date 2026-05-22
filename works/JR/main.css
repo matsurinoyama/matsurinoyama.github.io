@@ -1005,6 +1005,7 @@ nav {
 .tab-btn {
   display: flex;
   position: relative;
+  justify-content: center;
   align-items: center;
   gap: 0.55rem;
   transition: color 0.2s;
@@ -1012,6 +1013,7 @@ nav {
   border: none;
   background: none;
   padding: 1rem 2rem;
+  width: 100%;
   color: var(--text-sub);
   font-weight: 700;
   font-size: 0.88rem;
@@ -1658,10 +1660,6 @@ footer {
   }
   .hero {
     padding: 3rem 1.5rem 3rem;
-  }
-
-  .difficulty-tabs {
-    overflow-x: auto;
   }
   .tab-btn {
     padding: 0.8rem 1.2rem;
