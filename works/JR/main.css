@@ -1,3 +1,16 @@
+@font-face {
+  font-weight: 400;
+  src: url("Fonts/JF-Dot-Shinonome16.ttf") format("truetype");
+  font-family: "JFTicket";
+  font-display: swap;
+}
+@font-face {
+  font-weight: 700 800;
+  src: url("Fonts/JF-Dot-Shinonome16B.ttf") format("truetype");
+  font-family: "JFTicket";
+  font-display: swap;
+}
+
 :root {
   --jr-dark: #002f6c;
   --jr-blue: #0075be;
@@ -543,208 +556,205 @@ nav {
   font-family: "Shippori Mincho B1", serif;
 }
 
-/* ── PASS CARD (train ticket style) ── */
+/* ── PASS CARD (JR ticket style) ── */
 .pass-card {
-  display: flex;
   position: relative;
-  margin-top: 3rem;
+  margin: 5rem 0;
   box-shadow:
-    0 6px 28px rgba(0, 0, 0, 0.13),
-    0 1px 4px rgba(0, 0, 0, 0.07);
-  border: 1.5px solid #c8b89a;
-  border-radius: 6px;
-  background: #fdfaf5;
-  overflow: visible;
-  font-family: "Shippori Mincho B1", serif;
+    0 6px 30px rgba(0, 0, 0, 0.22),
+    0 1px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #90b8a0;
+  border-radius: 3px;
+  background: #c8e4d4;
+  aspect-ratio: 2.5 / 1;
+  overflow: hidden;
+  color: #111;
+  font-family: "JFTicket", "Shippori Mincho B1", serif;
 }
-.ticket-stub {
+.pass-card::before {
+  /*
+   * JR.svg path embedded inside a 200×200 transparent tile (logo ~80×43px
+   * centred at 60,78). Two layers offset by half-tile (100px) give half-drop
+   * stagger; nearest-neighbour gap ≈ 100√2 − 80 ≈ 61px ≈ 0.75× logo width.
+   */
+  position: absolute;
+  opacity: 0.1;
+  z-index: 0;
+  mix-blend-mode: multiply;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='440'%3E%3Csvg x='60' y='134' width='320' height='172' viewBox='0 0 300 162.6'%3E%3Cpath d='M75.1,73.1h20.4v24.8c0,5.5,13.9,5.7,17,5.7s20.8-.2,20.8-7.2v-55.8h75.7c13.5,0,16,19.3,16,24.3s-2.2,26-14.8,26h-7.9l22.7,28.6h-25.5l-37-46.4h38.3c4.4,0,4.6-6.1,4.6-7.4s-.2-6.7-4.4-6.7h-47.7v41.2c0,18.2-28.6,21.7-39.3,21.7s-39-5-39-20.4v-28.4Z' fill='%23004422'/%3E%3C/svg%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='440'%3E%3Csvg x='60' y='134' width='320' height='172' viewBox='0 0 300 162.6'%3E%3Cpath d='M75.1,73.1h20.4v24.8c0,5.5,13.9,5.7,17,5.7s20.8-.2,20.8-7.2v-55.8h75.7c13.5,0,16,19.3,16,24.3s-2.2,26-14.8,26h-7.9l22.7,28.6h-25.5l-37-46.4h38.3c4.4,0,4.6-6.1,4.6-7.4s-.2-6.7-4.4-6.7h-47.7v41.2c0,18.2-28.6,21.7-39.3,21.7s-39-5-39-20.4v-28.4Z' fill='%23004422'/%3E%3C/svg%3E%3C/svg%3E");
+  background-position:
+    0 0,
+    220px 220px;
+  background-size:
+    440px 440px,
+    440px 440px;
+  background-repeat: repeat, repeat;
+  pointer-events: none;
+  content: "";
+}
+.ticket-inner {
   display: flex;
   position: relative;
-  flex-shrink: 0;
-  align-items: stretch;
-  border-radius: 4px 0 0 4px;
-  background: var(--jr-dark);
-  width: 96px;
-}
-.ticket-stub-inner {
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem 0.6rem;
-  width: 100%;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
+  z-index: 1;
+  height: 100%;
 }
-.ticket-logo-mark {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.1rem;
-}
-.ticket-logo-jr {
-  color: var(--white);
-  font-weight: 700;
-  font-size: 1.55rem;
-  line-height: 1;
-  letter-spacing: 0.04em;
-}
-.ticket-logo-west {
-  color: var(--jr-orange);
-  font-weight: 700;
-  font-size: 0.6rem;
-  letter-spacing: 0.22em;
-}
-.ticket-stub-type {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.6rem;
-  letter-spacing: 0.22em;
-}
-.ticket-stub-price {
-  color: var(--jr-orange);
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-}
-.ticket-perf {
-  position: absolute;
-  top: 8px;
-  right: -1px;
-  bottom: 8px;
-  border-right: 2px dashed rgba(200, 184, 154, 0.6);
-  width: 0;
-}
-.ticket-body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  border-radius: 0 4px 4px 0;
-  padding: 1.4rem 1.8rem 0;
-  min-width: 0;
-  overflow: hidden;
-}
-.ticket-header {
+.ticket-top {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 0.9rem;
-  border-bottom: 1px solid #e0d5c8;
-  padding-bottom: 0.7rem;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 2rem 4rem 1.4rem;
+}
+.ticket-top-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+}
+.ticket-circle-mark {
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #111;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+}
+.ticket-badge {
+  display: inline-block;
+  flex-shrink: 0;
+  border: 2px solid #111;
+  padding: 0.15rem 0.3rem;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+}
+.ticket-title-block {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
 }
 .ticket-title-main {
-  color: var(--jr-dark);
+  color: #111;
   font-weight: 700;
-  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-  letter-spacing: 0.1em;
-}
-.ticket-serial {
-  margin-left: 1rem;
-  color: #b0a090;
-  font-size: 0.62rem;
-  font-family: "Shippori Mincho B1", serif;
+  font-size: 1.95rem;
   letter-spacing: 0.06em;
+}
+.ticket-title-sub {
+  color: #333;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+}
+.ticket-serial-top {
+  flex-shrink: 0;
+  color: #333;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-align: right;
   white-space: nowrap;
 }
-.ticket-route {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-.ticket-loc {
-  flex: 1;
-}
-.ticket-loc-label {
-  margin-bottom: 0.2rem;
-  color: var(--jr-blue);
-  font-weight: 700;
-  font-size: 0.58rem;
-  letter-spacing: 0.22em;
-}
-.ticket-loc-name {
-  color: var(--jr-dark);
-  font-weight: 700;
-  font-size: clamp(1.1rem, 2.2vw, 1.45rem);
-  line-height: 1.2;
-}
-.ticket-loc-sub {
-  margin-top: 0.2rem;
-  color: #a09080;
-  font-size: 0.65rem;
-  line-height: 1.5;
-}
-.ticket-route-arrow {
-  flex-shrink: 0;
-  padding: 0 0.3rem;
-  color: var(--jr-orange);
-  font-weight: 700;
-  font-size: 1.3rem;
-}
-.ticket-info-band {
-  display: flex;
-  margin-bottom: 0.75rem;
-  border: 1px solid #e0d5c8;
-  border-radius: 4px;
-  background: rgba(0, 47, 108, 0.025);
-  overflow: hidden;
-}
-.ticket-info-cell {
+.ticket-main {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 0.45rem 0.8rem;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.8rem 5rem 1.6rem;
 }
-.ticket-info-cell:not(:last-child) {
-  border-right: 1px solid #e0d5c8;
-}
-.ticket-info-label {
-  margin-bottom: 0.15rem;
-  color: var(--jr-blue);
-  font-weight: 700;
-  font-size: 0.57rem;
-  letter-spacing: 0.2em;
-}
-.ticket-info-val {
-  color: var(--jr-dark);
-  font-weight: 700;
-  font-size: 0.78rem;
-  line-height: 1.3;
-}
-.ticket-conditions {
+.ticket-stations {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0 1.4rem;
-  margin-bottom: 0.6rem;
-  color: #a09080;
-  font-size: 0.6rem;
-  line-height: 1.9;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  transform: scaleX(0.8);
+  transform-origin: center;
 }
-.ticket-stripe {
-  opacity: 0.82;
-  margin: 0 -1.8rem;
-  border-radius: 0 0 4px 0;
-  background: repeating-linear-gradient(
-    90deg,
-    #1a1a1a 0px,
-    #2a2828 8px,
-    #111 16px,
-    #222 24px
-  );
-  height: 20px;
+.ticket-station {
+  color: #060606;
+  font-weight: 800;
+  font-size: clamp(3rem, 5.8vw, 3.6rem);
+  line-height: 1.1;
+  letter-spacing: 0.5em;
+  text-align: center;
+  white-space: nowrap;
 }
-.ticket-punch {
+.ticket-arrow-char {
+  flex-shrink: 0;
+  padding: 0 0.4em;
+  color: #111;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.8vw, 2rem);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.ticket-via {
+  margin-top: 1.2rem;
+  color: #222;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+}
+.ticket-valid-row {
+  margin-bottom: 0.35rem;
+  color: #111;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+}
+.ticket-valid-row strong {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+.ticket-note-row {
+  color: #2a2a2a;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+.ticket-mag-stripe {
   position: absolute;
-  top: 50%;
-  left: 84px;
-  transform: translateY(-50%);
-  z-index: 3;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1.5px dashed #c8b89a;
-  border-radius: 50%;
-  background: #f3ede3;
-  width: 22px;
-  height: 22px;
+  right: 0;
+  bottom: 30%;
+  left: 0;
+  opacity: 0.75;
+  z-index: 0;
+  mix-blend-mode: multiply;
+  background: #7ecfc0;
+  height: 52px;
+}
+.ticket-bottom {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  z-index: 2;
+  padding: 1rem 4rem 2rem;
+  color: #333;
+  font-size: 1.2rem;
+  line-height: 1.75;
+  letter-spacing: 0.04em;
+}
+.ticket-bottom-codes {
+  flex-shrink: 0;
+  color: #333;
+  font-size: 1.2rem;
+  text-align: right;
+  white-space: nowrap;
+}
+.ticket-price {
+  font-weight: 800;
+  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+  letter-spacing: 0.02em;
 }
 
 /* ── RESERVATION ── */
@@ -767,22 +777,16 @@ nav {
   font-family: "Shippori Mincho B1", serif;
 }
 .res-icon {
-  display: inline-flex;
   flex-shrink: 0;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: var(--jr-blue);
-  width: 28px;
-  height: 28px;
-  color: var(--white);
-  font-size: 1rem;
+  color: var(--jr-blue);
+  font-size: 2em;
+  line-height: 1;
 }
 .res-rule-head .ti {
   vertical-align: -0.1em;
   margin-right: 0.35em;
   color: var(--jr-orange);
-  font-size: 0.95rem;
+  font-size: 1.5rem;
 }
 .res-body {
   margin-bottom: 1.8rem;
@@ -872,7 +876,7 @@ nav {
 }
 .lottery-stamp {
   display: inline-block;
-  transform: rotate(-1deg);
+  transform: rotate(var(--stamp-tilt, -1deg));
   margin-bottom: 2rem;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
   border-radius: 6px;
@@ -917,14 +921,16 @@ nav {
 }
 .period-label {
   position: absolute;
-  top: -0.65rem;
+  top: -1.1rem;
   left: 50%;
   transform: translateX(-50%);
+  border: 2px solid var(--jr-orange);
+  border-radius: 999px;
   background: var(--jr-mid);
-  padding: 0 1rem;
+  padding: 0.3rem 1.6rem;
   color: var(--jr-orange);
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   letter-spacing: 0.28em;
   white-space: nowrap;
 }
@@ -1466,6 +1472,61 @@ footer {
   opacity: 1;
 }
 
+/* ── TICKET DROP (overrides generic reveal) ── */
+.pass-card.reveal {
+  transform: translateY(-60px) rotate(0deg);
+  opacity: 0;
+  transition: none;
+}
+.pass-card.reveal.visible {
+  animation: ticketDrop 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transition: none;
+}
+@keyframes ticketDrop {
+  0% {
+    transform: translateY(-60px) rotate(0deg);
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  78% {
+    transform: translateY(8px) rotate(calc(var(--tilt-deg, -2deg) * 1.4));
+  }
+  100% {
+    transform: translateY(0) rotate(var(--tilt-deg, -2deg));
+    opacity: 1;
+  }
+}
+
+/* ── STAMP DROP (overrides generic reveal) ── */
+.lottery-stamp.reveal {
+  transform: translateY(-30px) rotate(0deg);
+  opacity: 0;
+  transition: none;
+}
+.lottery-stamp.reveal.visible {
+  animation: stampDrop 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transition: none;
+}
+@keyframes stampDrop {
+  0% {
+    transform: translateY(-30px) rotate(0deg);
+    opacity: 0;
+  }
+  55% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(3px) rotate(calc(var(--stamp-tilt, -1deg) * 1.35));
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) rotate(var(--stamp-tilt, -1deg));
+    opacity: 1;
+  }
+}
+
 @keyframes fadeUp {
   from {
     transform: translateY(22px);
@@ -1525,33 +1586,27 @@ footer {
   .res-step::after {
     display: none;
   }
-  .ticket-stub {
-    width: 72px;
+  .pass-card {
+    aspect-ratio: unset;
   }
-  .ticket-stub-inner {
-    gap: 0.75rem;
+  .ticket-top {
+    gap: 0.7rem;
+    padding: 1.2rem 2rem 0.8rem;
   }
-  .ticket-info-band {
-    flex-wrap: wrap;
+  .ticket-top-left {
+    gap: 0.7rem;
   }
-  .ticket-info-cell {
-    min-width: calc(50% - 1px);
+  .ticket-main {
+    gap: 0.5rem;
+    padding: 0.6rem 2rem 1rem;
   }
-  .ticket-info-cell:nth-child(2) {
-    border-right: none;
+  .ticket-bottom {
+    flex-direction: column;
+    margin-top: 0;
+    padding: 0.8rem 2rem 1.2rem;
   }
-  .ticket-info-cell:nth-child(3) {
-    border-top: 1px solid #e0d5c8;
-  }
-  .ticket-info-cell:nth-child(4) {
-    border-top: 1px solid #e0d5c8;
-    border-right: none;
-  }
-  .ticket-punch {
-    left: 60px;
-  }
-  .ticket-perf {
-    right: -1px;
+  .ticket-bottom-codes {
+    text-align: left;
   }
   .overview-row {
     grid-template-columns: 1fr;
@@ -1578,12 +1633,7 @@ footer {
   .hero {
     padding: 3rem 1.5rem 3rem;
   }
-  .ticket-body {
-    padding: 1rem 1.2rem 0;
-  }
-  .ticket-stripe {
-    margin: 0 -1.2rem;
-  }
+
   .difficulty-tabs {
     overflow-x: auto;
   }
