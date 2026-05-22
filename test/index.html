@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Carousel</title>
+  </head>
+  <style>
+    @font-face {
+      src: url("fonts/FOT-GMaruGoPro-M.otf"), url("fonts/FOT-GMaruGoPro-DB.otf"),
+        url("fonts/FOT-GMaruGoPro-B.otf");
+      font-family: "FOT-GMaruGo Pro";
+    }
+    body {
+      margin: 5vw 10vw;
+      padding: 0;
+      font-family: "FOT-GMaruGo Pro", sans-serif;
+    }
+
+    .carousel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1vw;
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .carousel-item {
+      flex-grow: 2;
+      flex-shrink: 2;
+      border-radius: 0.5vw;
+      background-color: #f0f0f0;
+      width: auto;
+      height: 200px;
+    }
+
+    .carousel-item img {
+      border-radius: 0.5vw;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+  <body>
+    <h1>Malayan Applied Arts<br />سني ڬونائن ملايا</h1>
+    <div class="carousel">
+      <h3 style="text-orientation: vertical-rl; writing-mode: vertical-rl">
+        2026
+      </h3>
+      <div class="carousel-item">
+        <img src="https://cdn.03080.jp/2026/WCC/driftingAway_01.jpeg" alt="" />
+      </div>
+      <div class="carousel-item">
+        <img src="https://cdn.03080.jp/2026/WCC/driftingAway_02.jpeg" alt="" />
+      </div>
+      <div class="carousel-item">
+        <img src="https://cdn.03080.jp/2026/WCC/driftingAway_03.jpeg" alt="" />
+      </div>
+      <div class="carousel-item">
+        <img src="https://cdn.03080.jp/2026/WCC/driftingAway_04.jpeg" alt="" />
+      </div>
+      <div class="carousel-item">
+        <img src="https://cdn.03080.jp/2026/WCC/driftingAway_05.jpeg" alt="" />
+      </div>
+      <h3 style="text-orientation: vertical-rl; writing-mode: vertical-rl">
+        2025
+      </h3>
+      <div class="carousel-item">
+        <img
+          src="https://cdn.03080.jp/2025/EER/001/peopleNotMet-Demachiyanagi_01.jpg"
+          alt=""
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="https://cdn.03080.jp/2025/EER/002/stationMaster_01.JPG"
+          alt=""
+        />
+      </div>
+      <div class="carousel-item">
+        <img src="https://cdn.03080.jp/2025/SMG/poster.jpg" alt="" />
+      </div>
+      <h3 style="text-orientation: vertical-rl; writing-mode: vertical-rl">
+        2022
+      </h3>
+      <div class="carousel-item">
+        <img src="https://cdn.03080.jp/2022/WWSA/after_01.jpg" alt="" />
+      </div>
+    </div>
+  </body>
+</html>
