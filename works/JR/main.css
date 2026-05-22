@@ -138,7 +138,7 @@ nav {
 .nav-cta {
   transition: background 0.2s !important;
   border-bottom: none !important;
-  border-radius: 20px !important;
+  border-radius: 999px !important;
   background: var(--jr-orange) !important;
   padding: 0.55rem 1.3rem !important;
   color: var(--white) !important;
@@ -324,7 +324,7 @@ nav {
   align-items: center;
   gap: 0.8rem;
   transition: all 0.3s;
-  border-radius: 8px;
+  border-radius: 999px;
   background: var(--jr-orange);
   padding: 1rem 2.2rem;
   color: var(--white);
@@ -689,10 +689,10 @@ nav {
 }
 .ticket-route-ref {
   vertical-align: super;
-  font-size: 1.4rem;
   font-weight: 400;
-  letter-spacing: 0;
+  font-size: 1.4rem;
   line-height: 0;
+  letter-spacing: 0;
 }
 .ticket-route-arrow {
   flex-shrink: 0;
@@ -932,7 +932,7 @@ nav {
   left: 50%;
   transform: translateX(-50%);
   border: 2px solid var(--jr-orange);
-  border-radius: 999px;
+  border-radius: 8px;
   background: var(--jr-mid);
   padding: 0.3rem 1.6rem;
   color: var(--jr-orange);
@@ -982,7 +982,7 @@ nav {
   align-items: center;
   gap: 0.8rem;
   transition: all 0.3s;
-  border-radius: 8px;
+  border-radius: 999px;
   background: var(--jr-orange);
   padding: 1.1rem 2.8rem;
   color: var(--white);
@@ -1379,7 +1379,7 @@ nav {
   align-items: center;
   gap: 0.7rem;
   transition: all 0.3s;
-  border-radius: 8px;
+  border-radius: 999px;
   background: var(--jr-orange);
   padding: 1.1rem 2.5rem;
   color: var(--white);
@@ -1398,7 +1398,7 @@ nav {
   gap: 0.7rem;
   transition: all 0.3s;
   border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 8px;
+  border-radius: 999px;
   background: transparent;
   padding: 1.1rem 2.5rem;
   color: var(--white);
@@ -1633,8 +1633,8 @@ footer {
     line-height: 1.6;
   }
   .ticket-codes {
-    text-align: right;
     font-size: 0.78rem;
+    text-align: right;
     white-space: normal;
   }
   .overview-row {
@@ -1714,8 +1714,8 @@ footer {
   .ticket-route-station {
     font-size: 1.2rem;
     letter-spacing: 0.12em;
-    white-space: nowrap;
     text-align: center;
+    white-space: nowrap;
   }
   .ticket-route-ref {
     font-size: 0.8rem;
