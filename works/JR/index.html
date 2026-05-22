@@ -16,1479 +16,6 @@
       href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont/dist/tabler-icons.min.css"
     />
     <link rel="stylesheet" href="main.css" />
-    <style>
-      :root {
-        --jr-dark: #002f6c;
-        --jr-blue: #0075be;
-        --jr-mid: #0057b8;
-        --jr-orange: #f07800;
-        --jr-orange-dk: #d66800;
-        --jr-sky: #e8f3fb;
-        --jr-gray: #f5f7fa;
-        --white: #ffffff;
-        --text: #222222;
-        --text-sub: #555555;
-        --text-lite: #888888;
-        --border: #d8e6f0;
-        --rule: rgba(0, 47, 108, 0.12);
-        --beginner: #00963d;
-        --medium: #f07800;
-        --expert: #c1272d;
-      }
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        background: var(--white);
-        overflow-x: hidden;
-        color: var(--text);
-        line-height: 1.8;
-        font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
-      }
-      .mincho {
-        font-family: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
-      }
-      .latin {
-        font-family: "Shippori Mincho B1", serif;
-      }
-
-      /* ── TOP BAR ── */
-      .top-bar {
-        background: var(--jr-dark);
-        padding: 0.45rem 1rem;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
-        text-align: center;
-      }
-      .top-bar a {
-        color: rgba(255, 255, 255, 0.8);
-        text-decoration: none;
-      }
-      .top-bar a:hover {
-        color: var(--jr-orange);
-      }
-
-      /* ── NAV ── */
-      nav {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        border-bottom: 3px solid var(--jr-dark);
-        background: var(--white);
-      }
-      .nav-inner {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0 auto;
-        padding: 0 2rem;
-        max-width: 1200px;
-        height: 64px;
-      }
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        text-decoration: none;
-      }
-      .logo-img {
-        width: auto;
-        height: 40px;
-      }
-      .logo-sep {
-        flex-shrink: 0;
-        background: var(--border);
-        width: 1px;
-        height: 28px;
-      }
-      .logo-text {
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: 0.82rem;
-        line-height: 1.4;
-        letter-spacing: 0.04em;
-      }
-      .logo-text small {
-        display: block;
-        color: var(--text-sub);
-        font-weight: 400;
-        font-size: 0.72rem;
-      }
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 1.6rem;
-        font-weight: 500;
-        font-size: 0.82rem;
-        list-style: none;
-      }
-      .nav-links a {
-        transition:
-          border-color 0.2s,
-          color 0.2s;
-        border-bottom: 2px solid transparent;
-        padding: 0.3rem 0;
-        color: var(--jr-dark);
-        text-decoration: none;
-      }
-      .nav-links a:hover {
-        border-bottom-color: var(--jr-orange);
-      }
-      .nav-cta {
-        transition: background 0.2s !important;
-        border-bottom: none !important;
-        border-radius: 20px !important;
-        background: var(--jr-orange) !important;
-        padding: 0.55rem 1.3rem !important;
-        color: var(--white) !important;
-        font-weight: 700 !important;
-      }
-      .nav-cta:hover {
-        background: var(--jr-orange-dk) !important;
-      }
-
-      /* ── HERO ── */
-      .hero {
-        position: relative;
-        background: var(--jr-dark);
-        padding: 5rem 2rem 5rem;
-        overflow: hidden;
-        color: var(--white);
-      }
-      /* ── HERO SLIDESHOW ── */
-      .hero-slides {
-        position: absolute;
-        inset: 0;
-      }
-      .hero-slide {
-        position: absolute;
-        opacity: 0;
-        transition: opacity 1.3s ease;
-        inset: 0;
-      }
-      .hero-slide.active {
-        opacity: 1;
-      }
-      .hero-slide img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-      }
-      .slide-overlay {
-        position: absolute;
-        z-index: 1;
-        inset: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(0, 47, 108, 0.93) 0%,
-          rgba(0, 74, 158, 0.82) 40%,
-          rgba(0, 117, 190, 0.58) 100%
-        );
-      }
-      .slide-controls {
-        position: absolute;
-        z-index: 2;
-        inset: 0;
-        pointer-events: none;
-      }
-      .slide-controls > * {
-        pointer-events: all;
-      }
-      .slide-caption {
-        position: absolute;
-        right: 2.5rem;
-        bottom: 3.2rem;
-        text-align: right;
-      }
-      .slide-caption-name {
-        display: block;
-        margin-bottom: 0.2rem;
-        color: rgba(255, 255, 255, 0.85);
-        font-size: 0.88rem;
-        font-family: "Shippori Mincho B1", serif;
-        letter-spacing: 0.2em;
-      }
-      .slide-caption-line {
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 0.66rem;
-        letter-spacing: 0.12em;
-      }
-      .hero-inner {
-        display: grid;
-        position: relative;
-        grid-template-columns: 1fr auto;
-        align-items: start;
-        gap: 3rem;
-        z-index: 3;
-        margin: 0 auto;
-        max-width: 1200px;
-      }
-      .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        margin-bottom: 1.5rem;
-        border-radius: 6px;
-        background: var(--jr-orange);
-        padding: 0.4rem 1rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.78rem;
-        letter-spacing: 0.1em;
-      }
-      .hero-eyebrow {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        margin-bottom: 1.2rem;
-        color: rgba(255, 255, 255, 0.65);
-        font-size: 0.72rem;
-        letter-spacing: 0.35em;
-        text-transform: uppercase;
-      }
-      .hero-eyebrow::before {
-        flex-shrink: 0;
-        background: var(--jr-orange);
-        width: 28px;
-        height: 1px;
-        content: "";
-      }
-      .hero h1 {
-        margin-bottom: 1rem;
-        font-weight: 700;
-        font-size: clamp(2.2rem, 5vw, 4.2rem);
-        line-height: 1.3;
-        font-family: "Shippori Mincho B1", serif;
-        letter-spacing: 0.02em;
-      }
-      .hero h1 .accent {
-        color: var(--jr-orange);
-      }
-      .hero-subtitle {
-        margin-bottom: 2rem;
-        color: rgba(255, 255, 255, 0.82);
-        font-weight: 400;
-        font-size: clamp(1rem, 1.8vw, 1.35rem);
-        font-family: "Shippori Mincho B1", serif;
-        letter-spacing: 0.05em;
-      }
-      .hero-lead {
-        margin-bottom: 2.5rem;
-        max-width: 580px;
-        color: rgba(255, 255, 255, 0.75);
-        font-size: 0.95rem;
-        line-height: 2;
-      }
-      .hero-stats {
-        display: flex;
-        margin-bottom: 2.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.1);
-        max-width: 560px;
-        overflow: hidden;
-      }
-      .hero-stat {
-        flex: 1;
-        border-right: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 1.2rem 1.4rem;
-        text-align: center;
-      }
-      .hero-stat:last-child {
-        border-right: none;
-      }
-      .hero-stat .num {
-        margin-bottom: 0.3rem;
-        color: var(--jr-orange);
-        font-weight: 800;
-        font-size: clamp(1.4rem, 2.5vw, 2rem);
-        line-height: 1.1;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .hero-stat .num .small {
-        margin-left: 0.1em;
-        color: rgba(255, 255, 255, 0.65);
-        font-weight: 500;
-        font-size: 0.52em;
-      }
-      .hero-stat .label {
-        color: rgba(255, 255, 255, 0.55);
-        font-size: 0.68rem;
-        letter-spacing: 0.15em;
-      }
-      .hero-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.8rem;
-        transition: all 0.3s;
-        border-radius: 8px;
-        background: var(--jr-orange);
-        padding: 1rem 2.2rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.88rem;
-        letter-spacing: 0.1em;
-        text-decoration: none;
-      }
-      .hero-cta:hover {
-        transform: translateY(-2px);
-        background: var(--jr-orange-dk);
-      }
-      .hero-side {
-        display: flex;
-        position: relative;
-        align-items: flex-end;
-        align-self: stretch;
-        padding-top: 2rem;
-        color: rgba(255, 255, 255, 0.4);
-        font-size: 0.9rem;
-        font-family: "Shippori Mincho B1", serif;
-        letter-spacing: 0.3em;
-        writing-mode: vertical-rl;
-      }
-      .hero-side::before {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        background: rgba(255, 255, 255, 0.25);
-        width: 1px;
-        height: 1.5rem;
-        content: "";
-      }
-
-      /* ── AREA BAND ── */
-      .area-band {
-        background: var(--jr-dark);
-        padding: 0.9rem 2rem;
-      }
-      .area-band-inner {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem 1.5rem;
-        margin: 0 auto;
-        max-width: 1200px;
-      }
-      .area-band .band-label {
-        color: var(--jr-orange);
-        font-weight: 700;
-        font-size: 0.78rem;
-        letter-spacing: 0.08em;
-        white-space: nowrap;
-      }
-      .area-tag {
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.12);
-        padding: 0.2rem 0.7rem;
-        color: rgba(255, 255, 255, 0.82);
-        font-size: 0.72rem;
-        letter-spacing: 0.06em;
-        white-space: nowrap;
-      }
-      .area-note {
-        color: rgba(255, 255, 255, 0.4);
-        font-size: 0.7rem;
-      }
-
-      /* ── SECTIONS ── */
-      .section {
-        padding: 6rem 2rem;
-      }
-      .section--gray {
-        background: var(--jr-gray);
-      }
-      .section--sky {
-        background: var(--jr-sky);
-      }
-      .section--dark {
-        background: var(--jr-dark);
-        color: var(--white);
-      }
-      .section--blue {
-        background: var(--jr-mid);
-        color: var(--white);
-      }
-      .section-wrap {
-        margin: 0 auto;
-        max-width: 1200px;
-      }
-      .section-eyebrow {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        margin-bottom: 0.8rem;
-        color: var(--jr-blue);
-        font-weight: 700;
-        font-size: 0.72rem;
-        letter-spacing: 0.28em;
-        text-transform: uppercase;
-      }
-      .section-eyebrow::before {
-        flex-shrink: 0;
-        background: var(--jr-orange);
-        width: 22px;
-        height: 2px;
-        content: "";
-      }
-      .section--dark .section-eyebrow,
-      .section--blue .section-eyebrow {
-        color: rgba(255, 255, 255, 0.6);
-      }
-      .section-title {
-        margin-bottom: 0.8rem;
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: clamp(1.7rem, 3vw, 2.6rem);
-        line-height: 1.5;
-        font-family: "Shippori Mincho B1", serif;
-        letter-spacing: 0.02em;
-      }
-      .section--dark .section-title,
-      .section--blue .section-title {
-        color: var(--white);
-      }
-      .section-lead {
-        margin-bottom: 3rem;
-        max-width: 760px;
-        color: var(--text-sub);
-        font-size: 0.95rem;
-        line-height: 2;
-      }
-      .section--dark .section-lead,
-      .section--blue .section-lead {
-        color: rgba(255, 255, 255, 0.72);
-      }
-
-      /* ── PHILOSOPHY ── */
-      .philosophy-grid {
-        display: grid;
-        grid-template-columns: 1fr 1.4fr;
-        align-items: start;
-        gap: 5rem;
-        margin-top: 3rem;
-        border-top: 2px solid var(--jr-dark);
-        padding-top: 3rem;
-      }
-      .philosophy-quote {
-        color: var(--jr-dark);
-        font-weight: 600;
-        font-size: clamp(1.6rem, 2.8vw, 2.2rem);
-        line-height: 2;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .philosophy-quote .em {
-        color: var(--jr-orange);
-      }
-      .philosophy-body {
-        color: var(--text-sub);
-        font-size: 0.95rem;
-        line-height: 2.2;
-      }
-      .philosophy-body p + p {
-        margin-top: 1.5rem;
-      }
-
-      /* ── DATA ── */
-      .data-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin-top: 3rem;
-      }
-      .data-card {
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        border-top: 3px solid var(--jr-orange);
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.07);
-        padding: 2.5rem;
-      }
-      .data-card.featured {
-        border-top-color: var(--white);
-      }
-      .data-card .dc-tag {
-        margin-bottom: 0.8rem;
-        color: var(--jr-orange);
-        font-weight: 700;
-        font-size: 0.72rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-      }
-      .data-card.featured .dc-tag {
-        color: rgba(255, 255, 255, 0.55);
-      }
-      .data-card .big-num {
-        margin-bottom: 0.5rem;
-        color: var(--white);
-        font-weight: 800;
-        font-size: clamp(3.5rem, 7vw, 6rem);
-        line-height: 1;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .data-card .big-num .unit {
-        margin-left: 0.3rem;
-        color: rgba(255, 255, 255, 0.55);
-        font-weight: 400;
-        font-size: 0.35em;
-      }
-      .data-card.featured .big-num {
-        color: var(--jr-orange);
-      }
-      .data-card .dc-desc {
-        margin-top: 1rem;
-        color: rgba(255, 255, 255, 0.65);
-        font-size: 0.9rem;
-        line-height: 1.9;
-      }
-      .problem-conclusion {
-        margin-top: 4rem;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-left: 4px solid var(--jr-orange);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.04);
-        padding: 2.5rem;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: clamp(1.05rem, 1.8vw, 1.35rem);
-        line-height: 2.1;
-        font-family: "Shippori Mincho B1", serif;
-      }
-
-      /* ── PASS CARD ── */
-      .pass-card {
-        margin-top: 3rem;
-        border: 1px solid var(--border);
-        border-top: 4px solid var(--jr-dark);
-        border-radius: 12px;
-        background: var(--white);
-        padding: 3rem;
-        overflow: hidden;
-      }
-      .pass-card-head {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 1.5rem;
-      }
-      .pass-card-title {
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: clamp(1.4rem, 2.5vw, 2rem);
-        line-height: 1.4;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .pass-card-title .pop {
-        color: var(--jr-orange);
-      }
-      .pass-card-badge {
-        align-self: flex-start;
-        border-radius: 4px;
-        background: var(--jr-dark);
-        padding: 0.4rem 1rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.72rem;
-        letter-spacing: 0.18em;
-        white-space: nowrap;
-      }
-      .pass-desc {
-        margin-bottom: 2rem;
-        max-width: 760px;
-        color: var(--text-sub);
-        font-size: 0.95rem;
-        line-height: 2.1;
-      }
-      .pass-meta {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-      .pass-meta-item {
-        border-right: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        padding: 1.5rem;
-      }
-      .pass-meta-item:nth-child(2n) {
-        border-right: none;
-      }
-      .pass-meta-item:nth-last-child(-n + 2) {
-        border-bottom: none;
-      }
-      .meta-label {
-        margin-bottom: 0.5rem;
-        color: var(--jr-blue);
-        font-weight: 700;
-        font-size: 0.7rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-      }
-      .meta-value {
-        margin-bottom: 0.3rem;
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: 1.15rem;
-        line-height: 1.4;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .meta-sub {
-        color: var(--text-lite);
-        font-size: 0.78rem;
-      }
-
-      /* ── RESERVATION ── */
-      .reservation-box {
-        margin-top: 2rem;
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--jr-blue);
-        border-radius: 10px;
-        background: var(--white);
-        padding: 2.5rem;
-      }
-      .res-title {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-        margin-bottom: 1rem;
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: 1.15rem;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .res-icon {
-        display: inline-flex;
-        flex-shrink: 0;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        background: var(--jr-blue);
-        width: 28px;
-        height: 28px;
-        color: var(--white);
-        font-size: 1rem;
-      }
-      .res-rule-head .ti {
-        vertical-align: -0.1em;
-        margin-right: 0.35em;
-        color: var(--jr-orange);
-        font-size: 0.95rem;
-      }
-      .res-body {
-        margin-bottom: 1.8rem;
-        color: var(--text-sub);
-        font-size: 0.9rem;
-        line-height: 1.95;
-      }
-      .res-body strong {
-        color: var(--jr-dark);
-      }
-      .res-steps {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1rem;
-      }
-      .res-step {
-        position: relative;
-        text-align: center;
-      }
-      .res-step::after {
-        position: absolute;
-        top: 0.9rem;
-        right: -0.7rem;
-        content: "→";
-        color: var(--jr-blue);
-        font-size: 0.9rem;
-      }
-      .res-step:last-child::after {
-        display: none;
-      }
-      .step-num {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto 0.8rem;
-        border-radius: 50%;
-        background: var(--jr-dark);
-        width: 36px;
-        height: 36px;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.85rem;
-      }
-      .step-head {
-        margin-bottom: 0.3rem;
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: 0.88rem;
-      }
-      .step-text {
-        color: var(--text-sub);
-        font-size: 0.78rem;
-        line-height: 1.65;
-      }
-      .res-rules {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-        margin: 0 0 1.8rem;
-      }
-      .res-rule-item {
-        border-left: 3px solid var(--jr-orange);
-        border-radius: 0 6px 6px 0;
-        background: rgba(0, 0, 0, 0.025);
-        padding: 0.6rem 0.9rem;
-      }
-      .res-rule-head {
-        margin-bottom: 0.2rem;
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: 0.83rem;
-      }
-      .res-rule-body {
-        color: var(--text-sub);
-        font-size: 0.8rem;
-        line-height: 1.75;
-      }
-      .res-rule-body strong {
-        color: var(--jr-dark);
-      }
-
-      /* ── LOTTERY ── */
-      .lottery-wrap {
-        margin: 0 auto;
-        max-width: 900px;
-        text-align: center;
-      }
-      .lottery-stamp {
-        display: inline-block;
-        transform: rotate(-1deg);
-        margin-bottom: 2rem;
-        box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 6px;
-        background: var(--jr-orange);
-        padding: 0.6rem 2rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.85rem;
-        letter-spacing: 0.2em;
-      }
-      .lottery-bignum {
-        margin-bottom: 0.8rem;
-        color: var(--white);
-        font-weight: 800;
-        font-size: clamp(4rem, 10vw, 8rem);
-        line-height: 1;
-        font-family: "Shippori Mincho B1", serif;
-        letter-spacing: -0.02em;
-      }
-      .lottery-bignum .accent {
-        color: var(--jr-orange);
-      }
-      .lottery-bignum .small {
-        margin-left: 0.2em;
-        font-weight: 600;
-        font-size: 0.35em;
-      }
-      .lottery-tagline {
-        margin-bottom: 3rem;
-        color: rgba(255, 255, 255, 0.78);
-        font-size: clamp(1rem, 1.8vw, 1.3rem);
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .lottery-period {
-        position: relative;
-        margin: 0 auto;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 2.5rem;
-        max-width: 680px;
-      }
-      .period-label {
-        position: absolute;
-        top: -0.65rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--jr-mid);
-        padding: 0 1rem;
-        color: var(--jr-orange);
-        font-weight: 700;
-        font-size: 0.7rem;
-        letter-spacing: 0.28em;
-        white-space: nowrap;
-      }
-      .lottery-dates {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-      }
-      .date-block {
-        flex: 1;
-        text-align: center;
-      }
-      .date-label-t {
-        margin-bottom: 0.6rem;
-        color: rgba(255, 255, 255, 0.55);
-        font-size: 0.75rem;
-        letter-spacing: 0.2em;
-      }
-      .date-value {
-        color: var(--white);
-        font-weight: 700;
-        font-size: clamp(1.1rem, 1.8vw, 1.45rem);
-        line-height: 1.4;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .date-value .year {
-        display: block;
-        margin-bottom: 0.2rem;
-        color: var(--jr-orange);
-        font-size: 0.68em;
-      }
-      .date-arrow {
-        color: var(--jr-orange);
-        font-size: 1.6rem;
-      }
-      .lottery-cta {
-        margin-top: 2.5rem;
-      }
-      .lottery-cta a {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.8rem;
-        transition: all 0.3s;
-        border-radius: 8px;
-        background: var(--jr-orange);
-        padding: 1.1rem 2.8rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.9rem;
-        letter-spacing: 0.15em;
-        text-decoration: none;
-      }
-      .lottery-cta a:hover {
-        transform: translateY(-2px);
-        background: var(--jr-orange-dk);
-      }
-
-      /* ── STATIONS ── */
-      .difficulty-tabs {
-        display: flex;
-        margin-bottom: 2.5rem;
-        border-bottom: 2px solid var(--border);
-      }
-      .tab-btn {
-        display: flex;
-        position: relative;
-        align-items: center;
-        gap: 0.55rem;
-        transition: color 0.2s;
-        cursor: pointer;
-        border: none;
-        background: none;
-        padding: 1rem 2rem;
-        color: var(--text-sub);
-        font-weight: 700;
-        font-size: 0.88rem;
-        letter-spacing: 0.05em;
-      }
-      .tab-btn::after {
-        position: absolute;
-        right: 0;
-        bottom: -2px;
-        left: 0;
-        transition: background 0.2s;
-        background: transparent;
-        height: 3px;
-        content: "";
-      }
-      .tab-btn.active {
-        color: var(--jr-dark);
-      }
-      .tab-btn.active::after {
-        background: var(--jr-dark);
-      }
-      .tab-btn:hover {
-        color: var(--jr-dark);
-      }
-      .diff-dot {
-        flex-shrink: 0;
-        border-radius: 50%;
-        width: 10px;
-        height: 10px;
-      }
-      .dot-beginner {
-        background: var(--beginner);
-      }
-      .dot-medium {
-        background: var(--medium);
-      }
-      .dot-expert {
-        background: var(--expert);
-      }
-
-      .tab-panel {
-        display: none;
-      }
-      .tab-panel.active {
-        display: block;
-      }
-
-      .level-intro {
-        margin-bottom: 2rem;
-        border-left: 4px solid;
-        border-radius: 8px;
-        background: var(--jr-sky);
-        padding: 1.4rem 1.8rem;
-        color: var(--text-sub);
-        font-size: 0.9rem;
-        line-height: 1.95;
-      }
-      .level-intro.beginner {
-        border-color: var(--beginner);
-      }
-      .level-intro.medium {
-        border-color: var(--medium);
-      }
-      .level-intro.expert {
-        border-color: var(--expert);
-      }
-      .level-intro strong {
-        color: var(--jr-dark);
-      }
-
-      .station-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-      }
-      .station-card {
-        display: flex;
-        flex-direction: column;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        border: 1px solid var(--border);
-        border-top: 3px solid var(--jr-dark);
-        border-radius: 12px;
-        background: var(--white);
-        padding: 2rem;
-        overflow: hidden;
-      }
-      .station-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 14px 32px -12px rgba(0, 47, 108, 0.22);
-      }
-      .panel-beginner .station-card {
-        border-top-color: var(--beginner);
-      }
-      .panel-medium .station-card {
-        border-top-color: var(--medium);
-      }
-      .panel-expert .station-card {
-        border-top-color: var(--expert);
-      }
-
-      .diff-badge {
-        display: inline-block;
-        margin-bottom: 1rem;
-        border-radius: 20px;
-        padding: 0.2rem 0.65rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.68rem;
-        letter-spacing: 0.08em;
-      }
-      .badge-beginner {
-        background: var(--beginner);
-      }
-      .badge-medium {
-        background: var(--medium);
-      }
-      .badge-expert {
-        background: var(--expert);
-      }
-
-      .station-name {
-        margin-bottom: 0.2rem;
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: 1.7rem;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .station-yomi {
-        margin-bottom: 0.85rem;
-        color: var(--text-lite);
-        font-size: 0.73rem;
-        letter-spacing: 0.25em;
-      }
-      .station-info {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-        margin-bottom: 1rem;
-      }
-      .station-tag {
-        border-radius: 20px;
-        background: var(--jr-sky);
-        padding: 0.2rem 0.6rem;
-        color: var(--jr-dark);
-        font-weight: 600;
-        font-size: 0.7rem;
-        letter-spacing: 0.06em;
-      }
-      .station-tag.pref {
-        background: var(--jr-dark);
-        color: var(--white);
-      }
-      .station-desc {
-        flex: 1;
-        border-top: 1px dashed var(--border);
-        padding-top: 1rem;
-        color: var(--text-sub);
-        font-size: 0.87rem;
-        line-height: 1.95;
-      }
-      .station-attr {
-        margin-top: auto;
-        padding-top: 1rem;
-        color: var(--jr-blue);
-        font-weight: 600;
-        font-size: 0.73rem;
-        line-height: 1.9;
-        letter-spacing: 0.02em;
-      }
-      /* ── LINE TABLE ── */
-      .line-data-section {
-        margin-top: 3rem;
-      }
-      .line-data-head {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        margin-bottom: 1.2rem;
-        color: var(--jr-orange);
-        font-weight: 700;
-        font-size: 0.68rem;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-      }
-      .line-data-head::before {
-        flex-shrink: 0;
-        background: var(--jr-orange);
-        width: 18px;
-        height: 2px;
-        content: "";
-      }
-      .line-table-wrap {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        overflow-x: auto;
-      }
-      .line-table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 0.82rem;
-      }
-      .line-table thead th {
-        background: rgba(255, 255, 255, 0.07);
-        padding: 0.7rem 1rem;
-        color: rgba(255, 255, 255, 0.4);
-        font-weight: 700;
-        font-size: 0.63rem;
-        letter-spacing: 0.22em;
-        text-align: left;
-        text-transform: uppercase;
-        white-space: nowrap;
-      }
-      .line-table tbody td {
-        vertical-align: middle;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-        padding: 0.6rem 1rem;
-        color: rgba(255, 255, 255, 0.65);
-        white-space: nowrap;
-      }
-      .line-table tbody tr:hover td {
-        background: rgba(255, 255, 255, 0.03);
-      }
-      .lt-line {
-        color: var(--white);
-        font-weight: 600;
-      }
-      .lt-campaign {
-        vertical-align: super;
-        margin-left: 0.2em;
-        color: var(--jr-orange);
-        font-weight: 700;
-        font-size: 0.62rem;
-      }
-      .lt-max {
-        color: var(--jr-orange);
-        font-weight: 700;
-        font-family: "Shippori Mincho B1", serif;
-        text-align: right;
-      }
-      .lt-min {
-        color: rgba(255, 255, 255, 0.4);
-        font-family: "Shippori Mincho B1", serif;
-        text-align: right;
-      }
-      .lt-ratio {
-        color: rgba(255, 255, 255, 0.3);
-        font-size: 0.75rem;
-        text-align: right;
-        white-space: nowrap;
-      }
-      .lt-ratio.hot {
-        color: var(--jr-orange);
-        font-weight: 700;
-        font-size: 0.8rem;
-      }
-      .line-data-note {
-        margin-top: 0.8rem;
-        color: rgba(255, 255, 255, 0.3);
-        font-size: 0.68rem;
-        letter-spacing: 0.05em;
-      }
-      @media (max-width: 900px) {
-        .line-table thead th,
-        .line-table tbody td {
-          padding: 0.5rem 0.7rem;
-          font-size: 0.75rem;
-        }
-      }
-      .station-img-wrap {
-        margin: -2rem -2rem 1.5rem;
-        background: var(--jr-gray);
-        height: 190px;
-        overflow: hidden;
-      }
-      .station-img-wrap img {
-        display: block;
-        transition: transform 0.5s ease;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .station-card:hover .station-img-wrap img {
-        transform: scale(1.05);
-      }
-      .station-tag.shinkansen {
-        background: var(--jr-orange);
-        color: var(--white);
-      }
-
-      /* ── OVERVIEW ── */
-      .overview-table {
-        margin-top: 2.5rem;
-        border-top: 3px solid var(--jr-dark);
-      }
-      .overview-row {
-        display: grid;
-        grid-template-columns: 180px 1fr;
-        align-items: baseline;
-        gap: 2rem;
-        transition: background 0.2s;
-        border-bottom: 1px solid var(--border);
-        padding: 1.3rem 1rem;
-      }
-      .overview-row:hover {
-        background: var(--jr-sky);
-      }
-      .ot-label {
-        position: relative;
-        padding-left: 0.9rem;
-        color: var(--jr-dark);
-        font-weight: 700;
-        font-size: 0.85rem;
-        letter-spacing: 0.1em;
-      }
-      .ot-label::before {
-        position: absolute;
-        top: 0.5em;
-        left: 0;
-        background: var(--jr-orange);
-        width: 3px;
-        height: 0.9em;
-        content: "";
-      }
-      .ot-value {
-        color: var(--text-sub);
-        font-size: 0.92rem;
-        line-height: 1.95;
-      }
-      .ot-value strong {
-        color: var(--jr-dark);
-        font-weight: 700;
-      }
-
-      /* ── CTA ── */
-      .cta-inner {
-        margin: 0 auto;
-        max-width: 800px;
-        text-align: center;
-      }
-      .cta-inner h2 {
-        margin-bottom: 1.5rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: clamp(1.8rem, 3.5vw, 3rem);
-        line-height: 1.5;
-        font-family: "Shippori Mincho B1", serif;
-      }
-      .cta-inner h2 .accent {
-        color: var(--jr-orange);
-      }
-      .cta-inner p {
-        margin-bottom: 2.5rem;
-        color: rgba(255, 255, 255, 0.78);
-        font-size: 0.98rem;
-        line-height: 2;
-      }
-      .btn-group {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
-      }
-      .btn-orange {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.7rem;
-        transition: all 0.3s;
-        border-radius: 8px;
-        background: var(--jr-orange);
-        padding: 1.1rem 2.5rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.88rem;
-        letter-spacing: 0.12em;
-        text-decoration: none;
-      }
-      .btn-orange:hover {
-        transform: translateY(-2px);
-        background: var(--jr-orange-dk);
-      }
-      .btn-outline {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.7rem;
-        transition: all 0.3s;
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        border-radius: 8px;
-        background: transparent;
-        padding: 1.1rem 2.5rem;
-        color: var(--white);
-        font-weight: 700;
-        font-size: 0.88rem;
-        letter-spacing: 0.12em;
-        text-decoration: none;
-      }
-      .btn-outline:hover {
-        border-color: var(--white);
-        background: rgba(255, 255, 255, 0.1);
-      }
-
-      /* ── FOOTER ── */
-      footer {
-        background: #07131f;
-        padding: 4rem 2rem 2rem;
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 0.82rem;
-      }
-      .footer-inner {
-        display: grid;
-        grid-template-columns: 1.4fr 1fr 1fr;
-        gap: 3rem;
-        margin: 0 auto;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 3rem;
-        max-width: 1200px;
-      }
-      .footer-brand .f-logo {
-        filter: brightness(0) invert(1);
-        margin-bottom: 1rem;
-        height: 60px;
-      }
-      .footer-brand p {
-        line-height: 1.9;
-      }
-      .footer-col h4 {
-        margin-bottom: 1.2rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        padding-bottom: 0.6rem;
-        color: var(--white);
-        font-size: 0.88rem;
-        letter-spacing: 0.15em;
-      }
-      .footer-col ul {
-        line-height: 2.3;
-        list-style: none;
-      }
-      .footer-col a {
-        transition: color 0.2s;
-        color: rgba(255, 255, 255, 0.5);
-        text-decoration: none;
-      }
-      .footer-col a:hover {
-        color: var(--jr-orange);
-      }
-      .footer-bottom {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 2rem auto 0;
-        max-width: 1200px;
-        font-size: 0.72rem;
-        letter-spacing: 0.1em;
-      }
-
-      /* ── REVEAL ── */
-      .reveal {
-        transform: translateY(22px);
-        opacity: 0;
-        transition:
-          opacity 0.8s ease,
-          transform 0.8s ease;
-      }
-      .reveal.visible {
-        transform: translateY(0);
-        opacity: 1;
-      }
-
-      @keyframes fadeUp {
-        from {
-          transform: translateY(22px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-      .hero-content > * {
-        opacity: 0;
-        animation: fadeUp 0.9s ease forwards;
-      }
-      .hero-content .hero-badge {
-        animation-delay: 0.1s;
-      }
-      .hero-content .hero-eyebrow {
-        animation-delay: 0.25s;
-      }
-      .hero-content h1 {
-        animation-delay: 0.4s;
-      }
-      .hero-content .hero-subtitle {
-        animation-delay: 0.55s;
-      }
-      .hero-content .hero-lead {
-        animation-delay: 0.7s;
-      }
-      .hero-content .hero-stats {
-        animation-delay: 0.85s;
-      }
-      .hero-content .hero-cta {
-        animation-delay: 1s;
-      }
-      .hero-side {
-        opacity: 0;
-        animation: fadeUp 0.9s ease 1.1s forwards;
-      }
-
-      /* ── RESPONSIVE ── */
-      @media (max-width: 900px) {
-        .hero-inner {
-          grid-template-columns: 1fr;
-        }
-        .hero-side,
-        .top-bar {
-          display: none;
-        }
-        .philosophy-grid,
-        .data-grid,
-        .station-grid,
-        .res-steps {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
-        }
-        .res-step::after {
-          display: none;
-        }
-        .pass-meta {
-          grid-template-columns: 1fr;
-        }
-        .pass-meta-item {
-          border-right: none !important;
-          border-bottom: 1px solid var(--border) !important;
-        }
-        .pass-meta-item:last-child {
-          border-bottom: none !important;
-        }
-        .overview-row {
-          grid-template-columns: 1fr;
-          gap: 0.3rem;
-        }
-        .footer-inner {
-          grid-template-columns: 1fr;
-          gap: 2rem;
-        }
-        .footer-bottom {
-          flex-direction: column;
-          gap: 0.5rem;
-          text-align: center;
-        }
-        .nav-links {
-          display: none;
-        }
-        .slide-caption {
-          display: none;
-        }
-        .section {
-          padding: 4rem 1.5rem;
-        }
-        .hero {
-          padding: 3rem 1.5rem 3rem;
-        }
-        .pass-card {
-          padding: 2rem 1.5rem;
-        }
-        .difficulty-tabs {
-          overflow-x: auto;
-        }
-        .tab-btn {
-          padding: 0.8rem 1.2rem;
-          font-size: 0.8rem;
-          white-space: nowrap;
-        }
-        .lottery-dates {
-          flex-direction: column;
-          gap: 1rem;
-        }
-        .date-arrow {
-          transform: rotate(90deg);
-        }
-        .btn-group {
-          flex-direction: column;
-          align-items: center;
-        }
-        .lottery-period {
-          padding: 2rem 1.5rem;
-        }
-      }
-    </style>
   </head>
   <body>
     <!-- TOP BAR -->
@@ -1623,6 +150,116 @@
         >
           <img
             src="https://www.ana.co.jp/japan-travel-planner/area/kyushu/yamaguchi/0000003/img005.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="城崎温泉駅"
+          data-line="JR山陰本線・兵庫県"
+        >
+          <img
+            src="https://kinosaki-spa.gr.jp/core/wp-content/themes/kinosakionsen/img/home_sotoyu_01.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="尾道駅"
+          data-line="JR山陽本線・広島県"
+        >
+          <img
+            src="https://www.ononavi.jp/onomichiya/upload/photos/1377844945l.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="長浜駅"
+          data-line="JR琵琶湖線・滋賀県"
+        >
+          <img
+            src="https://www.kurokabe.co.jp/xadmins/wp-content/uploads/2022/03/ca4ac97d08f56b1132363993b4fc82f5.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="東萩駅"
+          data-line="JR山陰本線・山口県"
+        >
+          <img
+            src="https://www.hagishi.com/wp/wp-content/uploads/2024/08/%E8%8F%8A%E5%B1%8B%E6%A8%AA%E4%B8%81.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="伊部駅（備前焼）"
+          data-line="JR赤穂線・岡山県"
+        >
+          <img
+            src="https://www.okayama-kanko.jp/lsc/upfile/spot/0001/1018/11018_1_l.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="玉造温泉駅"
+          data-line="JR山陰本線・島根県"
+        >
+          <img
+            src="https://www.kankou-shimane.com/jp/wp-content/uploads/2024/12/363-tamazukurionsen_012.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="出雲坂根駅"
+          data-line="JR木次線・島根県"
+        >
+          <img
+            src="https://img-cdn.guide.travel.co.jp/article/114/20130912164926/6E559C06456946C7B4E0724E0A289D58_L.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="道後山駅"
+          data-line="JR芸備線・広島県"
+        >
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/JRW_dougoyama_sta.jpg/640px-JRW_dougoyama_sta.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="永原駅（マキノ高原）"
+          data-line="JR湖西線・滋賀県"
+        >
+          <img
+            src="https://takashima-kanko.jp/spot/uploads/metase03.jpg"
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <div
+          class="hero-slide"
+          data-station="新岩国駅（錦帯橋）"
+          data-line="山陽新幹線 (自由席)・山口県"
+        >
+          <img
+            src="https://kankou.iwakuni-city.net/wp-content/uploads/2020/02/dd849b186e98962a449af941827ea174.jpg"
             alt=""
             loading="lazy"
           />
@@ -1871,44 +508,65 @@
         </div>
 
         <div class="pass-card reveal">
-          <div class="pass-card-head">
-            <h3 class="pass-card-title mincho">
-              地方向け<span class="pop">フリーパス</span>
-            </h3>
+          <!-- stub -->
+          <div class="ticket-stub">
+            <div class="ticket-stub-inner">
+              <div class="ticket-logo-mark">
+                <span class="ticket-logo-jr">JR</span>
+                <span class="ticket-logo-west">西日本</span>
+              </div>
+              <span class="ticket-stub-type">フリーパス</span>
+              <span class="ticket-stub-price">¥50,000</span>
+            </div>
+            <div class="ticket-perf"></div>
           </div>
-          <p class="pass-desc">
-            JR西日本管内（近畿・北陸・山陰・山陽・紀伊半島・中国地方全域）の対象列車に自由に途中下車・乗降できる若者限定フリーパス。いつもの路線が、まだ誰も体験したことのない冒険のルートに変わります。山陽新幹線は<strong>自由席</strong>のみ対象です（指定席・グリーン車は別途料金）。
-          </p>
-          <div class="pass-meta">
-            <div class="pass-meta-item">
-              <div class="meta-label">応募資格</div>
-              <div class="meta-value mincho">30歳未満</div>
-              <div class="meta-sub">
-                JR西日本エリア在住・身分証明書の提示が必要
+          <!-- punch hole -->
+          <div class="ticket-punch"></div>
+          <!-- body -->
+          <div class="ticket-body">
+            <div class="ticket-header">
+              <span class="ticket-title-main">地方の魅力再発見 フリーパス</span>
+              <span class="ticket-serial">No. JRW-2027-XXXXXX</span>
+            </div>
+            <div class="ticket-route">
+              <div class="ticket-loc">
+                <div class="ticket-loc-label">乗車区間</div>
+                <div class="ticket-loc-name">JR西日本全線</div>
+                <div class="ticket-loc-sub">山陽新幹線 自由席を含む</div>
+              </div>
+              <div class="ticket-route-arrow">→</div>
+              <div class="ticket-loc">
+                <div class="ticket-loc-label">途中下車</div>
+                <div class="ticket-loc-name">全駅対象</div>
+                <div class="ticket-loc-sub">
+                  観光配分システムによる事前予約制<br />（35,000人/日未満の駅）
+                </div>
               </div>
             </div>
-            <div class="pass-meta-item">
-              <div class="meta-label">有効期間</div>
-              <div class="meta-value mincho">2027.4 – 2028.3</div>
-              <div class="meta-sub">1年間有効・いつでも利用可</div>
-            </div>
-            <div class="pass-meta-item">
-              <div class="meta-label">対象範囲</div>
-              <div class="meta-value mincho">JR西日本全線</div>
-              <div class="meta-sub">
-                管内の通過駅で途中下車可。<br />新幹線は<strong
-                  style="color: var(--jr-dark)"
-                  >自由席のみ</strong
-                >利用可。
+            <div class="ticket-info-band">
+              <div class="ticket-info-cell">
+                <span class="ticket-info-label">応募資格</span>
+                <span class="ticket-info-val">30歳未満</span>
+              </div>
+              <div class="ticket-info-cell">
+                <span class="ticket-info-label">有効期間</span>
+                <span class="ticket-info-val">2027.4.1 〜 2028.3.31</span>
+              </div>
+              <div class="ticket-info-cell">
+                <span class="ticket-info-label">発行条件</span>
+                <span class="ticket-info-val">抽選当選者 無償発行</span>
+              </div>
+              <div class="ticket-info-cell">
+                <span class="ticket-info-label">対象者</span>
+                <span class="ticket-info-val">JR西日本エリア在住</span>
               </div>
             </div>
-            <div class="pass-meta-item">
-              <div class="meta-label">定価</div>
-              <div class="meta-value mincho" style="color: var(--jr-orange)">
-                ¥50,000
-              </div>
-              <div class="meta-sub">定価。抽選当選者は無償にて発行。</div>
+            <div class="ticket-conditions">
+              <span>※ 新幹線は自由席のみ。指定席・グリーン車は別途料金。</span>
+              <span>※ 下車は観光配分システムによる事前予約制。</span>
+              <span>※ 乗車（入場）はすべての駅で自由。</span>
             </div>
+            <div class="ticket-stripe"></div>
           </div>
         </div>
 
