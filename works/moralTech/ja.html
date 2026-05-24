@@ -1,0 +1,1737 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>技術の道徳化：第一章</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@100;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../static/main.css" />
+    <style>
+      :root {
+        --paper: #ffffff;
+        --line: #e2e2e2;
+        --font: "IBM Plex Sans JP", sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        display: block;
+        background: var(--mBLACK);
+        width: 100%;
+        max-width: unset;
+        height: 100%;
+        min-height: unset;
+        overflow: hidden;
+        font-family: var(--font);
+      }
+
+      /* main.css conflict resets */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        transition: none;
+        margin: 0;
+        color: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        writing-mode: horizontal-tb;
+      }
+      p {
+        transition: none;
+        margin: 0;
+        color: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+      }
+      a {
+        transition: none;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      #viewport {
+        display: flex;
+        position: fixed;
+        justify-content: center;
+        align-items: center;
+        inset: 0;
+        background: var(--mBLACK);
+        overflow: hidden;
+      }
+      #stage {
+        position: relative;
+        flex-shrink: 0;
+        transform-origin: center center;
+        width: 1280px;
+        height: 720px;
+      }
+      .slide {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+        inset: 0;
+        width: 1280px;
+        height: 720px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .slide.active {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* slide reveal animation on active */
+      .slide.active .reveal {
+        animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+      }
+      .slide.active .reveal:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .slide.active .reveal:nth-child(2) {
+        animation-delay: 0.12s;
+      }
+      .slide.active .reveal:nth-child(3) {
+        animation-delay: 0.19s;
+      }
+      .slide.active .reveal:nth-child(4) {
+        animation-delay: 0.26s;
+      }
+      .slide.active .reveal:nth-child(5) {
+        animation-delay: 0.33s;
+      }
+      @keyframes rise {
+        from {
+          transform: translateY(22px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* ---------- shared bits ---------- */
+      .kicker {
+        color: var(--mRED);
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+      .kicker.on-red {
+        color: var(--mYELLOW);
+      }
+      .h-title {
+        margin-top: 16px;
+        color: var(--mBLACK);
+        font-weight: 700;
+        font-size: 42px;
+        line-height: 1.3;
+      }
+      .rd {
+        color: var(--mRED);
+        font-weight: 700;
+      }
+
+      /* paper slide base */
+      .paper {
+        background: var(--paper);
+      }
+      .paper::before {
+        position: absolute;
+        opacity: 0.28;
+        inset: 0;
+        background-image: radial-gradient(
+          rgba(0, 0, 0, 0.02) 1px,
+          transparent 1px
+        );
+        background-size: 5px 5px;
+        pointer-events: none;
+        content: "";
+      }
+      /* red slide base */
+      .redslide {
+        background: var(--mRED);
+      }
+      .redslide .h-title {
+        color: #fff;
+      }
+
+      /* ===== minimalist slide grid system ===== */
+      .sg {
+        display: grid;
+        position: absolute;
+        grid-template-rows: auto 1fr;
+        gap: 48px;
+        inset: 0;
+        padding: 64px 32px 32px;
+        overflow: hidden;
+      }
+      .sg-hd-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+        justify-items: start;
+        gap: 48px;
+      }
+      .sg-hd-2 > div:has(.sdesc) {
+        margin-top: 30px;
+      }
+      .sg:has(.sg-3) .sg-hd-2 {
+        grid-template-columns:
+          calc((100% - 96px) / 3)
+          calc((100% - 96px) / 3 * 2 + 48px);
+      }
+      .sg-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+      .sg-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 48px;
+      }
+      .sg-flow {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        align-items: center;
+        gap: 16px;
+      }
+      /* column item */
+      .ci {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        container-type: inline-size;
+      }
+      .ci-rule {
+        flex-shrink: 0;
+        margin-bottom: 16px;
+        background: var(--mRED);
+        width: 50%;
+        height: 2px;
+      }
+      .ci-rule.yl {
+        background: var(--mYELLOW);
+      }
+      .ci-name {
+        color: var(--mBLACK);
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .ci-name.wh {
+        color: #fff;
+      }
+      .ci-desc {
+        margin-top: 8px;
+        color: var(--mBLACK);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .ci-desc.wh {
+        color: rgba(255, 255, 255, 0.86);
+      }
+
+      .ci-icon {
+        margin-top: auto;
+        padding-top: 32px;
+      }
+      .ci-icon .material-symbols-outlined {
+        display: flex;
+        justify-content: end;
+        color: var(--mRED);
+        font-size: min(100cqi, 25vh);
+
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 300;
+      }
+      .ci-icon.yl .material-symbols-outlined {
+        color: var(--mYELLOW);
+      }
+      /* dark panel */
+      .dpanel {
+        border: 2px solid var(--mRED);
+        border-radius: 6px;
+        background: transparent;
+        padding: 28px;
+        width: 100%;
+        overflow: hidden;
+      }
+      .dp-label {
+        color: var(--mRED);
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .dp-title {
+        margin-top: 8px;
+        color: var(--mBLACK);
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 1.2;
+      }
+      .dp-p {
+        margin-top: 12px;
+        color: var(--mBLACK);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .dp-q {
+        margin-top: 20px;
+        color: var(--mRED);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+      .sdesc {
+        color: var(--mBLACK);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .qbox {
+        display: flex;
+        align-items: flex-start;
+      }
+      .qnum {
+        flex-shrink: 0;
+        margin: 0px 32px;
+        color: var(--mYELLOW);
+        font-weight: 700;
+        font-size: 78px;
+        line-height: 1.1;
+      }
+      .qtext {
+        margin: 0px 32px;
+        color: #fff;
+        font-weight: 500;
+        font-size: 28px;
+        line-height: 1.3;
+      }
+
+      /* ============================================================= */
+      /* SLIDE 1 — TITLE (2×2 grid)                                    */
+      /* ============================================================= */
+      .title-grid {
+        display: grid;
+        position: absolute;
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr 1.5fr;
+        inset: 0;
+      }
+      .title-top-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 64px 32px 0px 32px;
+      }
+      .title-bottom-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 0px 32px 0px 32px;
+      }
+      .title-top-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 64px 32px 0px 0px;
+      }
+      .title-bottom-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+      .title-bottom-right img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+      .bigname {
+        color: #fff;
+        font-weight: 500;
+        font-size: 78px;
+        line-height: 1.15;
+      }
+      .yrule {
+        margin-bottom: 16px;
+        background: var(--mYELLOW);
+        width: 50%;
+        height: 2px;
+      }
+      .byline {
+        color: var(--mYELLOW);
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .blurb {
+        margin-top: 12px;
+        max-width: 420px;
+        color: rgba(255, 255, 255, 0.92);
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .ch-name {
+        color: var(--mYELLOW);
+        font-weight: 700;
+        font-size: 78px;
+        line-height: 1.15;
+      }
+      .presented {
+        color: white;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      /* ============================================================= */
+      /* nav chrome                                                     */
+      /* ============================================================= */
+      #progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 50;
+        transition: width 0.35s ease;
+        background: var(--mYELLOW);
+        width: 0;
+        height: 4px;
+      }
+      #nav {
+        display: flex;
+        position: fixed;
+        bottom: 16px;
+        left: 50%;
+        align-items: center;
+        gap: 16px;
+        transform: translateX(-50%);
+        opacity: 0;
+        z-index: 50;
+        backdrop-filter: blur(8px);
+        transition: opacity 0.3s;
+        border-radius: 999px;
+        background: rgba(20, 16, 12, 0.62);
+        padding: 8px 16px;
+      }
+      #viewport:hover #nav {
+        opacity: 1;
+      }
+      .navbtn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        appearance: none;
+        cursor: pointer;
+        border: none;
+        border-radius: 50%;
+        background: transparent;
+        padding: 4px;
+        color: #fff;
+      }
+      .navbtn:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+      .navbtn .material-symbols-outlined {
+        font-size: 20px;
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400;
+      }
+      #counter {
+        min-width: 56px;
+        color: #fff;
+        font-weight: 700;
+        font-size: 12px;
+        text-align: center;
+      }
+      .dots {
+        display: flex;
+        gap: 6px;
+      }
+      .dot {
+        transition: all 0.2s;
+        cursor: pointer;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.32);
+        width: 8px;
+        height: 8px;
+      }
+      .dot.on {
+        transform: scale(1.3);
+        background: var(--mYELLOW);
+      }
+      #hint {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 50;
+        transition: opacity 0.5s;
+        border-radius: 8px;
+        background: rgba(20, 16, 12, 0.5);
+        padding: 8px 12px;
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 600;
+        font-size: 12px;
+        font-family: var(--font);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="progress"></div>
+    <div id="viewport">
+      <div id="stage">
+        <!-- ===================== SLIDE 1 : TITLE ===================== -->
+        <section class="slide redslide" data-name="タイトル">
+          <div class="title-grid">
+            <!-- top-left: book title -->
+            <div class="title-top-left">
+              <div class="reveal">
+                <div class="bigname">技術の<br />道徳化</div>
+              </div>
+              <div class="reveal"><div class="yrule"></div></div>
+            </div>
+            <!-- top-right: chapter info -->
+            <div class="title-top-right">
+              <div class="reveal">
+                <div class="ch-name">第一章<br />媒介された道徳</div>
+              </div>
+            </div>
+            <!-- bottom-left: author + blurb -->
+            <div class="title-bottom-left">
+              <div class="reveal">
+                <div class="byline">PETER-PAUL VERBEEK</div>
+                <div class="blurb">
+                  テクノロジーは単なる道具ではない。私たちの行動・知覚・道徳的判断を形作る。
+                </div>
+              </div>
+            </div>
+            <!-- bottom-right: rizanmark -->
+            <div class="title-bottom-right">
+              <div class="reveal">
+                <div class="presented">発表者</div>
+              </div>
+              <img class="reveal" src="rizanmark.svg" alt="rizan mark" />
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 2 : INTRO ===================== -->
+        <section class="slide paper" data-name="中立ではない">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">はじめに</div>
+                <h1 class="reveal h-title">テクノロジーは中立な道具ではない</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  テクノロジーは設計された機能を果たすだけではない。<span
+                    style="color: var(--mRED)"
+                    >私たちの行動と世界の経験の仕方を形作る。</span
+                  >同じ道具が、誰も想定しなかった全く新しい行動や社会規範を生み出す。
+                </p>
+              </div>
+            </div>
+            <div class="sg-3 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">自動車</div>
+                <div class="ci-desc">
+                  単にA地点からB地点へ移動するだけではない。社会的接触の範囲を広げ、職住間の距離を決め、都市や道路の設計を変える。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">携帯電話</div>
+                <div class="ci-desc">
+                  連絡を容易にする一方、新しい規範も生む。テキスト言語、既読スルー、公共の場でのプライベートな会話など。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">phone_iphone</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">医療機器</div>
+                <div class="ci-desc">
+                  単に身体を映像化するだけではない。特に出生前診断や終末期医療において、新たな責任を生み出す。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">monitor_heart</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 3 : BURSTING WITH MORALITY ===================== -->
+        <section class="slide paper" data-name="道徳に溢れた世界">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">道徳的次元</div>
+                <h1 class="reveal h-title">「道徳に溢れた世界」</h1>
+              </div>
+              <div class="reveal dpanel">
+                <div class="dp-label">課題</div>
+                <div class="dp-p">
+                  主流の倫理学は、道徳は<strong>専ら人間の領域</strong>だという。物体には心も自由意志も意図もないため、道徳性を認めることは「アニミズム」のように聞こえる。だが物体は明らかに私たちの道徳的判断を形作っている。だからこそ問わざるを得ない：
+                </div>
+                <div class="dp-q">
+                  デザイナーはどうすれば、作るものの道徳的役割を予測し、「組み込む」ことができるか？
+                </div>
+              </div>
+            </div>
+            <div
+              class="reveal"
+              style="
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 48px;
+              "
+            >
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">スピードバンプ</div>
+                <div class="ci-desc">「学校の近くではゆっくり走れ。」</div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">road</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">シートベルト警告音</div>
+                <div class="ci-desc">シートベルトをするまで鳴り続ける。</div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined"
+                    >airline_seat_recline_extra</span
+                  >
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">省エネ電球</div>
+                <div class="ci-desc">環境への良心を肩代わりする。</div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">lightbulb</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">カートのコインロック</div>
+                <div class="ci-desc">カートを元の場所に返すよう促す。</div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">shopping_cart</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 4 : ETHICS & TECHNOLOGY ===================== -->
+        <section class="slide paper" data-name="倫理とテクノロジー">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">倫理とテクノロジー</div>
+                <h1 class="reveal h-title">単純ではなかった関係性</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  テクノロジーと道徳は常に複雑な関係にある。明らかに善いと思える発明もあれば、深く議論されるものもある。
+                </p>
+              </div>
+            </div>
+            <div class="sg-2 reveal">
+              <div>
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 12px;
+                    color: var(--mGREEN);
+                    margin-bottom: 16px;
+                  "
+                >
+                  明らかに善
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 20px">
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mGREEN);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >medication</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        ペニシリン
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        かつては命取りだった細菌感染症を克服し、医学を変革した。
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mGREEN);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >agriculture</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        農業機器
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        数十億人を飢餓から救い、近代的な食料システムを可能にした。
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mGREEN);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >vaccines</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        外科器具
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        安全で再現可能な手術を世代を超えて実現した。
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 12px;
+                    color: var(--mRED);
+                    margin-bottom: 16px;
+                  "
+                >
+                  深く議論される
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 20px">
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mRED);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >destruction</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        核兵器
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        被害があまりにも大きく、利点を見出すことはほぼ不可能。
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mRED);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >gynecology</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        経口避妊薬
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        解放運動に大きな役割を果たした一方、保守的な宗教界では今も議論が続く。
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 5 : EXTERNALIST TRAP ===================== -->
+        <section class="slide paper" data-name="外部主義の罠">
+          <div class="sg">
+            <div class="sg-hd-2" style="grid-template-columns: 1fr 1.5fr">
+              <div>
+                <div class="reveal kicker">現代倫理学の限界</div>
+                <h1 class="reveal h-title">「外部主義」の罠</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  工学倫理やコンピュータ倫理などの現代的分野でさえ、<span
+                    class="rd"
+                    >二つの領域を分離する</span
+                  >。「社会」をテクノロジーのリスクから守り、技術が問題を起こせば内部告発する。テクノロジーは単なる道具として扱われる。
+                </p>
+              </div>
+            </div>
+            <div
+              class="sg-2 reveal"
+              style="grid-template-columns: 1fr 1.5fr; height: 100%"
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  transform: translateY(16px);
+                "
+              >
+                <div class="dpanel">
+                  <div class="dp-label">ヴァーベークの反論</div>
+                  <div class="dp-q">
+                    「人間はテクノロジー的存在であり、テクノロジーは社会的存在である。」
+                  </div>
+                  <div class="dp-p">
+                    二つの領域は切り離せない。互いに構成し合っている。
+                  </div>
+                </div>
+              </div>
+              <div></div>
+            </div>
+            <img
+              class="reveal"
+              src="venn.svg"
+              alt=""
+              style="
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: calc(0.6 * (100% - 112px) + 32px);
+                height: auto;
+              "
+            />
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 6 : TWO FACES ===================== -->
+        <section class="slide paper" data-name="道徳的媒介の二つの側面">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">媒介作用の道徳的意味</div>
+                <h1 class="reveal h-title">道徳的媒介の二つの側面</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  どちらの事例も、テクノロジーが人間に代わって静かに道徳的決定を下している。一方は排除によって、もう一方は病気と責任の理解を変えることによって。
+                </p>
+              </div>
+            </div>
+            <div class="sg-2 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">ロバート・モーゼスの低い跨道橋</div>
+                <div class="ci-desc">
+                  ランドン・ウィナーの事例：ロングアイランドのビーチへ続くパークウェイの陸橋は、意図的に<strong>バスが通れないほど低く</strong>建設された。これにより、バスを利用していた貧しいアフリカ系アメリカ人住民はビーチにアクセスできなかった。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">flyover</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">BRCA遺伝子検査</div>
+                <div class="ci-desc">
+                  乳がん遺伝子の検査は、<strong>健康な人を「潜在的な患者」</strong>に変え、新たなカテゴリーを生む。<span
+                    style="color: var(--mRED)"
+                    >「まだ病気ではない人」。</span
+                  >テクノロジーは困難な選択の状況を組み立て、どの選択をすべきかさえ示唆する。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">biotech</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 7 : TECHNOLOGICAL MEDIATION ===================== -->
+        <section class="slide paper" data-name="技術的媒介">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">核心概念</div>
+                <h1 class="reveal h-title">技術的媒介</h1>
+              </div>
+              <div
+                class="reveal dpanel"
+                style="display: flex; flex-direction: column; gap: 12px"
+              >
+                <div class="dp-label">ハイデガーの二つの様式</div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                    flex: 1;
+                  "
+                >
+                  <div>
+                    <div class="dp-title">手元性</div>
+                    <div class="dp-p" style="margin-top: 8px">
+                      道具が機能し、消える。私たちはその存在に気づかない。
+                    </div>
+                  </div>
+                  <div>
+                    <div class="dp-title">眼前性</div>
+                    <div class="dp-p" style="margin-top: 8px">
+                      道具が壊れる。私たちは突然それをモノとして認識する。
+                    </div>
+                  </div>
+                </div>
+                <div class="dp-p">
+                  アイデはこれを
+                  <strong>経験（知覚）</strong>と
+                  <strong>実践（行動）</strong>の二つの観点に拡張する。
+                </div>
+              </div>
+            </div>
+            <div class="sg-2 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">釘を打つ</div>
+                <div class="ci-desc">
+                  注目するのは釘であり、ハンマーではない。道具を通じて行動する。手元性。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">hardware</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">眼鏡をかける</div>
+                <div class="ci-desc">
+                  眼鏡そのものを知覚するのではなく、眼鏡を通じて世界を知覚する。身体化された知覚。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">eyeglasses_2</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 8 : MEDIATION OF EXPERIENCE ===================== -->
+        <section class="slide paper" data-name="経験の媒介">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">経験の媒介　ドン・アイデ</div>
+                <h1 class="reveal h-title">
+                  テクノロジーはいかにして知覚を変容させるか
+                </h1>
+              </div>
+              <div
+                class="reveal dpanel"
+                style="display: flex; flex-direction: column; gap: 12px"
+              >
+                <div class="dp-label">道徳的に重要な理由</div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                    flex: 1;
+                  "
+                >
+                  <div>
+                    <div class="dp-title">多安定性</div>
+                    <div class="dp-p" style="margin-top: 8px">
+                      同じ機器が文脈によって異なるアイデンティティを持つ。電話とタイプライターは当初、聴覚・視覚障害者の補助として開発された。
+                    </div>
+                  </div>
+                  <div>
+                    <div class="dp-p">
+                      「現実」とみなされるものを形作ることで（MRIや超音波を考えよ）、テクノロジーは疾病・妊娠・胎児に関する私たちの意思決定を形作る。
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sg-3 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">身体化関係</div>
+                <div class="ci-desc">
+                  テクノロジーが「組み込まれ」身体の延長となる。眼鏡を通して世界を見るように。（≈
+                  手元性）
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">eyeglasses_2</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">解釈学的関係</div>
+                <div class="ci-desc">
+                  テクノロジーが解釈を必要とする表象を提供する。体温計は熱さを直接感じさせるのではなく、解釈すべき数値を示す。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined"
+                    >device_thermostat</span
+                  >
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">増幅と縮減</div>
+                <div class="ci-desc">
+                  赤外線カメラで木を見ると、肉眼で見えるものの多くが失われるが、同時に新しい側面が現れる——木が健康かどうかがわかる。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">park</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 9 : MEDIATION OF PRAXIS ===================== -->
+        <section class="slide paper" data-name="実践の媒介">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">
+                  実践の媒介　ブルーノ・ラトゥール
+                </div>
+                <h1 class="reveal h-title">
+                  テクノロジーはいかにして行動を形作るか
+                </h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  ラトゥールは<span class="rd"
+                    >人工物がスクリプト（台本）を持つ</span
+                  >と示す。行動を規定し、招待し、抑制する。銃は「怒りを表現する」を「人を殺す」に翻訳する。スピードバンプは同意するかどうかにかかわらず速度を落とさせる。行動の媒介は手元性・眼前性の両位置から生じる。
+                </p>
+              </div>
+            </div>
+            <div class="sg-3 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">スクリプト</div>
+                <div class="ci-desc">
+                  映画の台本のように、人工物は行動の仕方を規定する。スピードバンプは<span
+                    class="rd"
+                    >「ゆっくり走れ」</span
+                  >と言い、紙コップは<span class="rd">「捨ててくれ」</span
+                  >と言う。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">assignment</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">行動の翻訳</div>
+                <div class="ci-desc">
+                  「素早く食事を準備する」＋電子レンジ→「一人でレトルト食品を食べる習慣」。新しい複合的な目標が生まれる。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">restaurant</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">招待と抑制</div>
+                <div class="ci-desc">
+                  スクリプトはある行動を招待し、別の行動を抑制する。これは記号として読まれるのではなく、物質的に作用する。
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">back_hand</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 10 : TABLE 1 ===================== -->
+        <section class="slide paper" data-name="語彙の一覧">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">ヴァーベークの表1</div>
+                <h1 class="reveal h-title">技術的媒介の語彙</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  あらゆる媒介は知覚の変換と行動の翻訳を含む——二つの鏡像的な構造である。
+                </p>
+              </div>
+            </div>
+            <div
+              class="reveal"
+              style="
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+              "
+            >
+              <div
+                style="
+                  border-radius: 8px;
+                  overflow: hidden;
+                  border: 1px solid var(--line);
+                  max-width: 1020px;
+                  margin: 0 auto;
+                  width: 100%;
+                "
+              >
+                <div style="display: grid; grid-template-columns: 1fr 1fr">
+                  <div
+                    style="
+                      background: var(--mBLACK);
+                      color: #fff;
+                      font-weight: 700;
+                      font-size: 22px;
+                      text-align: center;
+                      padding: 16px;
+                    "
+                  >
+                    経験
+                  </div>
+                  <div
+                    style="
+                      background: var(--mRED);
+                      color: #fff;
+                      font-weight: 700;
+                      font-size: 22px;
+                      text-align: center;
+                      padding: 16px;
+                    "
+                  >
+                    実践
+                  </div>
+                </div>
+                <div id="tbl"><!-- rows injected by script --></div>
+              </div>
+              <p
+                style="
+                  text-align: center;
+                  font-style: italic;
+                  color: var(--mBLACK);
+                  font-size: 14px;
+                "
+              >
+                どちらの構造も文脈依存的である。つまり、同じ人工物でも使われ方によって異なる媒介が生じうる。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 11 : MEDIATION & MORALITY ===================== -->
+        <section class="slide paper" data-name="媒介と道徳性">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">媒介と道徳性</div>
+                <h1 class="reveal h-title">モノは今や道徳性を持つのか？</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  シートベルトをするまで鳴り続ける車、速度を決めるスピードバンプ。ラトゥールにとって、これらは文字通り<span
+                    style="color: var(--mRED)"
+                    >道徳を体現する。</span
+                  >デザイナーは道徳的任務をモノに委任したのだ。
+                </p>
+              </div>
+            </div>
+            <div class="sg-flow reveal" style="align-content: end">
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  text-align: center;
+                  padding: 32px 24px;
+                  border: 2px solid var(--mRED);
+                  border-radius: 6px;
+                  container-type: inline-size;
+                "
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: min(90cqi, 25vh);
+                    color: var(--mRED);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >church</span
+                >
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 28px;
+                    color: var(--mRED);
+                    margin-top: 16px;
+                  "
+                >
+                  神
+                </div>
+                <p
+                  style="
+                    font-size: 14px;
+                    color: var(--mBLACK);
+                    margin-top: 8px;
+                    line-height: 1.4;
+                  "
+                >
+                  啓蒙以前：道徳の源泉は神。
+                </p>
+              </div>
+              <div style="display: flex; align-items: center">
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: 32px;
+                    color: var(--mRED);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >arrow_forward</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  text-align: center;
+                  padding: 32px 24px;
+                  border: 2px solid var(--mRED);
+                  border-radius: 6px;
+                  container-type: inline-size;
+                "
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: min(90cqi, 25vh);
+                    color: var(--mRED);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >family_restroom</span
+                >
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 28px;
+                    color: var(--mRED);
+                    margin-top: 16px;
+                  "
+                >
+                  人間
+                </div>
+                <p
+                  style="
+                    font-size: 14px;
+                    color: var(--mBLACK);
+                    margin-top: 8px;
+                    line-height: 1.4;
+                  "
+                >
+                  啓蒙時代（カント）：道徳の源泉は人間の理性へ。
+                </p>
+              </div>
+              <div style="display: flex; align-items: center">
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: 32px;
+                    color: var(--mRED);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >arrow_forward</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  text-align: center;
+                  padding: 32px 24px;
+                  border: 2px solid var(--mRED);
+                  border-radius: 6px;
+                  background: var(--mRED);
+                  container-type: inline-size;
+                "
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: min(90cqi, 25vh);
+                    color: var(--mYELLOW);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >settings</span
+                >
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 28px;
+                    color: var(--mYELLOW);
+                    margin-top: 16px;
+                  "
+                >
+                  モノ？
+                </div>
+                <p
+                  style="
+                    font-size: 14px;
+                    color: #fff;
+                    margin-top: 8px;
+                    line-height: 1.4;
+                  "
+                >
+                  テクノロジーの道徳的役割により、道徳の源泉はモノへと移るのか？
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 12 : THREE THEORIES ===================== -->
+        <section class="slide paper" data-name="三つの理論">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">
+                  機械カニバリズムとの接続 · 第1章
+                </div>
+                <h1 class="reveal h-title">テクノロジーの三つの理論</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  両書は同じラトゥールと同じ例（銃・スピードバンプ）を用いる。『機械カニバリズム』は人間と機械の関係を三つの理論に整理する：
+                </p>
+              </div>
+            </div>
+            <div
+              class="reveal"
+              style="
+                display: grid;
+                grid-template-rows: 1fr auto;
+                gap: 16px;
+                overflow: hidden;
+              "
+            >
+              <div class="sg-3" style="overflow: hidden">
+                <div class="ci">
+                  <div class="ci-rule"></div>
+                  <div class="ci-name">道具説</div>
+                  <div class="ci-desc">
+                    テクノロジーは中立。<strong>人間</strong>だけが結果を決める。
+                  </div>
+                  <div class="ci-icon">
+                    <span class="material-symbols-outlined">handyman</span>
+                  </div>
+                </div>
+                <div class="ci">
+                  <div class="ci-rule"></div>
+                  <div class="ci-name">自律説</div>
+                  <div class="ci-desc">
+                    テクノロジーには固有の論理がある。<strong>機械</strong>が結果を決める。
+                  </div>
+                  <div class="ci-icon">
+                    <span class="material-symbols-outlined"
+                      >precision_manufacturing</span
+                    >
+                  </div>
+                </div>
+                <div class="ci">
+                  <div class="ci-rule"></div>
+                  <div class="ci-name">媒介説</div>
+                  <div class="ci-desc">
+                    どちらでもない。人間と技術の複合体から<strong>新たな、予期せぬ目的</strong>が生まれる。
+                  </div>
+                  <div class="ci-icon">
+                    <span class="material-symbols-outlined">hub</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 13 : CONCLUSION (red) ===================== -->
+        <section class="slide redslide" data-name="まとめ">
+          <div class="sg">
+            <div class="sg-hd-2" style="grid-template-columns: 1fr 0.5fr">
+              <div>
+                <div class="reveal kicker on-red">まとめ</div>
+                <h1 class="reveal h-title">
+                  テクノロジーは私たちの道徳を形作る——主導者は私たちだけではない
+                </h1>
+              </div>
+              <div></div>
+            </div>
+            <div class="sg-3 reveal">
+              <div class="ci">
+                <div class="ci-rule yl"></div>
+                <div class="ci-name wh">道徳性はハイブリッドだ</div>
+                <div class="ci-desc wh">
+                  純粋に人間の問題でも、機械の問題でもない。人間とテクノロジーの連合体の中に宿る。
+                </div>
+                <div class="ci-icon yl">
+                  <span class="material-symbols-outlined">balance</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule yl"></div>
+                <div class="ci-name wh">設計＝別の手段による倫理</div>
+                <div class="ci-desc wh">
+                  エンジニアは「道徳を物質化する」。作るものの道徳的役割を予測し、組み込むことができる。
+                </div>
+                <div class="ci-icon yl">
+                  <span class="material-symbols-outlined">settings</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule yl"></div>
+                <div class="ci-name wh">後現象学的倫理学</div>
+                <div class="ci-desc wh">
+                  ヴァーベークの理論的枠組みは、アイデ（知覚）、ラトゥール（行動）、フーコー（主体）に基づく。
+                </div>
+                <div class="ci-icon yl">
+                  <span class="material-symbols-outlined">hub</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 14 : DISCUSSION (red) ===================== -->
+        <section class="slide redslide" data-name="ディスカッション">
+          <div class="sg">
+            <div>
+              <div class="reveal kicker on-red">ディスカッション！</div>
+              <h1 class="reveal h-title">今日の議論テーマ</h1>
+            </div>
+            <div
+              class="reveal"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                justify-content: space-around;
+              "
+            >
+              <div class="qbox">
+                <div class="qnum">1</div>
+                <p class="qtext">
+                  テクノロジーは私たちの道徳に影響を与えるか？
+                  もしそうなら、どうすれば道徳的なテクノロジーを作れるか？
+                </p>
+              </div>
+              <div class="qbox">
+                <div class="qnum">2</div>
+                <p class="qtext">
+                  長期的に見て、テクノロジーは私たちの道徳をより良くしているのか、悪化させているのか？
+                </p>
+              </div>
+              <div class="qbox">
+                <div class="qnum">3</div>
+                <p class="qtext">
+                  テクノロジーとの相互作用は、私たちの知覚する現実をどのように形作っているか？
+                  その現実はどれほど「本物」なのか？
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- /stage -->
+    </div>
+    <!-- /viewport -->
+
+    <!-- nav chrome -->
+    <div id="nav">
+      <button class="navbtn" id="prev" aria-label="前へ">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <span id="counter">01 / 14</span>
+      <div class="dots" id="dots"></div>
+      <button class="navbtn" id="next" aria-label="次へ">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+    <div id="hint">← → キーで移動できます</div>
+
+    <script>
+      /* ---------- TABLE 1 rows ---------- */
+      (function () {
+        const rows = [
+          ["知覚の媒介", "行動の媒介"],
+          ["技術的志向性", "スクリプト"],
+          ["知覚の変換", "行動の翻訳"],
+          ["増幅と縮減", "招待と抑制"],
+        ];
+        const span = ["委任：意図的な刻印", "多安定性：文脈依存性"];
+        let html = "";
+        rows.forEach((r, i) => {
+          const bg = i % 2 === 0 ? "#F6F6F6" : "#FFFFFF";
+          html +=
+            '<div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);">' +
+            '<div style="padding:12px 16px;text-align:center;background:' +
+            bg +
+            ';font-weight:600;font-size:16px;color:var(--mBLACK);font-family:var(--font);">' +
+            r[0] +
+            "</div>" +
+            '<div style="padding:12px 16px;text-align:center;background:' +
+            (bg === "#F6F6F6" ? "#FBEFEF" : "#FDF6F6") +
+            ';font-weight:600;font-size:16px;color:var(--mBLACK);font-family:var(--font);">' +
+            r[1] +
+            "</div>" +
+            "</div>";
+        });
+        span.forEach((s) => {
+          html +=
+            '<div style="padding:12px 16px;text-align:center;border-top:1px solid var(--line);background:#fff;font-weight:700;font-style:italic;color:var(--mRED);font-size:14px;font-family:var(--font);">' +
+            s +
+            "</div>";
+        });
+        document.getElementById("tbl").innerHTML = html;
+      })();
+
+      /* ---------- scale-to-fit ---------- */
+      const BASE_W = 1280,
+        BASE_H = 720;
+      const stage = document.getElementById("stage");
+      function fit() {
+        const s = Math.max(
+          window.innerWidth / BASE_W,
+          window.innerHeight / BASE_H,
+        );
+        stage.style.transform = "scale(" + s + ")";
+      }
+      window.addEventListener("resize", fit);
+      fit();
+
+      /* ---------- slide engine ---------- */
+      const slides = [...document.querySelectorAll(".slide")];
+      const total = slides.length;
+      let idx = Math.max(
+        0,
+        Math.min(
+          total - 1,
+          parseInt(localStorage.getItem("moralTech-ja-slide") || "0"),
+        ),
+      );
+      const counter = document.getElementById("counter");
+      const progress = document.getElementById("progress");
+      const dotsWrap = document.getElementById("dots");
+      slides.forEach((_, i) => {
+        const d = document.createElement("div");
+        d.className = "dot";
+        d.addEventListener("click", () => go(i));
+        dotsWrap.appendChild(d);
+      });
+      const dots = [...document.querySelectorAll(".dot")];
+      function pad(n) {
+        return String(n).padStart(2, "0");
+      }
+      function render() {
+        slides.forEach((s, i) => s.classList.toggle("active", i === idx));
+        dots.forEach((d, i) => d.classList.toggle("on", i === idx));
+        counter.textContent = pad(idx + 1) + " / " + pad(total);
+        progress.style.width = (idx / (total - 1)) * 100 + "%";
+      }
+      function go(n) {
+        idx = Math.max(0, Math.min(total - 1, n));
+        localStorage.setItem("moralTech-ja-slide", idx);
+        render();
+      }
+      function next() {
+        if (idx < total - 1) go(idx + 1);
+      }
+      function prev() {
+        if (idx > 0) go(idx - 1);
+      }
+
+      document.getElementById("next").addEventListener("click", next);
+      document.getElementById("prev").addEventListener("click", prev);
+
+      let hintTimer = setTimeout(() => {
+        document.getElementById("hint").style.opacity = "0";
+      }, 4200);
+      window.addEventListener("keydown", (e) => {
+        switch (e.key) {
+          case "ArrowRight":
+          case "ArrowDown":
+          case "PageDown":
+          case " ":
+            e.preventDefault();
+            next();
+            break;
+          case "ArrowLeft":
+          case "ArrowUp":
+          case "PageUp":
+            e.preventDefault();
+            prev();
+            break;
+          case "Home":
+            go(0);
+            break;
+          case "End":
+            go(total - 1);
+            break;
+          case "f":
+          case "F":
+            if (!document.fullscreenElement) {
+              document.documentElement.requestFullscreen &&
+                document.documentElement.requestFullscreen();
+            } else {
+              document.exitFullscreen && document.exitFullscreen();
+            }
+            break;
+        }
+      });
+      document.getElementById("viewport").addEventListener("click", (e) => {
+        if (e.target.closest("#nav")) return;
+        const x = e.clientX / window.innerWidth;
+        if (x > 0.62) next();
+        else if (x < 0.38) prev();
+      });
+      render();
+    </script>
+  </body>
+</html>

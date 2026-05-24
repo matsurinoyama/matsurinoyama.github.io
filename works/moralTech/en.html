@@ -1,0 +1,1816 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moralizing Technology: Chapter 1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@100;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../static/main.css" />
+    <style>
+      :root {
+        --paper: #ffffff;
+        --line: #e2e2e2;
+        --font: "IBM Plex Sans JP", sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        display: block;
+        background: var(--mBLACK);
+        width: 100%;
+        max-width: unset;
+        height: 100%;
+        min-height: unset;
+        overflow: hidden;
+        font-family: var(--font);
+      }
+
+      /* main.css conflict resets */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        transition: none;
+        margin: 0;
+        color: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        writing-mode: horizontal-tb;
+      }
+      p {
+        transition: none;
+        margin: 0;
+        color: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+      }
+      a {
+        transition: none;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      #viewport {
+        display: flex;
+        position: fixed;
+        justify-content: center;
+        align-items: center;
+        inset: 0;
+        background: var(--mBLACK);
+        overflow: hidden;
+      }
+      #stage {
+        position: relative;
+        flex-shrink: 0;
+        transform-origin: center center;
+        width: 1280px;
+        height: 720px;
+      }
+      .slide {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+        inset: 0;
+        width: 1280px;
+        height: 720px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .slide.active {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* slide reveal animation on active */
+      .slide.active .reveal {
+        animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+      }
+      .slide.active .reveal:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .slide.active .reveal:nth-child(2) {
+        animation-delay: 0.12s;
+      }
+      .slide.active .reveal:nth-child(3) {
+        animation-delay: 0.19s;
+      }
+      .slide.active .reveal:nth-child(4) {
+        animation-delay: 0.26s;
+      }
+      .slide.active .reveal:nth-child(5) {
+        animation-delay: 0.33s;
+      }
+      @keyframes rise {
+        from {
+          transform: translateY(22px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* ---------- shared bits ---------- */
+      .kicker {
+        color: var(--mRED);
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+      .kicker.on-red {
+        color: var(--mYELLOW);
+      }
+      .h-title {
+        margin-top: 16px;
+        color: var(--mBLACK);
+        font-weight: 700;
+        font-size: 44px;
+        line-height: 1.15;
+      }
+      .rd {
+        color: var(--mRED);
+        font-weight: 700;
+      }
+
+      /* paper slide base */
+      .paper {
+        background: var(--paper);
+      }
+      .paper::before {
+        position: absolute;
+        opacity: 0.28;
+        inset: 0;
+        background-image: radial-gradient(
+          rgba(0, 0, 0, 0.02) 1px,
+          transparent 1px
+        );
+        background-size: 5px 5px;
+        pointer-events: none;
+        content: "";
+      }
+      /* red slide base */
+      .redslide {
+        background: var(--mRED);
+      }
+      .redslide .h-title {
+        color: #fff;
+      }
+
+      /* ===== minimalist slide grid system ===== */
+      .sg {
+        display: grid;
+        position: absolute;
+        grid-template-rows: auto 1fr;
+        gap: 48px;
+        inset: 0;
+        padding: 64px 32px 32px;
+        overflow: hidden;
+      }
+      .sg-hd-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+        justify-items: start;
+        gap: 48px;
+      }
+      .sg-hd-2 > div:has(.sdesc) {
+        margin-top: 30px; /* align with title top: kicker (14px) + title margin (16px) */
+      }
+      .sg:has(.sg-3) .sg-hd-2 {
+        grid-template-columns:
+          calc((100% - 96px) / 3)
+          calc((100% - 96px) / 3 * 2 + 48px);
+      }
+      .sg-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+      .sg-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 48px;
+      }
+      .sg-flow {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        align-items: center;
+        gap: 16px;
+      }
+      /* column item */
+      .ci {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        container-type: inline-size;
+      }
+      .ci-rule {
+        flex-shrink: 0;
+        margin-bottom: 16px;
+        background: var(--mRED);
+        width: 50%;
+        height: 2px;
+      }
+      .ci-rule.yl {
+        background: var(--mYELLOW);
+      }
+      .ci-name {
+        color: var(--mBLACK);
+        font-weight: 700;
+        font-size: 18px;
+        text-transform: uppercase;
+      }
+      .ci-name.wh {
+        color: #fff;
+      }
+      .ci-desc {
+        margin-top: 8px;
+        color: var(--mBLACK);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .ci-desc.wh {
+        color: rgba(255, 255, 255, 0.86);
+      }
+
+      .ci-icon {
+        margin-top: auto;
+        padding-top: 32px;
+      }
+      .ci-icon .material-symbols-outlined {
+        display: flex;
+        justify-content: end;
+        color: var(--mRED);
+        font-size: min(100cqi, 25vh);
+
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 300;
+      }
+      .ci-icon.yl .material-symbols-outlined {
+        color: var(--mYELLOW);
+      }
+      /* dark panel */
+      .dpanel {
+        border: 2px solid var(--mRED);
+        border-radius: 6px;
+        background: transparent;
+        padding: 28px;
+        width: 100%;
+        overflow: hidden;
+      }
+      .dp-label {
+        color: var(--mRED);
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .dp-title {
+        margin-top: 8px;
+        color: var(--mBLACK);
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 1.2;
+      }
+      .dp-p {
+        margin-top: 12px;
+        color: var(--mBLACK);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .dp-q {
+        margin-top: 20px;
+        color: var(--mRED);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+      .sdesc {
+        color: var(--mBLACK);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .qbox {
+        display: flex;
+        align-items: flex-start;
+      }
+      .qnum {
+        flex-shrink: 0;
+        margin: 0px 32px;
+        color: var(--mYELLOW);
+        font-weight: 700;
+        font-size: 78px;
+        line-height: 1.1;
+      }
+      .qtext {
+        margin: 0px 32px;
+        color: #fff;
+        font-weight: 500;
+        font-size: 38px;
+        line-height: 1.1;
+      }
+
+      /* ============================================================= */
+      /* SLIDE 1 — TITLE (2×2 grid)                                    */
+      /* ============================================================= */
+      .title-grid {
+        display: grid;
+        position: absolute;
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr 1.5fr;
+        inset: 0;
+      }
+      .title-top-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 64px 32px 0px 32px;
+      }
+      .title-bottom-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 0px 32px 0px 32px;
+      }
+      .title-top-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 64px 32px 0px 0px;
+      }
+      .title-bottom-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+      .title-bottom-right img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+      .bigname {
+        color: #fff;
+        font-weight: 500;
+        font-size: 78px;
+        line-height: 1.15;
+      }
+      .yrule {
+        margin-bottom: 16px;
+        background: var(--mYELLOW);
+        width: 50%;
+        height: 2px;
+      }
+      .byline {
+        color: var(--mYELLOW);
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .blurb {
+        margin-top: 12px;
+        max-width: 420px;
+        color: rgba(255, 255, 255, 0.92);
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .ch-name {
+        color: var(--mYELLOW);
+        font-weight: 700;
+        font-size: 78px;
+        line-height: 1.15;
+      }
+      .presented {
+        color: white;
+        font-weight: 500;
+        font-size: 16px;
+        text-transform: uppercase;
+      }
+
+      /* ============================================================= */
+      /* nav chrome                                                     */
+      /* ============================================================= */
+      #progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 50;
+        transition: width 0.35s ease;
+        background: var(--mYELLOW);
+        width: 0;
+        height: 4px;
+      }
+      #nav {
+        display: flex;
+        position: fixed;
+        bottom: 16px;
+        left: 50%;
+        align-items: center;
+        gap: 16px;
+        transform: translateX(-50%);
+        opacity: 0;
+        z-index: 50;
+        backdrop-filter: blur(8px);
+        transition: opacity 0.3s;
+        border-radius: 999px;
+        background: rgba(20, 16, 12, 0.62);
+        padding: 8px 16px;
+      }
+      #viewport:hover #nav {
+        opacity: 1;
+      }
+      .navbtn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        appearance: none;
+        cursor: pointer;
+        border: none;
+        border-radius: 50%;
+        background: transparent;
+        padding: 4px;
+        color: #fff;
+      }
+      .navbtn:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+      .navbtn .material-symbols-outlined {
+        font-size: 20px;
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400;
+      }
+      #counter {
+        min-width: 56px;
+        color: #fff;
+        font-weight: 700;
+        font-size: 12px;
+        text-align: center;
+      }
+      .dots {
+        display: flex;
+        gap: 6px;
+      }
+      .dot {
+        transition: all 0.2s;
+        cursor: pointer;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.32);
+        width: 8px;
+        height: 8px;
+      }
+      .dot.on {
+        transform: scale(1.3);
+        background: var(--mYELLOW);
+      }
+      #hint {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 50;
+        transition: opacity 0.5s;
+        border-radius: 8px;
+        background: rgba(20, 16, 12, 0.5);
+        padding: 8px 12px;
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 600;
+        font-size: 12px;
+        font-family: var(--font);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="progress"></div>
+    <div id="viewport">
+      <div id="stage">
+        <!-- ===================== SLIDE 1 : TITLE ===================== -->
+        <section class="slide redslide" data-name="Title">
+          <div class="title-grid">
+            <!-- top-left: book title -->
+            <div class="title-top-left">
+              <div class="reveal">
+                <div class="bigname">Moralizing<br />Technology</div>
+              </div>
+              <div class="reveal"><div class="yrule"></div></div>
+            </div>
+            <!-- top-right: chapter info -->
+            <div class="title-top-right">
+              <div class="reveal">
+                <div class="ch-name">CHAPTER 1:<br />Mediated Morality</div>
+              </div>
+            </div>
+            <!-- bottom-left: author + blurb -->
+            <div class="title-bottom-left">
+              <div class="reveal">
+                <div class="byline">PETER-PAUL VERBEEK</div>
+                <div class="blurb">
+                  Technologies are not simply neutral instruments. They help
+                  shape what we do, how we perceive, and the moral decisions we
+                  make.
+                </div>
+              </div>
+            </div>
+            <!-- bottom-right: rizanmark — fills the full 360px-tall cell, no margins -->
+            <div class="title-bottom-right">
+              <div class="reveal">
+                <div class="presented">Presented by</div>
+              </div>
+              <img class="reveal" src="rizanmark.svg" alt="rizan mark" />
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 2 : INTRO ===================== -->
+        <section class="slide paper" data-name="Not neutral">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">Introduction</div>
+                <h1 class="reveal h-title">
+                  Technologies Are Not Neutral Instruments
+                </h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  Technologies do much more than just perform their intended
+                  function. They
+                  <span style="color: var(--mRED)"
+                    >give shape to what we do and how we experience the
+                    world.</span
+                  >
+                  The same tools inadvertently creates brand new behaviours
+                  nobody accounted for.
+                </p>
+              </div>
+            </div>
+            <div class="sg-3 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Automobiles</div>
+                <div class="ci-desc">
+                  They don't just move us from A→B. They lengthen our social
+                  radius, decide how far we live from work, and reshape how we
+                  design cities and roads.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Mobile Phones</div>
+                <div class="ci-desc">
+                  Makes contact easy, but breeds new norms: texting as a new
+                  "language," ghosting, being "left on read," private talk in
+                  public.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">phone_iphone</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Medical Devices</div>
+                <div class="ci-desc">
+                  Doesn't only image the body. It generates new
+                  responsibilities, especially in antenatal diagnostics and
+                  long-term suffering.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">monitor_heart</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 3 : BURSTING WITH MORALITY ===================== -->
+        <section class="slide paper" data-name="Bursting with morality">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">The moral dimension</div>
+                <h1 class="reveal h-title">A World "Bursting with Morality"</h1>
+              </div>
+              <div class="reveal dpanel">
+                <div class="dp-label">The challenge</div>
+                <div class="dp-p">
+                  Mainstream ethics says morality is an
+                  <strong>exclusively human affair.</strong>
+                  Objects have no mind, free will, or intention, so crediting
+                  them with morality sounds like "animism." Yet things clearly
+                  shape our moral decisions. So one must ask:
+                </div>
+                <div class="dp-q">
+                  How can designers anticipate, or even "build in," the moral
+                  roles of what they make?
+                </div>
+              </div>
+            </div>
+            <div
+              class="reveal"
+              style="
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 48px;
+              "
+            >
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Speed bump</div>
+                <div class="ci-desc">"Slow down near the school."</div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">road</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Seatbelt chime</div>
+                <div class="ci-desc">Nags until you buckle up.</div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined"
+                    >airline_seat_recline_extra</span
+                  >
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Energy-saving bulb</div>
+                <div class="ci-desc">Takes over our eco-conscience.</div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">lightbulb</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Trolley coin-lock</div>
+                <div class="ci-desc">Reminds us to return the cart.</div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">shopping_cart</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 4 : ETHICS & TECHNOLOGY ===================== -->
+        <section class="slide paper" data-name="Ethics & technology">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">Ethics &amp; technology</div>
+                <h1 class="reveal h-title">
+                  A Relationship That Was Never Simple
+                </h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  Technology and morality have always been tangled. Some
+                  inventions look plainly good. Others are deeply contested.
+                </p>
+              </div>
+            </div>
+            <div class="sg-2 reveal">
+              <div>
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 12px;
+                    color: var(--mGREEN);
+                    margin-bottom: 16px;
+                  "
+                >
+                  SEEMINGLY GOOD
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 20px">
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mGREEN);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >medication</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        Penicillin
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        Transformed medicine by defeating bacterial infections
+                        that were once deadly.
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mGREEN);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >agriculture</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        Agricultural equipment
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        Freed billions from famine and enabled modern food
+                        systems.
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mGREEN);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >vaccines</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        Surgical instruments
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        Made safe, repeatable procedures possible across
+                        generations.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 12px;
+                    color: var(--mRED);
+                    margin-bottom: 16px;
+                  "
+                >
+                  DEEPLY CONTESTED
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 20px">
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mRED);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >destruction</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        Nuclear weapons
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        Destruction so vast that benefits are hard to see.
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 16px; align-items: center">
+                    <span
+                      class="material-symbols-outlined"
+                      style="
+                        font-size: 120px;
+                        color: var(--mRED);
+                        font-variation-settings:
+                          &quot;FILL&quot; 1,
+                          &quot;wght&quot; 300;
+                        flex-shrink: 0;
+                      "
+                      >gynecology</span
+                    >
+                    <div>
+                      <div
+                        style="
+                          font-weight: 700;
+                          font-size: 20px;
+                          color: var(--mBLACK);
+                        "
+                      >
+                        The birth-control pill
+                      </div>
+                      <div
+                        style="
+                          font-size: 14px;
+                          color: var(--mBLACK);
+                          margin-top: 4px;
+                        "
+                      >
+                        World-changing for emancipation, yet contested in
+                        conservative religious circles.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 5 : EXTERNALIST TRAP ===================== -->
+        <section class="slide paper" data-name="Externalist trap">
+          <div class="sg">
+            <div class="sg-hd-2" style="grid-template-columns: 1fr 1.5fr">
+              <div>
+                <div class="reveal kicker">Why current ethics falls short</div>
+                <h1 class="reveal h-title">The "Externalist" Trap</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  Even modern fields (engineering ethics, computer ethics) still
+                  <span class="rd">separate two realms</span>: protect "society"
+                  from the risks of "technology," and blow the whistle when tech
+                  misbehaves. Technology is treated as a mere instrument.
+                </p>
+              </div>
+            </div>
+            <div
+              class="sg-2 reveal"
+              style="grid-template-columns: 1fr 1.5fr; height: 100%"
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  transform: translateY(16px);
+                "
+              >
+                <div class="dpanel">
+                  <div class="dp-label">Verbeek's counter-claim</div>
+                  <div class="dp-q">
+                    "Humans are technological beings, just as technologies are
+                    social entities."
+                  </div>
+                  <div class="dp-p">
+                    The two domains cannot be cleanly separated; they constitute
+                    each other.
+                  </div>
+                </div>
+              </div>
+              <div></div>
+            </div>
+            <img
+              class="reveal"
+              src="venn.svg"
+              alt=""
+              style="
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: calc(0.6 * (100% - 112px) + 32px);
+                height: auto;
+              "
+            />
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 6 : TWO FACES ===================== -->
+        <section class="slide paper" data-name="Two faces of mediation">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">Mediation has a moral charge</div>
+                <h1 class="reveal h-title">Two Faces of Moral Mediation</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  Both cases show technology quietly making moral decisions on
+                  our behalf — one by exclusion, one by transforming how we
+                  understand illness and responsibility.
+                </p>
+              </div>
+            </div>
+            <div class="sg-2 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Robert Moses' low overpasses</div>
+                <div class="ci-desc">
+                  Langdon Winner's example: parkway overpasses to Long Island's
+                  beaches were deliberately built
+                  <strong>too low for buses to pass.</strong> This quietly
+                  restricted beach access for poorer, mostly African-American
+                  residents who relied on buses.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">flyover</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">BRCA genetic testing</div>
+                <div class="ci-desc">
+                  Tests for breast-cancer genes turn
+                  <strong>healthy people into potential patients</strong> and
+                  create a new category: the
+                  <span style="color: var(--mRED)">"not-yet-ill."</span> The
+                  technology organizes a hard situation of choice, and even
+                  suggests which choice to make.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">biotech</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 7 : TECHNOLOGICAL MEDIATION ===================== -->
+        <section class="slide paper" data-name="Technological mediation">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">The core concept</div>
+                <h1 class="reveal h-title">Technological Mediation</h1>
+              </div>
+              <div
+                class="reveal dpanel"
+                style="display: flex; flex-direction: column; gap: 12px"
+              >
+                <div class="dp-label">Heidegger's two modes</div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                    flex: 1;
+                  "
+                >
+                  <div>
+                    <div class="dp-title">Ready-to-hand</div>
+                    <div class="dp-p" style="margin-top: 8px">
+                      The tool works and disappears. We become unaware of it.
+                    </div>
+                  </div>
+                  <div>
+                    <div class="dp-title">Present-at-hand</div>
+                    <div class="dp-p" style="margin-top: 8px">
+                      The tool breaks. We suddenly notice it as a thing.
+                    </div>
+                  </div>
+                </div>
+                <div class="dp-p">
+                  Ihde extends this into
+                  <strong>EXPERIENCE (perception)</strong> and
+                  <strong>PRAXIS (action)</strong>.
+                </div>
+              </div>
+            </div>
+            <div class="sg-2 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Hammering a nail</div>
+                <div class="ci-desc">
+                  Your attention is on the nail, not the hammer. You act through
+                  the tool. Ready-to-hand.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">hardware</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Wearing glasses</div>
+                <div class="ci-desc">
+                  You don't perceive the glasses, but you perceive the world
+                  through them. Embodied perception.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">eyeglasses_2</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 8 : MEDIATION OF EXPERIENCE ===================== -->
+        <section class="slide paper" data-name="Mediation of experience">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">
+                  Mediation of experience · Don Ihde
+                </div>
+                <h1 class="reveal h-title">
+                  How Technology Transforms What We Perceive
+                </h1>
+              </div>
+              <div
+                class="reveal dpanel"
+                style="display: flex; flex-direction: column; gap: 12px"
+              >
+                <div class="dp-label">Why it matters morally</div>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 16px;
+                    flex: 1;
+                  "
+                >
+                  <div>
+                    <div class="dp-title">Multistability</div>
+                    <div class="dp-p" style="margin-top: 8px">
+                      The same device has different identities by context: the
+                      telephone and typewriter began as aids for the deaf and
+                      blind.
+                    </div>
+                  </div>
+                  <div>
+                    <div class="dp-p">
+                      By shaping what counts as "real" (think MRI or ultrasound
+                      imaging), technology shapes the decisions we make about
+                      disease, pregnancy, and an unborn child.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sg-3 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Embodiment relation</div>
+                <div class="ci-desc">
+                  Tech is "incorporated" and becomes an extension of the body,
+                  like glasses you see through. (≈ ready-to-hand)
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">eyeglasses_2</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Hermeneutic relation</div>
+                <div class="ci-desc">
+                  Tech gives a representation that must be read. A thermometer
+                  shows a value to interpret, not heat you feel directly.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined"
+                    >device_thermostat</span
+                  >
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Amplification &amp; reduction</div>
+                <div class="ci-desc">
+                  Viewing a tree through an infrared camera hides what the eye
+                  sees, but reveals something new: whether it is healthy.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">park</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 9 : MEDIATION OF PRAXIS ===================== -->
+        <section class="slide paper" data-name="Mediation of praxis">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">
+                  Mediation of praxis · Bruno Latour
+                </div>
+                <h1 class="reveal h-title">How Technology Shapes What We Do</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  Latour shows that
+                  <span class="rd">artifacts carry a script</span>. That is to
+                  say, they prescribe, invite, and inhibit actions. A gun
+                  translates "express my anger" into "kill that person." A speed
+                  bump slows you whether you agree or not. Action is mediated
+                  from both ready-to-hand and present-at-hand positions.
+                </p>
+              </div>
+            </div>
+            <div class="sg-3 reveal">
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Script</div>
+                <div class="ci-desc">
+                  Like a film script, an artifact prescribes how to act. A speed
+                  bump says <span class="rd">"Slow down,"</span> a paper cup
+                  says <span class="rd">"Throw me away."</span>
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">assignment</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Translation of action</div>
+                <div class="ci-desc">
+                  "Prepare meals quickly" + a microwave → "regularly eat instant
+                  meals, alone." New composite goals emerge.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">restaurant</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule"></div>
+                <div class="ci-name">Invitation &amp; inhibition</div>
+                <div class="ci-desc">
+                  Scripts invite some actions and discourage others, and this
+                  works materially, not as a sign to read.
+                </div>
+                <div class="ci-icon">
+                  <span class="material-symbols-outlined">back_hand</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 10 : TABLE 1 ===================== -->
+        <section class="slide paper" data-name="Vocabulary table">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">Verbeek's Table 1</div>
+                <h1 class="reveal h-title">
+                  A Vocabulary for Technological Mediation
+                </h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  Every mediation involves a transformation of perception and a
+                  translation of action, two mirrored structures.
+                </p>
+              </div>
+            </div>
+            <div
+              class="reveal"
+              style="
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+              "
+            >
+              <div
+                style="
+                  border-radius: 8px;
+                  overflow: hidden;
+                  border: 1px solid var(--line);
+                  max-width: 1020px;
+                  margin: 0 auto;
+                  width: 100%;
+                "
+              >
+                <div style="display: grid; grid-template-columns: 1fr 1fr">
+                  <div
+                    style="
+                      background: var(--mBLACK);
+                      color: #fff;
+                      font-weight: 700;
+                      font-size: 22px;
+                      text-align: center;
+                      padding: 16px;
+                    "
+                  >
+                    EXPERIENCE
+                  </div>
+                  <div
+                    style="
+                      background: var(--mRED);
+                      color: #fff;
+                      font-weight: 700;
+                      font-size: 22px;
+                      text-align: center;
+                      padding: 16px;
+                    "
+                  >
+                    PRAXIS
+                  </div>
+                </div>
+                <div id="tbl"><!-- rows injected by script --></div>
+              </div>
+              <p
+                style="
+                  text-align: center;
+                  font-style: italic;
+                  color: var(--mBLACK);
+                  font-size: 14px;
+                "
+              >
+                Both structures are context-dependent. Meaning, the same
+                artifact can mediate differently depending on how it is used.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 11 : MEDIATION & MORALITY ===================== -->
+        <section class="slide paper" data-name="Mediation & morality">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">Mediation &amp; morality</div>
+                <h1 class="reveal h-title">Do Things Now Carry Morality?</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  Cars that nag until you buckle up, speed bumps that decide
+                  your speed; for Latour these literally
+                  <span style="color: var(--mRED)">embody morality.</span>
+                  Designers delegated a moral task to them.
+                </p>
+              </div>
+            </div>
+            <div class="sg-flow reveal" style="align-content: end">
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  text-align: center;
+                  padding: 32px 24px;
+                  border: 2px solid var(--mRED);
+                  border-radius: 6px;
+                  container-type: inline-size;
+                "
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: min(90cqi, 25vh);
+                    color: var(--mRED);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >church</span
+                >
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 28px;
+                    color: var(--mRED);
+                    margin-top: 16px;
+                  "
+                >
+                  GOD
+                </div>
+                <p
+                  style="
+                    font-size: 14px;
+                    color: var(--mBLACK);
+                    margin-top: 8px;
+                    line-height: 1.4;
+                  "
+                >
+                  Pre-Enlightenment: morality comes from the divine.
+                </p>
+              </div>
+              <div style="display: flex; align-items: center">
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: 32px;
+                    color: var(--mRED);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >arrow_forward</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  text-align: center;
+                  padding: 32px 24px;
+                  border: 2px solid var(--mRED);
+                  border-radius: 6px;
+                  container-type: inline-size;
+                "
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: min(90cqi, 25vh);
+                    color: var(--mRED);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >family_restroom</span
+                >
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 28px;
+                    color: var(--mRED);
+                    margin-top: 16px;
+                  "
+                >
+                  HUMANS
+                </div>
+                <p
+                  style="
+                    font-size: 14px;
+                    color: var(--mBLACK);
+                    margin-top: 8px;
+                    line-height: 1.4;
+                  "
+                >
+                  Enlightenment (Kant): the source of morality moves to human
+                  reason.
+                </p>
+              </div>
+              <div style="display: flex; align-items: center">
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: 32px;
+                    color: var(--mRED);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >arrow_forward</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  text-align: center;
+                  padding: 32px 24px;
+                  border: 2px solid var(--mRED);
+                  border-radius: 6px;
+                  background: var(--mRED);
+                  container-type: inline-size;
+                "
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-size: min(90cqi, 25vh);
+                    color: var(--mYELLOW);
+                    font-variation-settings:
+                      &quot;FILL&quot; 1,
+                      &quot;wght&quot; 300;
+                  "
+                  >settings</span
+                >
+                <div
+                  style="
+                    font-weight: 700;
+                    font-size: 28px;
+                    color: var(--mYELLOW);
+                    margin-top: 16px;
+                  "
+                >
+                  THINGS?
+                </div>
+                <p
+                  style="
+                    font-size: 14px;
+                    color: #fff;
+                    margin-top: 8px;
+                    line-height: 1.4;
+                  "
+                >
+                  Does the moral role of technology move it one step further, to
+                  things?
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 12 : THREE THEORIES ===================== -->
+        <section class="slide paper" data-name="Three theories">
+          <div class="sg">
+            <div class="sg-hd-2">
+              <div>
+                <div class="reveal kicker">
+                  Connecting to Machine Cannibalism · Ch. 1
+                </div>
+                <h1 class="reveal h-title">Three Theories of Technology</h1>
+              </div>
+              <div class="reveal">
+                <p class="sdesc">
+                  Both books lean on the same Latour and the same examples (the
+                  gun, the speed bump). <em>Machine Cannibalism</em> sorts
+                  human–machine relations into three theories:
+                </p>
+              </div>
+            </div>
+            <div
+              class="reveal"
+              style="
+                display: grid;
+                grid-template-rows: 1fr auto;
+                gap: 16px;
+                overflow: hidden;
+              "
+            >
+              <div class="sg-3" style="overflow: hidden">
+                <div class="ci">
+                  <div class="ci-rule"></div>
+                  <div class="ci-name">Tool theory</div>
+                  <div class="ci-desc">
+                    Technology is neutral. The <strong>HUMAN</strong> alone
+                    determines the outcome.
+                  </div>
+                  <div class="ci-icon">
+                    <span class="material-symbols-outlined">handyman</span>
+                  </div>
+                </div>
+                <div class="ci">
+                  <div class="ci-rule"></div>
+                  <div class="ci-name">Autonomy theory</div>
+                  <div class="ci-desc">
+                    Technology has its own logic. The
+                    <strong>MACHINE</strong> determines the outcome.
+                  </div>
+                  <div class="ci-icon">
+                    <span class="material-symbols-outlined"
+                      >precision_manufacturing</span
+                    >
+                  </div>
+                </div>
+                <div class="ci">
+                  <div class="ci-rule"></div>
+                  <div class="ci-name">Mediation theory</div>
+                  <div class="ci-desc">
+                    Neither alone. A
+                    <strong>NEW, unplanned purpose</strong> emerges from the
+                    human–tech composite.
+                  </div>
+                  <div class="ci-icon">
+                    <span class="material-symbols-outlined">hub</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 13 : CONCLUSION (red) ===================== -->
+        <section class="slide redslide" data-name="Takeaway">
+          <div class="sg">
+            <div class="sg-hd-2" style="grid-template-columns: 1fr 0.5fr">
+              <div>
+                <div class="reveal kicker on-red">The takeaway</div>
+                <h1 class="reveal h-title">
+                  Technology Shapes Our Morals, and We Are Not the Only Driver
+                </h1>
+              </div>
+              <div></div>
+            </div>
+            <div class="sg-3 reveal">
+              <div class="ci">
+                <div class="ci-rule yl"></div>
+                <div class="ci-name wh">Morality is hybrid</div>
+                <div class="ci-desc wh">
+                  Not a purely human affair, nor purely the machine's. It lives
+                  in human–technology associations.
+                </div>
+                <div class="ci-icon yl">
+                  <span class="material-symbols-outlined">balance</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule yl"></div>
+                <div class="ci-name wh">Design = ethics by other means</div>
+                <div class="ci-desc wh">
+                  Engineers "materialize morality." They can anticipate, and
+                  even build in, the moral roles of their work.
+                </div>
+                <div class="ci-icon yl">
+                  <span class="material-symbols-outlined">settings</span>
+                </div>
+              </div>
+              <div class="ci">
+                <div class="ci-rule yl"></div>
+                <div class="ci-name wh">A postphenomenological ethics</div>
+                <div class="ci-desc wh">
+                  Verbeek's tools come from Ihde (perception), Latour (action),
+                  and Foucault (the subject).
+                </div>
+                <div class="ci-icon yl">
+                  <span class="material-symbols-outlined">hub</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== SLIDE 14 : DISCUSSION (red) ===================== -->
+        <section class="slide redslide" data-name="Discussion">
+          <div class="sg">
+            <div>
+              <div class="reveal kicker on-red">Discussion time!</div>
+              <h1 class="reveal h-title">Today's Discussion Questions</h1>
+            </div>
+            <div
+              class="reveal"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                justify-content: space-around;
+              "
+            >
+              <div class="qbox">
+                <div class="qnum">1</div>
+                <p class="qtext">
+                  Does technology affect our morals, and if so, how can we make
+                  moral technology?
+                </p>
+              </div>
+              <div class="qbox">
+                <div class="qnum">2</div>
+                <p class="qtext">
+                  In the long run, is technology making our morals better, or
+                  worse?
+                </p>
+              </div>
+              <div class="qbox">
+                <div class="qnum">3</div>
+                <p class="qtext">
+                  How does our interaction with technology shape our perceived
+                  reality, and how "authentic" is that reality?
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- /stage -->
+    </div>
+    <!-- /viewport -->
+
+    <!-- nav chrome -->
+    <div id="nav">
+      <button class="navbtn" id="prev" aria-label="Previous">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <span id="counter">01 / 14</span>
+      <div class="dots" id="dots"></div>
+      <button class="navbtn" id="next" aria-label="Next">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+    <div id="hint">← → arrow keys to navigate</div>
+
+    <script>
+      /* ---------- ICONS (Material Symbols) ---------- */
+      document.querySelectorAll("[data-ic]").forEach((el) => {
+        const icon = el.getAttribute("data-ic");
+        const isYellow = el.classList.contains("yellow");
+        const span = document.createElement("span");
+        span.className = "material-symbols-outlined";
+        span.style.color = isYellow ? "var(--mBLACK)" : "#fff";
+        span.textContent = icon;
+        el.appendChild(span);
+      });
+
+      /* ---------- TABLE 1 rows ---------- */
+      (function () {
+        const rows = [
+          ["Mediation of perception", "Mediation of action"],
+          ["Technological intentionality", "Script"],
+          ["Transformation of perception", "Translation of action"],
+          ["Amplification &amp; reduction", "Invitation &amp; inhibition"],
+        ];
+        const span = [
+          "Delegation : deliberate inscription",
+          "Multistability : context-dependence",
+        ];
+        let html = "";
+        rows.forEach((r, i) => {
+          const bg = i % 2 === 0 ? "#F6F6F6" : "#FFFFFF";
+          html +=
+            '<div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);">' +
+            '<div style="padding:12px 16px;text-align:center;background:' +
+            bg +
+            ';font-weight:600;font-size:16px;color:var(--mBLACK);font-family:var(--font);">' +
+            r[0] +
+            "</div>" +
+            '<div style="padding:12px 16px;text-align:center;background:' +
+            (bg === "#F6F6F6" ? "#FBEFEF" : "#FDF6F6") +
+            ';font-weight:600;font-size:16px;color:var(--mBLACK);font-family:var(--font);">' +
+            r[1] +
+            "</div>" +
+            "</div>";
+        });
+        span.forEach((s) => {
+          html +=
+            '<div style="padding:12px 16px;text-align:center;border-top:1px solid var(--line);background:#fff;font-weight:700;font-style:italic;color:var(--mRED);font-size:14px;font-family:var(--font);">' +
+            s +
+            "</div>";
+        });
+        document.getElementById("tbl").innerHTML = html;
+      })();
+
+      /* ---------- scale-to-fit ---------- */
+      const BASE_W = 1280,
+        BASE_H = 720;
+      const stage = document.getElementById("stage");
+      function fit() {
+        const s = Math.max(
+          window.innerWidth / BASE_W,
+          window.innerHeight / BASE_H,
+        );
+        stage.style.transform = "scale(" + s + ")";
+      }
+      window.addEventListener("resize", fit);
+      fit();
+
+      /* ---------- slide engine ---------- */
+      const slides = [...document.querySelectorAll(".slide")];
+      const total = slides.length;
+      let idx = Math.max(
+        0,
+        Math.min(
+          total - 1,
+          parseInt(localStorage.getItem("moralTech-en-slide") || "0"),
+        ),
+      );
+      const counter = document.getElementById("counter");
+      const progress = document.getElementById("progress");
+      const dotsWrap = document.getElementById("dots");
+      slides.forEach((_, i) => {
+        const d = document.createElement("div");
+        d.className = "dot";
+        d.addEventListener("click", () => go(i));
+        dotsWrap.appendChild(d);
+      });
+      const dots = [...document.querySelectorAll(".dot")];
+      function pad(n) {
+        return String(n).padStart(2, "0");
+      }
+      function render() {
+        slides.forEach((s, i) => s.classList.toggle("active", i === idx));
+        dots.forEach((d, i) => d.classList.toggle("on", i === idx));
+        counter.textContent = pad(idx + 1) + " / " + pad(total);
+        progress.style.width = (idx / (total - 1)) * 100 + "%";
+      }
+      function go(n) {
+        idx = Math.max(0, Math.min(total - 1, n));
+        localStorage.setItem("moralTech-en-slide", idx);
+        render();
+      }
+      function next() {
+        if (idx < total - 1) go(idx + 1);
+      }
+      function prev() {
+        if (idx > 0) go(idx - 1);
+      }
+
+      document.getElementById("next").addEventListener("click", next);
+      document.getElementById("prev").addEventListener("click", prev);
+
+      let hintTimer = setTimeout(() => {
+        document.getElementById("hint").style.opacity = "0";
+      }, 4200);
+      window.addEventListener("keydown", (e) => {
+        switch (e.key) {
+          case "ArrowRight":
+          case "ArrowDown":
+          case "PageDown":
+          case " ":
+            e.preventDefault();
+            next();
+            break;
+          case "ArrowLeft":
+          case "ArrowUp":
+          case "PageUp":
+            e.preventDefault();
+            prev();
+            break;
+          case "Home":
+            go(0);
+            break;
+          case "End":
+            go(total - 1);
+            break;
+          case "f":
+          case "F":
+            if (!document.fullscreenElement) {
+              document.documentElement.requestFullscreen &&
+                document.documentElement.requestFullscreen();
+            } else {
+              document.exitFullscreen && document.exitFullscreen();
+            }
+            break;
+        }
+      });
+      document.getElementById("viewport").addEventListener("click", (e) => {
+        if (e.target.closest("#nav")) return;
+        const x = e.clientX / window.innerWidth;
+        if (x > 0.62) next();
+        else if (x < 0.38) prev();
+      });
+      render();
+    </script>
+  </body>
+</html>
