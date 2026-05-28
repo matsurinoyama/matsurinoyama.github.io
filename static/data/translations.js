@@ -6,7 +6,7 @@ const TRANSLATIONS = {
       works: "Works",
       resume: "Résumé",
       lang: "JP",
-      langHref: "../jp/",
+      langHref: "../ja/",
     },
     resume: {
       pageTitle: "matsurinoyama_resume",
