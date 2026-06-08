@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="NMC.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nippon-Malayan Applied Arts Co.</title>
+    <link rel="preload" href="../../static/fonts/FOT-GMaruGoPro-M.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="../../static/fonts/FOT-GMaruGoPro-DB.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="../../static/fonts/FOT-GMaruGoPro-B.otf" as="font" type="font/otf" crossorigin />
+  </head>
+  <style>
+    @font-face {
+      font-weight: 400;
+      src: url("../../static/fonts/FOT-GMaruGoPro-M.otf");
+      font-family: "FOT-GMaruGo Pro";
+    }
+    @font-face {
+      font-weight: 600;
+      src: url("../../static/fonts/FOT-GMaruGoPro-DB.otf");
+      font-family: "FOT-GMaruGo Pro";
+    }
+    @font-face {
+      font-weight: 700;
+      src: url("../../static/fonts/FOT-GMaruGoPro-B.otf");
+      font-family: "FOT-GMaruGo Pro";
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 2.5vw 5vw 0;
+      height: 100vh;
+      overflow: hidden;
+      font-size: 0.75vw;
+      font-family: "FOT-GMaruGo Pro", sans-serif;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2vw;
+      margin-bottom: 3vw;
+    }
+
+    h1 {
+      flex-shrink: 0;
+      transition: opacity 0.5s;
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.5vw;
+      text-align: justify;
+      text-align-last: justify;
+      text-justify: inter-character;
+      text-transform: uppercase;
+    }
+
+    h1.fade,
+    .carousel-thumb.fade {
+      opacity: 0;
+    }
+
+    .header img {
+      width: auto;
+      height: 5vw;
+    }
+
+    h3 {
+      margin: 0;
+      padding: 0;
+      font-weight: 600;
+      font-size: 1.75vw;
+      line-height: 1;
+      writing-mode: vertical-rl;
+      text-orientation: vertical-rl;
+    }
+
+    h4 {
+      margin: 0;
+      padding: 0;
+    }
+
+    .carousel {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      align-items: flex-start;
+      gap: 1vw;
+      padding-bottom: 2.5vw;
+      width: 100%;
+      min-height: 0;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .year {
+      display: flex;
+      flex: 1 0 auto;
+      align-items: flex-start;
+      gap: 1vw;
+    }
+
+    .carousel-item {
+      display: flex;
+      flex: 1 0 auto;
+      align-items: flex-start;
+      gap: 1vw;
+      min-width: 17.5vw;
+    }
+
+    .carousel-thumb {
+      flex: 1 0 auto;
+      border-radius: 0.5vw;
+      background-color: #f0f0f0;
+      height: 17.5vw;
+      overflow: hidden;
+      transition: opacity 0.5s, width 0.5s;
+    }
+
+    #smg img {
+      transform: scale(1.25);
+    }
+
+    .carousel-thumb img {
+      border-radius: 0.5vw;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel h4 {
+      position: relative;
+      flex-shrink: 0;
+      margin-right: 1vw;
+      height: 17.5vw;
+      overflow: hidden;
+      transition: width 0.5s;
+    }
+
+    .lang {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      writing-mode: vertical-rl;
+      justify-content: space-between;
+      height: 17.5vw;
+      font-weight: 600;
+      font-size: 1vw;
+      line-height: 1.25;
+      transition: opacity 0.5s;
+    }
+
+    .lang span {
+      max-height: 50%;
+      overflow: hidden;
+    }
+
+    .lang.en { opacity: 1; }
+    .lang.ja { opacity: 0; }
+  </style>
+  <body>
+    <div class="header">
+      <h1 id="company-name">Nippon-Malayan Applied Arts Co.</h1>
+      <img src="NMC.svg" alt="" />
+    </div>
+    <div class="carousel">
+      <div class="year">
+        <h3>2026</h3>
+        <div class="carousel-item">
+          <div class="carousel-thumb" id="wcc">
+            <img
+              src="https://cdn.03080.jp/2026/WCC/driftingAway_01.jpeg"
+              alt=""
+            />
+          </div>
+          <h4>
+            <div class="lang en">
+              <span>Drifting Away</span
+              ><span style="font-weight: 400; font-size: 0.75vw"
+                >Interactive Installation</span
+              >
+            </div>
+            <div class="lang ja">
+              <span>離れていく</span
+              ><span style="font-weight: 400; font-size: 0.75vw"
+                >インタラクティブ<br />インスタレーション</span
+              >
+            </div>
+          </h4>
+        </div>
+      </div>
+      <div class="year">
+        <h3>2025</h3>
+        <div class="carousel-item">
+          <div class="carousel-thumb" id="eer001">
+            <img
+              src="https://cdn.03080.jp/2025/EER/001/peopleNotMet-Demachiyanagi_01.jpg"
+              alt=""
+            />
+          </div>
+          <h4>
+            <div class="lang en">
+              <span>the people we have (not) met @Demachiyanagi Station</span
+              ><span style="font-weight: 400; font-size: 0.75vw"
+                >Interactive Installation</span
+              >
+            </div>
+            <div class="lang ja">
+              <span>巡り合った（ことのない）人々 @出町柳駅</span
+              ><span style="font-weight: 400; font-size: 0.75vw"
+                >インタラクティブ<br />インスタレーション</span
+              >
+            </div>
+          </h4>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-thumb" id="eer002">
+          <img
+            src="https://cdn.03080.jp/2025/EER/002/stationMaster_01.JPG"
+            alt=""
+          />
+        </div>
+        <h4>
+          <div class="lang en">
+            <span>Everyone's Stationmaster</span
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >Interactive Installation</span
+            >
+          </div>
+          <div class="lang ja">
+            <span>みんなの駅長</span
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >インタラクティブ<br />インスタレーション</span
+            >
+          </div>
+        </h4>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-thumb" id="ksvi">
+          <img src="https://cdn.03080.jp/2025/KSVI/DegreeThumb_1.jpg" alt="" />
+        </div>
+        <h4>
+          <div class="lang en">
+            <span>Materialising the Freedom of Kyoto Seika University</span
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >Visual Identity</span
+            >
+          </div>
+          <div class="lang ja">
+            <span>京都精華大学の自由さの具体化</span
+            ><span style="font-weight: 400; font-size: 0.75vw">ＶＩデザイン</span>
+          </div>
+        </h4>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-thumb" id="mkvi">
+          <img src="https://cdn.03080.jp/2025/MKVI/ProductImage1.jpg" alt="" />
+        </div>
+        <h4>
+          <div class="lang en">
+            <span>MyKyoto</span
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >Visual Identity</span
+            >
+          </div>
+          <div class="lang ja">
+            <span>MyKyoto</span
+            ><span style="font-weight: 400; font-size: 0.75vw">ＶＩデザイン</span>
+          </div>
+        </h4>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-thumb" id="smg">
+          <img src="https://cdn.03080.jp/2025/SMG/bathroom.jpg" alt="" />
+        </div>
+        <h4>
+          <div class="lang en">
+            <span>Mamorigami no Me</span
+            ><span style="font-weight: 400; font-size: 0.75vw">Advertising</span>
+          </div>
+          <div class="lang ja">
+            <span>守神の目</span
+            ><span style="font-weight: 400; font-size: 0.75vw">広告デザイン</span>
+          </div>
+        </h4>
+      </div>
+      <div class="year">
+        <h3>2023</h3>
+        <div class="carousel-item">
+          <div class="carousel-thumb" id="pawd">
+            <img src="https://cdn.03080.jp/2023/PAWD/PAM1.jpg" alt="" />
+          </div>
+          <h4>
+            <div class="lang en">
+              <span>PAM Awards 2023</span
+              ><span style="font-weight: 400; font-size: 0.75vw"
+                >Advertising</span
+              >
+            </div>
+            <div class="lang ja">
+              <span>PAM Awards 2023</span
+              ><span style="font-weight: 400; font-size: 0.75vw">広告デザイン</span>
+            </div>
+          </h4>
+        </div>
+      </div>
+      <div class="year">
+        <h3>2022</h3>
+        <div class="carousel-item">
+          <div class="carousel-thumb" id="wwsa">
+            <img src="https://cdn.03080.jp/2022/WWSA/after_01.jpg" alt="" />
+          </div>
+          <h4>
+            <div class="lang en">
+              <span>Warna-Warni Shah Alam</span
+              ><span style="font-weight: 400; font-size: 0.75vw">Mural Art</span>
+            </div>
+            <div class="lang ja">
+              <span>Warna-Warni Shah Alam</span
+              ><span style="font-weight: 400; font-size: 0.75vw">壁画設置</span>
+            </div>
+          </h4>
+        </div>
+      </div>
+      <p style="width: 100%; margin: 0">
+        © 2026 Nippon-Malayan Applied Arts Co., Ltd / Syarikat Seni Gunaan
+        Jepun-Tanah Melayu Sdn. Bhd.
+      </p>
+    </div>
+    <script>
+      const names = [
+        "Nippon-Malayan Applied Arts Co.",
+        "日本馬來應用藝術社",
+        "Syarikat Seni Gunaan Jepun-Tanah Melayu",
+      ];
+      let i = 0;
+      const el = document.getElementById("company-name");
+      setInterval(() => {
+        el.classList.add("fade");
+        setTimeout(() => {
+          i = (i + 1) % names.length;
+          el.textContent = names[i];
+          document.title = names[i];
+          el.classList.remove("fade");
+        }, 500);
+      }, 5000);
+
+      const ITEM_IMAGES = {
+        wcc: [
+          "https://cdn.03080.jp/2026/WCC/driftingAway_01.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_02.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_03.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_04.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_05.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_06.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_07.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_08.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_09.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_10.jpeg",
+          "https://cdn.03080.jp/2026/WCC/driftingAway_11.jpeg",
+        ],
+        eer001: [
+          "https://cdn.03080.jp/2025/EER/001/peopleNotMet-Demachiyanagi_01.jpg",
+          "https://cdn.03080.jp/2025/EER/001/peopleNotMet-Demachiyanagi_02.jpg",
+          "https://cdn.03080.jp/2025/EER/001/peopleNotMet-Demachiyanagi_03.jpg",
+        ],
+        eer002: [
+          "https://cdn.03080.jp/2025/EER/002/stationMaster_01.JPG",
+          "https://cdn.03080.jp/2025/EER/002/stationMaster_02.JPG",
+          "https://cdn.03080.jp/2025/EER/002/stationMaster_03.JPG",
+        ],
+        ksvi: [
+          "https://cdn.03080.jp/2025/KSVI/DegreeThumb_1.jpg",
+          "https://cdn.03080.jp/2025/KSVI/IDThumb_1A.jpg",
+          "https://cdn.03080.jp/2025/KSVI/IDThumb_1B.jpg",
+          "https://cdn.03080.jp/2025/KSVI/DegreeThumb_2.jpg",
+          "https://cdn.03080.jp/2025/KSVI/IDThumb_2.jpg",
+          "https://cdn.03080.jp/2025/KSVI/DegreeThumb_3.jpg",
+          "https://cdn.03080.jp/2025/KSVI/DegreeThumb_4.jpg",
+          "https://cdn.03080.jp/2025/KSVI/IDThumb_3A.jpg",
+          "https://cdn.03080.jp/2025/KSVI/IDThumb_3B.jpg",
+          "https://cdn.03080.jp/2025/KSVI/DegreeThumb_5.jpg",
+          "https://cdn.03080.jp/2025/KSVI/IDThumb_4.jpg",
+          "https://cdn.03080.jp/2025/KSVI/SeikaLogo_AnimSymbol.gif",
+          "https://cdn.03080.jp/2025/KSVI/IDThumb_5.jpg",
+          "https://cdn.03080.jp/2025/KSVI/MockupAI.png",
+          "https://cdn.03080.jp/2025/KSVI/IDThumb_7.jpg",
+          "https://cdn.03080.jp/2025/KSVI/SeikaLogo_Faculty-H.gif",
+        ],
+        mkvi: [
+          "https://cdn.03080.jp/2025/MKVI/ProductImage1.jpg",
+          "https://cdn.03080.jp/2025/MKVI/Logo.jpg",
+          "https://cdn.03080.jp/2025/MKVI/ProductImage2.jpg",
+          "https://cdn.03080.jp/2025/MKVI/SymbolMark.jpg",
+          "https://cdn.03080.jp/2025/MKVI/ProductImage3.jpg",
+          "https://cdn.03080.jp/2025/MKVI/SymbolRationale.jpg",
+        ],
+        smg: [
+          "https://cdn.03080.jp/2025/SMG/bathroom.jpg",
+          "https://cdn.03080.jp/2025/SMG/poster.jpg",
+        ],
+        pawd: [
+          "https://cdn.03080.jp/2023/PAWD/PAM1.jpg",
+          "https://cdn.03080.jp/2023/PAWD/PAM2.jpg",
+          "https://cdn.03080.jp/2023/PAWD/PAM3.jpg",
+        ],
+        wwsa: [
+          "https://cdn.03080.jp/2022/WWSA/drawing_02.jpg",
+          "https://cdn.03080.jp/2022/WWSA/after_01.jpg",
+          "https://cdn.03080.jp/2022/WWSA/after_02.jpg",
+          "https://cdn.03080.jp/2022/WWSA/after_03.jpg",
+          "https://cdn.03080.jp/2022/WWSA/after_04.jpg",
+          "https://cdn.03080.jp/2022/WWSA/rationale_01.gif",
+        ],
+      };
+
+      function resolveEntry(entry) {
+        return Array.isArray(entry)
+          ? entry[Math.floor(Math.random() * entry.length)]
+          : entry;
+      }
+
+      const IMAGE_RATIOS = {};
+      const VH = 17.5;
+
+      function preloadImages(images) {
+        const flat = images.flatMap((e) => (Array.isArray(e) ? e : [e]));
+        return Promise.all(
+          flat.map(
+            (src) =>
+              new Promise((resolve) => {
+                if (IMAGE_RATIOS[src] !== undefined) return resolve();
+                const img = new Image();
+                img.onload = () => {
+                  IMAGE_RATIOS[src] = img.naturalWidth / img.naturalHeight;
+                  resolve();
+                };
+                img.onerror = resolve;
+                img.src = src;
+              })
+          )
+        );
+      }
+
+      function cycleImages(el, images, interval) {
+        let i = 0;
+        setInterval(() => {
+          const nextI = (i + 1) % images.length;
+          const nextSrc = resolveEntry(images[nextI]);
+          el.classList.add("fade");
+          if (IMAGE_RATIOS[nextSrc])
+            el.style.width = VH * IMAGE_RATIOS[nextSrc] + "vw";
+          setTimeout(() => {
+            i = nextI;
+            el.innerHTML = `<img src="${nextSrc}" alt="" />`;
+            el.classList.remove("fade");
+          }, 500);
+        }, interval);
+      }
+
+      Object.entries(ITEM_IMAGES).forEach(([id, images]) => {
+        const el = document.getElementById(id);
+        preloadImages(images).then(() => {
+          const firstSrc = resolveEntry(images[0]);
+          if (IMAGE_RATIOS[firstSrc])
+            el.style.width = VH * IMAGE_RATIOS[firstSrc] + "vw";
+          cycleImages(el, images, Math.random() * 10000 + 5000);
+        });
+      });
+
+      const langH4s = document.querySelectorAll(".carousel h4");
+      let showingEn = true;
+
+      document.fonts.ready.then(() => {
+        langH4s.forEach((h4) => {
+          h4.style.width = h4.querySelector(".lang.en").offsetWidth + "px";
+        });
+        setInterval(() => {
+          showingEn = !showingEn;
+          langH4s.forEach((h4) => {
+            const en = h4.querySelector(".lang.en");
+            const ja = h4.querySelector(".lang.ja");
+            const incoming = showingEn ? en : ja;
+            const outgoing = showingEn ? ja : en;
+            outgoing.style.opacity = "0";
+            incoming.style.opacity = "1";
+            h4.style.width = incoming.offsetWidth + "px";
+          });
+        }, 10000);
+      });
+    </script>
+  </body>
+</html>
