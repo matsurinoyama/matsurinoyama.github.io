@@ -77,8 +77,41 @@
     }
 
     .header img {
+      animation: spin 8s linear infinite;
       width: auto;
       height: 5vw;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      overflow: hidden;
+      background: #fff;
+      transition: opacity 0.5s;
+    }
+    #preloader.done {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #preloader img {
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      width: auto;
+      height: 200vh;
+      animation: spin-rising 1s linear infinite;
+    }
+
+    @keyframes spin-rising {
+      from { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+      to   { transform: translateX(-50%) translateY(-50%) rotate(-360deg); }
     }
 
     h3 {
@@ -128,9 +161,7 @@
 
     .carousel-thumb {
       flex: 1 0 auto;
-      transition:
-        opacity 0.5s,
-        width 0.5s;
+      transition: opacity 0.5s;
       border-radius: 0.5vw;
       background-color: #f0f0f0;
       height: 17.5vw;
@@ -151,7 +182,6 @@
     .carousel h4 {
       position: relative;
       flex-shrink: 0;
-      transition: width 0.5s;
       margin-right: 1vw;
       height: 17.5vw;
       overflow: hidden;
@@ -184,6 +214,7 @@
     }
   </style>
   <body>
+    <div id="preloader"><img src="NMC.svg" alt="" /></div>
     <div class="header">
       <h1 id="company-name">Nippon-Malayan Applied Arts Co.</h1>
       <img src="NMC.svg" alt="" />
@@ -366,7 +397,7 @@
       </h1>
       <p style="width: 100%; margin: 0">
         © 2026 Nippon-Malayan Applied Arts Co., Ltd / Syarikat Seni Gunaan
-        Jepun-Tanah Melayu Sdn. Bhd.
+        Tanah Melayu-Jepun Sdn. Bhd.
       </p>
     </div>
     <script>
@@ -376,10 +407,13 @@
           items: [
             "Nippon-Malayan Applied Arts Co.",
             "日本馬來藝術實踐社",
-            "Syarikat Seni Gunaan Jepun-Tanah Melayu",
+            "Syarikat Seni Gunaan Tanah Melayu-Jepun",
           ],
           i: 0,
-          update(el, val) { el.textContent = val; document.title = val; },
+          update(el, val) {
+            el.textContent = val;
+            document.title = val;
+          },
         },
         {
           el: document.getElementById("tagline"),
@@ -389,7 +423,9 @@
             "Kesenian, diamalkan.<br />Kyoto, JP ↔ Shah Alam, MY",
           ],
           i: 0,
-          update(el, val) { el.innerHTML = val; },
+          update(el, val) {
+            el.innerHTML = val;
+          },
         },
       ];
 
@@ -402,7 +438,7 @@
             c.el.classList.remove("fade");
           });
         }, 500);
-      }, 5000);
+      }, 10000);
 
       const ITEM_IMAGES = {
         wcc: [
@@ -482,6 +518,18 @@
       const IMAGE_RATIOS = {};
       const VH = 17.5;
 
+      const carousel = document.querySelector(".carousel");
+
+      function keepScrollAnchor() {
+        const h = carousel.scrollHeight;
+        const t = carousel.scrollTop;
+        const atBottom = h - t - carousel.clientHeight < 4;
+        requestAnimationFrame(() => {
+          const newH = carousel.scrollHeight;
+          carousel.scrollTop = atBottom ? newH : t + (newH - h);
+        });
+      }
+
       function preloadImages(images) {
         const flat = images.flatMap((e) => (Array.isArray(e) ? e : [e]));
         return Promise.all(
@@ -507,10 +555,12 @@
           const nextI = (i + 1) % images.length;
           const nextSrc = resolveEntry(images[nextI]);
           el.classList.add("fade");
-          if (IMAGE_RATIOS[nextSrc])
-            el.style.width = VH * IMAGE_RATIOS[nextSrc] + "vw";
           setTimeout(() => {
             i = nextI;
+            if (IMAGE_RATIOS[nextSrc]) {
+              keepScrollAnchor();
+              el.style.width = VH * IMAGE_RATIOS[nextSrc] + "vw";
+            }
             el.innerHTML = `<img src="${nextSrc}" alt="" />`;
             el.classList.remove("fade");
           }, 500);
@@ -523,7 +573,7 @@
           const firstSrc = resolveEntry(images[0]);
           if (IMAGE_RATIOS[firstSrc])
             el.style.width = VH * IMAGE_RATIOS[firstSrc] + "vw";
-          cycleImages(el, images, Math.random() * 10000 + 5000);
+          cycleImages(el, images, Math.random() * 20000 + 10000);
         });
       });
 
@@ -531,11 +581,18 @@
       let showingEn = true;
 
       document.fonts.ready.then(() => {
+        const preloader = document.getElementById("preloader");
+        preloader.classList.add("done");
+        preloader.addEventListener("transitionend", () => preloader.remove(), {
+          once: true,
+        });
+
         langH4s.forEach((h4) => {
           h4.style.width = h4.querySelector(".lang.en").offsetWidth + "px";
         });
         setInterval(() => {
           showingEn = !showingEn;
+          keepScrollAnchor();
           langH4s.forEach((h4) => {
             const en = h4.querySelector(".lang.en");
             const ja = h4.querySelector(".lang.ja");
@@ -545,7 +602,7 @@
             incoming.style.opacity = "1";
             h4.style.width = incoming.offsetWidth + "px";
           });
-        }, 10000);
+        }, 20000);
       });
     </script>
   </body>
