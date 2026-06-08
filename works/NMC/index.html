@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="jp">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="NMC.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日本馬來應用藝術社</title>
+  </head>
+  <style>
+    @font-face {
+      font-weight: 400;
+      src: url("../../static/fonts/FOT-GMaruGoPro-M.otf");
+      font-family: "FOT-GMaruGo Pro";
+    }
+    @font-face {
+      font-weight: 600;
+      src: url("../../static/fonts/FOT-GMaruGoPro-DB.otf");
+      font-family: "FOT-GMaruGo Pro";
+    }
+    @font-face {
+      font-weight: 700;
+      src: url("../../static/fonts/FOT-GMaruGoPro-B.otf");
+      font-family: "FOT-GMaruGo Pro";
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 2.5vw 5vw 0;
+      height: 100vh;
+      overflow: hidden;
+      font-size: 0.75vw;
+      font-family: "FOT-GMaruGo Pro", sans-serif;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2vw;
+      margin-bottom: 3vw;
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.5vw;
+      text-align: justify;
+      text-align-last: justify;
+      text-justify: inter-character;
+      text-transform: uppercase;
+    }
+
+    .header img {
+      width: auto;
+      height: 5vw;
+    }
+
+    h3 {
+      margin: 0;
+      padding: 0;
+      font-weight: 600;
+      font-size: 1.75vw;
+      line-height: 1;
+      writing-mode: vertical-rl;
+      text-orientation: vertical-rl;
+    }
+    h4 {
+      margin: 0;
+      padding: 0;
+      font-weight: 600;
+      font-size: 1vw;
+      line-height: 1.25;
+      writing-mode: vertical-rl;
+      text-orientation: vertical-rl;
+    }
+
+    .carousel {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      align-items: flex-start;
+      gap: 1vw;
+      padding-bottom: 2.5vw;
+      width: 100%;
+      min-height: 0;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .year {
+      display: flex;
+      flex: 1 0 auto;
+      align-items: flex-start;
+      gap: 1vw;
+    }
+
+    .carousel-item {
+      display: flex;
+      flex: 1 0 auto;
+      align-items: flex-start;
+      gap: 1vw;
+      min-width: 17.5vw;
+    }
+
+    .carousel-thumb {
+      flex: 1 0 auto;
+      border-radius: 0.5vw;
+      background-color: #f0f0f0;
+      height: 17.5vw;
+      overflow: hidden;
+    }
+
+    .carousel-thumb img {
+      border-radius: 0.5vw;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carousel h4 {
+      display: flex;
+      justify-content: space-between;
+      margin-right: 1vw;
+      height: 17.5vw;
+      overflow: hidden;
+    }
+    .carousel h4 span {
+      max-height: 50%;
+      overflow: hidden;
+    }
+  </style>
+  <body>
+    <div class="header">
+      <h1>日本馬來應用藝術社</h1>
+      <img src="NMC.svg" alt="" />
+    </div>
+    <div class="carousel">
+      <div class="year">
+        <h3>2026年</h3>
+        <div class="carousel-item">
+          <div class="carousel-thumb">
+            <img
+              src="https://cdn.03080.jp/2026/WCC/driftingAway_01.jpeg"
+              alt=""
+            />
+          </div>
+          <h4>
+            <span>離れていく</span
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >インタラクティブ<br />インスタレーション</span
+            >
+          </h4>
+        </div>
+      </div>
+      <div class="year">
+        <h3>2025年</h3>
+        <div class="carousel-item">
+          <div class="carousel-thumb">
+            <img
+              src="https://cdn.03080.jp/2025/EER/001/peopleNotMet-Demachiyanagi_01.jpg"
+              alt=""
+            />
+          </div>
+          <h4>
+            <span>巡り合った（ことのない）人々 @出町柳駅</span
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >インタラクティブ<br />インスタレーション</span
+            >
+          </h4>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-thumb">
+          <img
+            src="https://cdn.03080.jp/2025/EER/002/stationMaster_01.JPG"
+            alt=""
+          />
+        </div>
+        <h4>
+          <span>みんなの駅長</span
+          ><span style="font-weight: 400; font-size: 0.75vw"
+            >インタラクティブ<br />インスタレーション</span
+          >
+        </h4>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-thumb">
+          <img src="https://cdn.03080.jp/2025/KSVI/DegreeThumb_1.jpg" alt="" />
+        </div>
+        <h4>
+          <span>京都精華大学の自由さの具体化</span
+          ><span style="font-weight: 400; font-size: 0.75vw">ＶＩデザイン</span>
+        </h4>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-thumb">
+          <img src="https://cdn.03080.jp/2025/MKVI/ProductImage1.jpg" alt="" />
+        </div>
+        <h4>
+          <span>MyKyoto</span
+          ><span style="font-weight: 400; font-size: 0.75vw">ＶＩデザイン</span>
+        </h4>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-thumb">
+          <img src="https://cdn.03080.jp/2025/SMG/bathroom.jpg" alt="" />
+        </div>
+        <h4>
+          <span>守神の目</span
+          ><span style="font-weight: 400; font-size: 0.75vw">広告デザイン</span>
+        </h4>
+      </div>
+      <div class="year">
+        <h3>2023年</h3>
+        <div class="carousel-item">
+          <div class="carousel-thumb">
+            <img src="https://cdn.03080.jp/2023/PAWD/PAM1.jpg" alt="" />
+          </div>
+          <h4>
+            <span>PAM Awards 2023</span
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >広告デザイン</span
+            >
+          </h4>
+        </div>
+      </div>
+      <div class="year">
+        <h3>2022年</h3>
+        <div class="carousel-item">
+          <div class="carousel-thumb">
+            <img src="https://cdn.03080.jp/2022/WWSA/after_01.jpg" alt="" />
+          </div>
+          <h4>
+            <span>Warna-Warni Shah Alam</span
+            ><span style="font-weight: 400; font-size: 0.75vw">壁画設置</span>
+          </h4>
+        </div>
+      </div>
+      <p style="width: 100%; margin: 0">
+        © 2026 Nippon-Malayan Applied Arts Co., Ltd / Syarikat Seni Gunaan
+        Jepun-Tanah Melayu Sdn. Bhd.
+      </p>
+    </div>
+  </body>
+</html>
