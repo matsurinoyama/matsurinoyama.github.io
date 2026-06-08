@@ -370,36 +370,37 @@
       </p>
     </div>
     <script>
-      const names = [
-        "Nippon-Malayan Applied Arts Co.",
-        "日本馬來藝術實踐社",
-        "Syarikat Seni Gunaan Jepun-Tanah Melayu",
+      const cycles = [
+        {
+          el: document.getElementById("company-name"),
+          items: [
+            "Nippon-Malayan Applied Arts Co.",
+            "日本馬來藝術實踐社",
+            "Syarikat Seni Gunaan Jepun-Tanah Melayu",
+          ],
+          i: 0,
+          update(el, val) { el.textContent = val; document.title = val; },
+        },
+        {
+          el: document.getElementById("tagline"),
+          items: [
+            "Arts, applied.<br />Kyoto, JP ↔ Shah Alam, MY",
+            "「藝術」、実践へ。<br />日本 京都市 ↔ マレーシア シャーアラム",
+            "Kesenian, diamalkan.<br />Kyoto, JP ↔ Shah Alam, MY",
+          ],
+          i: 0,
+          update(el, val) { el.innerHTML = val; },
+        },
       ];
-      let i = 0;
-      const el = document.getElementById("company-name");
-      setInterval(() => {
-        el.classList.add("fade");
-        setTimeout(() => {
-          i = (i + 1) % names.length;
-          el.textContent = names[i];
-          document.title = names[i];
-          el.classList.remove("fade");
-        }, 500);
-      }, 5000);
 
-      const taglines = [
-        "Arts, applied.<br />Kyoto, JP ↔ Shah Alam, MY",
-        "「藝術」、実践へ。<br />日本 京都市 ↔ マレーシア シャーアラム",
-        "Kesenian, diamalkan.<br />Kyoto, JP ↔ Shah Alam, MY",
-      ];
-      let taglineIdx = 0;
-      const taglineEl = document.getElementById("tagline");
       setInterval(() => {
-        taglineEl.classList.add("fade");
+        cycles.forEach((c) => c.el.classList.add("fade"));
         setTimeout(() => {
-          taglineIdx = (taglineIdx + 1) % taglines.length;
-          taglineEl.innerHTML = taglines[taglineIdx];
-          taglineEl.classList.remove("fade");
+          cycles.forEach((c) => {
+            c.i = (c.i + 1) % c.items.length;
+            c.update(c.el, c.items[c.i]);
+            c.el.classList.remove("fade");
+          });
         }, 500);
       }, 5000);
 
