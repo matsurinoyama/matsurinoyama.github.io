@@ -90,11 +90,11 @@
 
     #preloader {
       position: fixed;
-      inset: 0;
       z-index: 100;
-      overflow: hidden;
-      background: #fff;
       transition: opacity 0.5s;
+      inset: 0;
+      background: #fff;
+      overflow: hidden;
     }
     #preloader.done {
       opacity: 0;
@@ -102,16 +102,20 @@
     }
     #preloader img {
       position: absolute;
-      left: 50%;
       top: 100%;
+      left: 50%;
+      animation: spin-rising 16s linear infinite;
       width: auto;
       height: 200vh;
-      animation: spin-rising 1s linear infinite;
     }
 
     @keyframes spin-rising {
-      from { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
-      to   { transform: translateX(-50%) translateY(-50%) rotate(-360deg); }
+      from {
+        transform: translateX(-50%) translateY(-50%) rotate(0deg);
+      }
+      to {
+        transform: translateX(-50%) translateY(-50%) rotate(-360deg);
+      }
     }
 
     h3 {
