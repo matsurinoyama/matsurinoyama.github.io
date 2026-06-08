@@ -5,9 +5,27 @@
     <link rel="icon" href="NMC.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nippon-Malayan Applied Arts Co.</title>
-    <link rel="preload" href="../../static/fonts/FOT-GMaruGoPro-M.otf" as="font" type="font/otf" crossorigin />
-    <link rel="preload" href="../../static/fonts/FOT-GMaruGoPro-DB.otf" as="font" type="font/otf" crossorigin />
-    <link rel="preload" href="../../static/fonts/FOT-GMaruGoPro-B.otf" as="font" type="font/otf" crossorigin />
+    <link
+      rel="preload"
+      href="../../static/fonts/FOT-GMaruGoPro-M.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="../../static/fonts/FOT-GMaruGoPro-DB.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="../../static/fonts/FOT-GMaruGoPro-B.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
   </head>
   <style>
     @font-face {
@@ -46,14 +64,10 @@
     }
 
     h1 {
-      flex-shrink: 0;
       transition: opacity 0.5s;
       margin: 0;
       font-weight: 700;
       font-size: 2.5vw;
-      text-align: justify;
-      text-align-last: justify;
-      text-justify: inter-character;
       text-transform: uppercase;
     }
 
@@ -114,11 +128,13 @@
 
     .carousel-thumb {
       flex: 1 0 auto;
+      transition:
+        opacity 0.5s,
+        width 0.5s;
       border-radius: 0.5vw;
       background-color: #f0f0f0;
       height: 17.5vw;
       overflow: hidden;
-      transition: opacity 0.5s, width 0.5s;
     }
 
     #smg img {
@@ -135,24 +151,24 @@
     .carousel h4 {
       position: relative;
       flex-shrink: 0;
+      transition: width 0.5s;
       margin-right: 1vw;
       height: 17.5vw;
       overflow: hidden;
-      transition: width 0.5s;
     }
 
     .lang {
+      display: flex;
       position: absolute;
       top: 0;
       left: 0;
-      display: flex;
-      writing-mode: vertical-rl;
       justify-content: space-between;
+      transition: opacity 0.5s;
       height: 17.5vw;
       font-weight: 600;
       font-size: 1vw;
       line-height: 1.25;
-      transition: opacity 0.5s;
+      writing-mode: vertical-rl;
     }
 
     .lang span {
@@ -160,8 +176,12 @@
       overflow: hidden;
     }
 
-    .lang.en { opacity: 1; }
-    .lang.ja { opacity: 0; }
+    .lang.en {
+      opacity: 1;
+    }
+    .lang.ja {
+      opacity: 0;
+    }
   </style>
   <body>
     <div class="header">
@@ -254,7 +274,9 @@
           </div>
           <div class="lang ja">
             <span>京都精華大学の自由さの具体化</span
-            ><span style="font-weight: 400; font-size: 0.75vw">ＶＩデザイン</span>
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >ＶＩデザイン</span
+            >
           </div>
         </h4>
       </div>
@@ -271,7 +293,9 @@
           </div>
           <div class="lang ja">
             <span>MyKyoto</span
-            ><span style="font-weight: 400; font-size: 0.75vw">ＶＩデザイン</span>
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >ＶＩデザイン</span
+            >
           </div>
         </h4>
       </div>
@@ -282,11 +306,15 @@
         <h4>
           <div class="lang en">
             <span>Mamorigami no Me</span
-            ><span style="font-weight: 400; font-size: 0.75vw">Advertising</span>
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >Advertising</span
+            >
           </div>
           <div class="lang ja">
             <span>守神の目</span
-            ><span style="font-weight: 400; font-size: 0.75vw">広告デザイン</span>
+            ><span style="font-weight: 400; font-size: 0.75vw"
+              >広告デザイン</span
+            >
           </div>
         </h4>
       </div>
@@ -305,7 +333,9 @@
             </div>
             <div class="lang ja">
               <span>PAM Awards 2023</span
-              ><span style="font-weight: 400; font-size: 0.75vw">広告デザイン</span>
+              ><span style="font-weight: 400; font-size: 0.75vw"
+                >広告デザイン</span
+              >
             </div>
           </h4>
         </div>
@@ -319,7 +349,9 @@
           <h4>
             <div class="lang en">
               <span>Warna-Warni Shah Alam</span
-              ><span style="font-weight: 400; font-size: 0.75vw">Mural Art</span>
+              ><span style="font-weight: 400; font-size: 0.75vw"
+                >Mural Art</span
+              >
             </div>
             <div class="lang ja">
               <span>Warna-Warni Shah Alam</span
@@ -328,6 +360,10 @@
           </h4>
         </div>
       </div>
+      <h1 id="tagline" style="width: 100%; margin: 0; text-align: right">
+        Arts, applied.<br />
+        Kyoto, JP ↔ Shah Alam, MY
+      </h1>
       <p style="width: 100%; margin: 0">
         © 2026 Nippon-Malayan Applied Arts Co., Ltd / Syarikat Seni Gunaan
         Jepun-Tanah Melayu Sdn. Bhd.
@@ -336,7 +372,7 @@
     <script>
       const names = [
         "Nippon-Malayan Applied Arts Co.",
-        "日本馬來應用藝術社",
+        "日本馬來藝術實踐社",
         "Syarikat Seni Gunaan Jepun-Tanah Melayu",
       ];
       let i = 0;
@@ -348,6 +384,22 @@
           el.textContent = names[i];
           document.title = names[i];
           el.classList.remove("fade");
+        }, 500);
+      }, 5000);
+
+      const taglines = [
+        "Arts, applied.<br />Kyoto, JP ↔ Shah Alam, MY",
+        "「藝術」、実践へ。<br />日本 京都市 ↔ マレーシア シャーアラム",
+        "Kesenian, diamalkan.<br />Kyoto, JP ↔ Shah Alam, MY",
+      ];
+      let taglineIdx = 0;
+      const taglineEl = document.getElementById("tagline");
+      setInterval(() => {
+        taglineEl.classList.add("fade");
+        setTimeout(() => {
+          taglineIdx = (taglineIdx + 1) % taglines.length;
+          taglineEl.innerHTML = taglines[taglineIdx];
+          taglineEl.classList.remove("fade");
         }, 500);
       }, 5000);
 
@@ -443,8 +495,8 @@
                 };
                 img.onerror = resolve;
                 img.src = src;
-              })
-          )
+              }),
+          ),
         );
       }
 
