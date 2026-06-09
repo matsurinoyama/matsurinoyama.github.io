@@ -390,7 +390,7 @@
           <h4>
             <div class="lang en">
               <span class="work-title">Warna-Warni&#x200B; Shah Alam</span
-              ><span class="work-genre">Mural Art</span>
+              ><span class="work-genre">Mural&nbsp;Art</span>
             </div>
             <div class="lang ja">
               <span class="work-title">Warna-Warni&#x200B; Shah Alam</span
@@ -400,7 +400,7 @@
         </div>
       </div>
       <h1 id="tagline" style="width: 100%; margin: 0; text-align: right">
-        Arts, applied.<br />
+        <span id="tagline-motto">Arts, applied.</span><br />
         Kyoto, JP ↔ Shah Alam, MY
       </h1>
       <p style="width: 100%; margin: 0">
@@ -409,6 +409,92 @@
       </p>
     </div>
     <script>
+      function buildWheel(cycles) {
+        const chars = new Set();
+        cycles.forEach((c) =>
+          c.items.forEach((s) =>
+            [...s].forEach((ch) => { if (ch !== " ") chars.add(ch); })
+          )
+        );
+        return [...chars].sort((a, b) => a.codePointAt(0) - b.codePointAt(0));
+      }
+
+      // tickRate: ms per wheel step  |  stagger: ms of left-to-right delay per position
+      function scrambleText(el, to, wheel, tickRate = 60, stagger = 25) {
+        const from = el.textContent;
+        const n = Math.max(from.length, to.length);
+        const start = performance.now();
+        let lastTick = -Infinity;
+
+        const pos = Array.from({ length: n }, (_, i) => {
+          const fc = from[i];   // undefined when i >= from.length (growing)
+          const tc = to[i];     // undefined when i >= to.length  (shrinking)
+
+          if (tc === undefined) {
+            // Position exists in source but not target — cycle briefly then vanish
+            const fi = fc && fc !== " " ? wheel.indexOf(fc) : -1;
+            return { vanish: true, done: false, idx: fi >= 0 ? fi : 0,
+                     stepsLeft: 2 + Math.floor(Math.random() * 4) };
+          }
+          if (fc === undefined) {
+            // New position — appears when its stagger time arrives, cycles to tc
+            if (tc === " ") return { vanish: false, done: true };
+            const ti = wheel.indexOf(tc);
+            if (ti < 0) return { vanish: false, done: true };
+            const idx = Math.floor(Math.random() * wheel.length);
+            const dist = ((ti - idx) + wheel.length) % wheel.length || wheel.length;
+            return { vanish: false, done: false, idx, stepsLeft: dist };
+          }
+          // Both positions exist — normal cycle
+          if (tc === " " || fc === tc) return { vanish: false, done: true };
+          const fi = wheel.indexOf(fc);
+          const ti = wheel.indexOf(tc);
+          const idx = fi >= 0 ? fi : Math.floor(Math.random() * wheel.length);
+          if (ti < 0) return { vanish: false, done: true };
+          const dist = ((ti - idx) + wheel.length) % wheel.length || wheel.length;
+          return { vanish: false, done: false, idx, stepsLeft: dist };
+        });
+
+        function tick(now) {
+          if (now - lastTick < tickRate) { requestAnimationFrame(tick); return; }
+          lastTick = now;
+          const elapsed = now - start;
+          let anyActive = false;
+          const out = [];
+
+          for (let i = 0; i < n; i++) {
+            const p = pos[i];
+            const tc = to[i];
+
+            if (p.done) {
+              if (!p.vanish && tc !== undefined) out.push(tc);
+              continue;
+            }
+            if (elapsed < i * stagger) {
+              if (from[i] !== undefined) out.push(from[i]); // new positions don't appear yet
+              anyActive = true;
+              continue;
+            }
+            p.stepsLeft--;
+            if (p.stepsLeft <= 0) {
+              p.done = true;
+              if (!p.vanish && tc !== undefined) out.push(tc);
+              // vanish positions simply disappear — no push
+            } else {
+              p.idx = (p.idx + 1) % wheel.length;
+              out.push(wheel[p.idx]);
+              anyActive = true;
+            }
+          }
+
+          el.textContent = out.join("");
+          if (anyActive) requestAnimationFrame(tick);
+          else el.textContent = to;
+        }
+
+        requestAnimationFrame(tick);
+      }
+
       const cycles = [
         {
           el: document.getElementById("company-name"),
@@ -418,34 +504,29 @@
             "Syarikat Seni Gunaan Tanah Melayu-Jepun",
           ],
           i: 0,
-          update(el, val) {
-            el.textContent = val;
-            document.title = val;
+          onCycle() {
+            document.title = this.items[this.i];
           },
         },
         {
-          el: document.getElementById("tagline"),
+          el: document.getElementById("tagline-motto"),
           items: [
-            "The arts, applied.<br />Kyoto, JP ↔ Shah Alam, MY",
-            "「藝術」、実践へ。<br />日本 京都市 ↔ マレーシア シャーアラム",
-            "Kesenian, diamalkan.<br />Kyoto, JP ↔ Shah Alam, MY",
+            "Arts, applied.",
+            "「藝術」、実践へ。",
+            "Kesenian, diamalkan.",
           ],
           i: 0,
-          update(el, val) {
-            el.innerHTML = val;
-          },
         },
       ];
 
+      cycles.forEach((c) => { c.wheel = buildWheel([c]); });
+
       setInterval(() => {
-        cycles.forEach((c) => c.el.classList.add("fade"));
-        setTimeout(() => {
-          cycles.forEach((c) => {
-            c.i = (c.i + 1) % c.items.length;
-            c.update(c.el, c.items[c.i]);
-            c.el.classList.remove("fade");
-          });
-        }, 500);
+        cycles.forEach((c) => {
+          c.i = (c.i + 1) % c.items.length;
+          scrambleText(c.el, c.items[c.i], c.wheel);
+          c.onCycle?.();
+        });
       }, 10000);
 
       const ITEM_IMAGES = {
