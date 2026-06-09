@@ -78,7 +78,7 @@
     }
 
     .header img {
-      animation: spin 6s steps(64) infinite;
+      animation: spin 8s steps(64) infinite;
       width: auto;
       height: 5vw;
     }
@@ -88,7 +88,7 @@
         transform: scale(1) rotate(0deg);
       }
       50% {
-        transform: scale(1.075) rotate(-180deg);
+        transform: scale(1.1) rotate(-180deg);
       }
       100% {
         transform: scale(1) rotate(-360deg);
@@ -413,8 +413,10 @@
         const chars = new Set();
         cycles.forEach((c) =>
           c.items.forEach((s) =>
-            [...s].forEach((ch) => { if (ch !== " ") chars.add(ch); })
-          )
+            [...s].forEach((ch) => {
+              if (ch !== " ") chars.add(ch);
+            }),
+          ),
         );
         return [...chars].sort((a, b) => a.codePointAt(0) - b.codePointAt(0));
       }
@@ -427,14 +429,18 @@
         let lastTick = -Infinity;
 
         const pos = Array.from({ length: n }, (_, i) => {
-          const fc = from[i];   // undefined when i >= from.length (growing)
-          const tc = to[i];     // undefined when i >= to.length  (shrinking)
+          const fc = from[i]; // undefined when i >= from.length (growing)
+          const tc = to[i]; // undefined when i >= to.length  (shrinking)
 
           if (tc === undefined) {
             // Position exists in source but not target — cycle briefly then vanish
             const fi = fc && fc !== " " ? wheel.indexOf(fc) : -1;
-            return { vanish: true, done: false, idx: fi >= 0 ? fi : 0,
-                     stepsLeft: 2 + Math.floor(Math.random() * 4) };
+            return {
+              vanish: true,
+              done: false,
+              idx: fi >= 0 ? fi : 0,
+              stepsLeft: 2 + Math.floor(Math.random() * 4),
+            };
           }
           if (fc === undefined) {
             // New position — appears when its stagger time arrives, cycles to tc
@@ -442,7 +448,8 @@
             const ti = wheel.indexOf(tc);
             if (ti < 0) return { vanish: false, done: true };
             const idx = Math.floor(Math.random() * wheel.length);
-            const dist = ((ti - idx) + wheel.length) % wheel.length || wheel.length;
+            const dist =
+              (ti - idx + wheel.length) % wheel.length || wheel.length;
             return { vanish: false, done: false, idx, stepsLeft: dist };
           }
           // Both positions exist — normal cycle
@@ -451,12 +458,15 @@
           const ti = wheel.indexOf(tc);
           const idx = fi >= 0 ? fi : Math.floor(Math.random() * wheel.length);
           if (ti < 0) return { vanish: false, done: true };
-          const dist = ((ti - idx) + wheel.length) % wheel.length || wheel.length;
+          const dist = (ti - idx + wheel.length) % wheel.length || wheel.length;
           return { vanish: false, done: false, idx, stepsLeft: dist };
         });
 
         function tick(now) {
-          if (now - lastTick < tickRate) { requestAnimationFrame(tick); return; }
+          if (now - lastTick < tickRate) {
+            requestAnimationFrame(tick);
+            return;
+          }
           lastTick = now;
           const elapsed = now - start;
           let anyActive = false;
@@ -519,7 +529,9 @@
         },
       ];
 
-      cycles.forEach((c) => { c.wheel = buildWheel([c]); });
+      cycles.forEach((c) => {
+        c.wheel = buildWheel([c]);
+      });
 
       setInterval(() => {
         cycles.forEach((c) => {
