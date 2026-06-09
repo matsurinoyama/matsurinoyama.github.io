@@ -53,6 +53,7 @@
       overflow: hidden;
       font-size: 0.75vw;
       font-family: "FOT-GMaruGo Pro", sans-serif;
+      word-break: auto-phrase;
     }
 
     .header {
@@ -77,14 +78,20 @@
     }
 
     .header img {
-      animation: spin 8s linear infinite;
+      animation: spin 6s steps(64) infinite;
       width: auto;
       height: 5vw;
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(-360deg);
+      0% {
+        transform: scale(1) rotate(0deg);
+      }
+      50% {
+        transform: scale(1.075) rotate(-180deg);
+      }
+      100% {
+        transform: scale(1) rotate(-360deg);
       }
     }
 
@@ -104,7 +111,7 @@
       position: absolute;
       top: 100%;
       left: 50%;
-      animation: spin-rising 16s linear infinite;
+      animation: spin-rising 16s steps(32) infinite;
       width: auto;
       height: 200vh;
     }
@@ -140,7 +147,7 @@
       flex-wrap: wrap;
       align-content: flex-start;
       align-items: flex-start;
-      gap: 1vw;
+      gap: 2vw;
       padding-bottom: 2.5vw;
       width: 100%;
       min-height: 0;
@@ -160,15 +167,16 @@
       flex: 1 0 auto;
       align-items: flex-start;
       gap: 1vw;
-      min-width: 17.5vw;
+      min-width: 20vw;
     }
 
     .carousel-thumb {
       flex: 1 0 auto;
-      transition: opacity 0.5s;
+      transition:
+        width 0.5s,
+        opacity 0.5s;
       border-radius: 0.5vw;
-      background-color: #f0f0f0;
-      height: 17.5vw;
+      height: 20vw;
       overflow: hidden;
     }
 
@@ -187,7 +195,7 @@
       position: relative;
       flex-shrink: 0;
       margin-right: 1vw;
-      height: 17.5vw;
+      height: 20vw;
       overflow: hidden;
     }
 
@@ -196,18 +204,34 @@
       position: absolute;
       top: 0;
       left: 0;
-      justify-content: space-between;
-      transition: opacity 0.5s;
-      height: 17.5vw;
+      gap: 2vw;
+      transition:
+        width 0.5s,
+        opacity 0.5s;
+      height: 20vw;
       font-weight: 600;
       font-size: 1vw;
       line-height: 1.25;
       writing-mode: vertical-rl;
     }
 
-    .lang span {
-      max-height: 50%;
-      overflow: hidden;
+    .work-title {
+      flex: 1 2 0;
+      transition:
+        width 0.5s,
+        opacity 0.5s;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    .work-genre {
+      flex: 0 1 0;
+      transition:
+        width 0.5s,
+        opacity 0.5s;
+      font-weight: 400;
+      font-size: 0.75vw;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
 
     .lang.en {
@@ -235,15 +259,13 @@
           </div>
           <h4>
             <div class="lang en">
-              <span>Drifting Away</span
-              ><span style="font-weight: 400; font-size: 0.75vw"
-                >Interactive Installation</span
-              >
+              <span class="work-title">Drifting Away</span
+              ><span class="work-genre">Interactive Installation</span>
             </div>
             <div class="lang ja">
-              <span>離れていく</span
-              ><span style="font-weight: 400; font-size: 0.75vw"
-                >インタラクティブ<br />インスタレーション</span
+              <span class="work-title">離れていく</span
+              ><span class="work-genre"
+                >インタラクティブ&#x200B;インスタレーション</span
               >
             </div>
           </h4>
@@ -260,15 +282,15 @@
           </div>
           <h4>
             <div class="lang en">
-              <span>the people we have (not) met @Demachiyanagi Station</span
-              ><span style="font-weight: 400; font-size: 0.75vw"
-                >Interactive Installation</span
-              >
+              <span class="work-title"
+                >the people we have (not) met @Demachiyanagi Station</span
+              ><span class="work-genre">Interactive Installation</span>
             </div>
             <div class="lang ja">
-              <span>巡り合った（ことのない）人々 @出町柳駅</span
-              ><span style="font-weight: 400; font-size: 0.75vw"
-                >インタラクティブ<br />インスタレーション</span
+              <span class="work-title"
+                >巡り合った (ことのない) 人々 @出町柳駅</span
+              ><span class="work-genre"
+                >インタラクティブ&#x200B;インスタレーション</span
               >
             </div>
           </h4>
@@ -283,54 +305,46 @@
         </div>
         <h4>
           <div class="lang en">
-            <span>Everyone's Stationmaster</span
-            ><span style="font-weight: 400; font-size: 0.75vw"
-              >Interactive Installation</span
-            >
+            <span class="work-title">Everyone's Stationmaster</span
+            ><span class="work-genre">Interactive Installation</span>
           </div>
           <div class="lang ja">
-            <span>みんなの駅長</span
-            ><span style="font-weight: 400; font-size: 0.75vw"
-              >インタラクティブ<br />インスタレーション</span
+            <span class="work-title">みんな&#x200B;の駅長</span
+            ><span class="work-genre"
+              >インタラクティブ&#x200B;インスタレーション</span
             >
           </div>
         </h4>
       </div>
       <div class="carousel-item">
-        <div class="carousel-thumb" id="ksvi">
+        <div class="carousel-thumb" id="ksvi" style="border: 1px solid #e6e6e6">
           <img src="https://cdn.03080.jp/2025/KSVI/DegreeThumb_1.jpg" alt="" />
         </div>
         <h4>
           <div class="lang en">
-            <span>Materialising the Freedom of Kyoto Seika University</span
-            ><span style="font-weight: 400; font-size: 0.75vw"
-              >Visual Identity</span
-            >
+            <span class="work-title"
+              >Materialising the Freedom of Kyoto Seika University</span
+            ><span class="work-genre">Visual&nbsp;Identity</span>
           </div>
           <div class="lang ja">
-            <span>京都精華大学の自由さの具体化</span
-            ><span style="font-weight: 400; font-size: 0.75vw"
-              >ＶＩデザイン</span
-            >
+            <span class="work-title"
+              >京都精華大学&#x200B;の自由さ&#x200B;の具体化</span
+            ><span class="work-genre">ＶＩデザイン</span>
           </div>
         </h4>
       </div>
       <div class="carousel-item">
-        <div class="carousel-thumb" id="mkvi">
+        <div class="carousel-thumb" id="mkvi" style="border: 1px solid #e6e6e6">
           <img src="https://cdn.03080.jp/2025/MKVI/ProductImage1.jpg" alt="" />
         </div>
         <h4>
           <div class="lang en">
-            <span>MyKyoto</span
-            ><span style="font-weight: 400; font-size: 0.75vw"
-              >Visual Identity</span
-            >
+            <span class="work-title">MyKyoto</span
+            ><span class="work-genre">Visual&nbsp;Identity</span>
           </div>
           <div class="lang ja">
-            <span>MyKyoto</span
-            ><span style="font-weight: 400; font-size: 0.75vw"
-              >ＶＩデザイン</span
-            >
+            <span class="work-title">MyKyoto</span
+            ><span class="work-genre">ＶＩデザイン</span>
           </div>
         </h4>
       </div>
@@ -340,16 +354,12 @@
         </div>
         <h4>
           <div class="lang en">
-            <span>Mamorigami no Me</span
-            ><span style="font-weight: 400; font-size: 0.75vw"
-              >Advertising</span
-            >
+            <span class="work-title">Mamorigami&#x200B; no Me</span
+            ><span class="work-genre">Advertising</span>
           </div>
           <div class="lang ja">
-            <span>守神の目</span
-            ><span style="font-weight: 400; font-size: 0.75vw"
-              >広告デザイン</span
-            >
+            <span class="work-title">守神&#x200B;の目</span
+            ><span class="work-genre">広告デザイン</span>
           </div>
         </h4>
       </div>
@@ -361,16 +371,12 @@
           </div>
           <h4>
             <div class="lang en">
-              <span>PAM Awards 2023</span
-              ><span style="font-weight: 400; font-size: 0.75vw"
-                >Advertising</span
-              >
+              <span class="work-title">PAM Awards 2023</span
+              ><span class="work-genre">Advertising</span>
             </div>
             <div class="lang ja">
-              <span>PAM Awards 2023</span
-              ><span style="font-weight: 400; font-size: 0.75vw"
-                >広告デザイン</span
-              >
+              <span class="work-title">PAM Awards 2023</span
+              ><span class="work-genre">広告デザイン</span>
             </div>
           </h4>
         </div>
@@ -383,14 +389,12 @@
           </div>
           <h4>
             <div class="lang en">
-              <span>Warna-Warni Shah Alam</span
-              ><span style="font-weight: 400; font-size: 0.75vw"
-                >Mural Art</span
-              >
+              <span class="work-title">Warna-Warni&#x200B; Shah Alam</span
+              ><span class="work-genre">Mural Art</span>
             </div>
             <div class="lang ja">
-              <span>Warna-Warni Shah Alam</span
-              ><span style="font-weight: 400; font-size: 0.75vw">壁画設置</span>
+              <span class="work-title">Warna-Warni&#x200B; Shah Alam</span
+              ><span class="work-genre">壁画設置</span>
             </div>
           </h4>
         </div>
@@ -422,7 +426,7 @@
         {
           el: document.getElementById("tagline"),
           items: [
-            "Arts, applied.<br />Kyoto, JP ↔ Shah Alam, MY",
+            "The arts, applied.<br />Kyoto, JP ↔ Shah Alam, MY",
             "「藝術」、実践へ。<br />日本 京都市 ↔ マレーシア シャーアラム",
             "Kesenian, diamalkan.<br />Kyoto, JP ↔ Shah Alam, MY",
           ],
@@ -520,7 +524,7 @@
       }
 
       const IMAGE_RATIOS = {};
-      const VH = 17.5;
+      const VH = 20;
 
       const carousel = document.querySelector(".carousel");
 
