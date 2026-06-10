@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="NMC.svg" />
+    <link rel="icon" href="../../static/NMC.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nippon-Malayan Applied Arts Co.</title>
     <link
@@ -112,8 +112,8 @@
       top: 100%;
       left: 50%;
       animation: spin-rising 16s steps(32) infinite;
-      width: auto;
-      height: 200vh;
+      width: 100vw;
+      height: auto;
     }
 
     @keyframes spin-rising {
@@ -142,6 +142,7 @@
 
     .carousel {
       display: flex;
+      position: relative;
       flex: 1;
       flex-direction: row;
       flex-wrap: wrap;
@@ -157,24 +158,25 @@
 
     .year {
       display: flex;
-      flex: 1 0 auto;
+      flex: 1 0 20vw;
       align-items: flex-start;
       gap: 1vw;
+      transition: flex-basis 0.5s ease;
     }
 
     .carousel-item {
       display: flex;
-      flex: 1 0 auto;
+      flex: 1 0 20vw;
       align-items: flex-start;
       gap: 1vw;
-      min-width: 20vw;
+      transition: flex-basis 0.5s ease;
     }
 
     .carousel-thumb {
       flex: 1 0 auto;
       transition:
-        width 0.5s,
-        opacity 0.5s;
+        width 0.5s ease,
+        opacity 0.5s ease;
       border-radius: 0.5vw;
       height: 20vw;
       overflow: hidden;
@@ -193,7 +195,6 @@
 
     .carousel h4 {
       position: relative;
-      flex-shrink: 0;
       margin-right: 1vw;
       height: 20vw;
       overflow: hidden;
@@ -206,8 +207,8 @@
       left: 0;
       gap: 2vw;
       transition:
-        width 0.5s,
-        opacity 0.5s;
+        width 0.5s ease,
+        opacity 0.5s ease;
       height: 20vw;
       font-weight: 600;
       font-size: 1vw;
@@ -218,16 +219,16 @@
     .work-title {
       flex: 1 2 0;
       transition:
-        width 0.5s,
-        opacity 0.5s;
+        width 0.5s ease,
+        opacity 0.5s ease;
       word-break: keep-all;
       overflow-wrap: break-word;
     }
     .work-genre {
       flex: 0 1 0;
       transition:
-        width 0.5s,
-        opacity 0.5s;
+        width 0.5s ease,
+        opacity 0.5s ease;
       font-weight: 400;
       font-size: 0.75vw;
       word-break: keep-all;
@@ -242,10 +243,10 @@
     }
   </style>
   <body>
-    <div id="preloader"><img src="NMC.svg" alt="" /></div>
+    <div id="preloader"><img src="../../static/NMC.svg" alt="" /></div>
     <div class="header">
       <h1 id="company-name">Nippon-Malayan Applied Arts Co.</h1>
-      <img src="NMC.svg" alt="" />
+      <img src="../../static/NMC.svg" alt="" />
     </div>
     <div class="carousel">
       <div class="year">
@@ -655,16 +656,20 @@
         setInterval(() => {
           const nextI = (i + 1) % images.length;
           const nextSrc = resolveEntry(images[nextI]);
-          el.classList.add("fade");
-          setTimeout(() => {
-            i = nextI;
-            if (IMAGE_RATIOS[nextSrc]) {
-              keepScrollAnchor();
-              el.style.width = VH * IMAGE_RATIOS[nextSrc] + "vw";
-            }
-            el.innerHTML = `<img src="${nextSrc}" alt="" />`;
-            el.classList.remove("fade");
-          }, 500);
+          const hovered = el.closest("[data-carousel-expanded]") !== null;
+          if (!hovered) el.classList.add("fade");
+          setTimeout(
+            () => {
+              i = nextI;
+              if (IMAGE_RATIOS[nextSrc]) {
+                keepScrollAnchor();
+                el.style.width = VH * IMAGE_RATIOS[nextSrc] + "vw";
+              }
+              el.innerHTML = `<img src="${nextSrc}" alt="" />`;
+              el.classList.remove("fade");
+            },
+            hovered ? 0 : 500,
+          );
         }, interval);
       }
 
@@ -705,6 +710,128 @@
           });
         }, 20000);
       });
+
+      function setupCarouselHover() {
+        const carousel = document.querySelector(".carousel");
+        if (!carousel) return;
+
+        let hoverTimer = null;
+        let expanded = null;
+        let collapsing = false;
+
+        function getFlexChildren() {
+          return [
+            ...carousel.querySelectorAll(
+              ":scope > .year, :scope > .carousel-item",
+            ),
+          ];
+        }
+
+        function expandItem(target) {
+          if (expanded || collapsing) return;
+
+          const targetRect = target.getBoundingClientRect();
+          const targetRowTop = Math.round(targetRect.top);
+
+          const rowItems = getFlexChildren().filter(
+            (el) => Math.round(el.getBoundingClientRect().top) === targetRowTop,
+          );
+          const rowSiblings = rowItems.filter((el) => el !== target);
+          if (!rowSiblings.length) return;
+
+          // Snapshot widths before any changes
+          const origWidths = new Map(
+            rowItems.map((el) => [el, el.getBoundingClientRect().width]),
+          );
+
+          const origTargetW = origWidths.get(target);
+          const newTargetW = origTargetW * 1.1;
+          const totalOrigSiblingW = rowSiblings.reduce(
+            (s, el) => s + origWidths.get(el),
+            0,
+          );
+          const totalNewSiblingW = totalOrigSiblingW - origTargetW;
+
+          // Freeze all row items to current pixel widths (no transition)
+          rowItems.forEach((el) => {
+            el.style.transition = "none";
+            el.style.flex = `0 0 ${origWidths.get(el)}px`;
+            el.style.overflow = "hidden";
+          });
+          carousel.offsetWidth; // commit freeze before animating
+
+          // Expand target
+          target.style.transition = "flex-basis 0.5s ease";
+          target.style.flex = `0 0 ${newTargetW}px`;
+          target.dataset.carouselExpanded = "1";
+
+          // Compress + fade siblings
+          rowSiblings.forEach((el) => {
+            const newW =
+              totalOrigSiblingW > 0
+                ? (origWidths.get(el) / totalOrigSiblingW) * totalNewSiblingW
+                : 0;
+            el.style.transition = "flex-basis 0.5s ease, opacity 0.15s ease";
+            el.style.flex = `0 0 ${newW}px`;
+            el.style.opacity = "0";
+            el.style.pointerEvents = "none";
+          });
+
+          expanded = { el: target, rowItems, rowSiblings, origWidths };
+        }
+
+        function collapseItem() {
+          if (!expanded) return;
+          const { el, rowItems, rowSiblings, origWidths } = expanded;
+          collapsing = true;
+
+          rowItems.forEach((item) => {
+            item.style.transition = "flex-basis 0.5s ease";
+            item.style.flex = `0 0 ${origWidths.get(item)}px`;
+          });
+          rowSiblings.forEach((sib) => {
+            sib.style.transition = "flex-basis 0.5s ease, opacity 0.15s ease";
+            sib.style.opacity = "";
+            sib.style.pointerEvents = "";
+          });
+
+          const snap = expanded;
+          expanded = null;
+
+          setTimeout(() => {
+            snap.rowItems.forEach((item) => {
+              item.style.flex = "";
+              item.style.overflow = "";
+              item.style.transition = "";
+              item.style.opacity = "";
+            });
+            delete snap.el.dataset.carouselExpanded;
+            collapsing = false;
+          }, 500);
+        }
+
+        getFlexChildren().forEach((item) => {
+          const thumb = item.querySelector(".carousel-thumb");
+          if (!thumb) return;
+
+          thumb.addEventListener("mouseenter", () => {
+            if (expanded || collapsing) return;
+            clearTimeout(hoverTimer);
+            hoverTimer = setTimeout(() => expandItem(item), 500);
+          });
+
+          thumb.addEventListener("mouseleave", () => {
+            if (!expanded) clearTimeout(hoverTimer);
+          });
+
+          item.addEventListener("mouseleave", () => {
+            clearTimeout(hoverTimer);
+            if (expanded?.el === item) collapseItem();
+          });
+        });
+      }
+
+      setupCarouselHover();
     </script>
   </body>
 </html>
