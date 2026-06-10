@@ -426,15 +426,13 @@
       function scrambleText(el, to, wheel, tickRate = 60, stagger = 25) {
         const from = el.textContent;
         const n = Math.max(from.length, to.length);
-        const start = performance.now();
-        let lastTick = -Infinity;
+        let elapsed = 0;
 
         const pos = Array.from({ length: n }, (_, i) => {
-          const fc = from[i]; // undefined when i >= from.length (growing)
-          const tc = to[i]; // undefined when i >= to.length  (shrinking)
+          const fc = from[i];
+          const tc = to[i];
 
           if (tc === undefined) {
-            // Position exists in source but not target — cycle briefly then vanish
             const fi = fc && fc !== " " ? wheel.indexOf(fc) : -1;
             return {
               vanish: true,
@@ -444,7 +442,6 @@
             };
           }
           if (fc === undefined) {
-            // New position — appears when its stagger time arrives, cycles to tc
             if (tc === " ") return { vanish: false, done: true };
             const ti = wheel.indexOf(tc);
             if (ti < 0) return { vanish: false, done: true };
@@ -453,7 +450,6 @@
               (ti - idx + wheel.length) % wheel.length || wheel.length;
             return { vanish: false, done: false, idx, stepsLeft: dist };
           }
-          // Both positions exist — normal cycle
           if (tc === " " || fc === tc) return { vanish: false, done: true };
           const fi = wheel.indexOf(fc);
           const ti = wheel.indexOf(tc);
@@ -463,13 +459,8 @@
           return { vanish: false, done: false, idx, stepsLeft: dist };
         });
 
-        function tick(now) {
-          if (now - lastTick < tickRate) {
-            requestAnimationFrame(tick);
-            return;
-          }
-          lastTick = now;
-          const elapsed = now - start;
+        function tick() {
+          elapsed += tickRate;
           let anyActive = false;
           const out = [];
 
@@ -482,7 +473,7 @@
               continue;
             }
             if (elapsed < i * stagger) {
-              if (from[i] !== undefined) out.push(from[i]); // new positions don't appear yet
+              if (from[i] !== undefined) out.push(from[i]);
               anyActive = true;
               continue;
             }
@@ -490,7 +481,6 @@
             if (p.stepsLeft <= 0) {
               p.done = true;
               if (!p.vanish && tc !== undefined) out.push(tc);
-              // vanish positions simply disappear — no push
             } else {
               p.idx = (p.idx + 1) % wheel.length;
               out.push(wheel[p.idx]);
@@ -499,11 +489,11 @@
           }
 
           el.textContent = out.join("");
-          if (anyActive) requestAnimationFrame(tick);
+          if (anyActive) setTimeout(tick, tickRate);
           else el.textContent = to;
         }
 
-        requestAnimationFrame(tick);
+        setTimeout(tick, tickRate);
       }
 
       const cycles = [
@@ -718,8 +708,9 @@
         let hoverTimer = null;
         let expanded = null;
         let collapsing = false;
+        let hoveredThumb = null;
 
-        function getFlexChildren() {
+        function getItems() {
           return [
             ...carousel.querySelectorAll(
               ":scope > .year, :scope > .carousel-item",
@@ -727,100 +718,115 @@
           ];
         }
 
-        function expandItem(target) {
+        function expandItem(item) {
           if (expanded || collapsing) return;
 
-          const targetRect = target.getBoundingClientRect();
-          const targetRowTop = Math.round(targetRect.top);
+          // Snapshot rendered widths and row positions for all items
+          const snapshots = getItems().map((el) => ({
+            el,
+            width: el.getBoundingClientRect().width,
+            top: Math.round(el.getBoundingClientRect().top),
+          }));
 
-          const rowItems = getFlexChildren().filter(
-            (el) => Math.round(el.getBoundingClientRect().top) === targetRowTop,
+          const snap = snapshots.find((s) => s.el === item);
+          const extraWidth = snap.width * 0.25;
+          const rowSiblings = snapshots.filter(
+            (s) => s.top === snap.top && s.el !== item,
           );
-          const rowSiblings = rowItems.filter((el) => el !== target);
-          if (!rowSiblings.length) return;
-
-          // Snapshot widths before any changes
-          const origWidths = new Map(
-            rowItems.map((el) => [el, el.getBoundingClientRect().width]),
-          );
-
-          const origTargetW = origWidths.get(target);
-          const newTargetW = origTargetW * 1.1;
-          const totalOrigSiblingW = rowSiblings.reduce(
-            (s, el) => s + origWidths.get(el),
+          const totalSiblingWidth = rowSiblings.reduce(
+            (sum, s) => sum + s.width,
             0,
           );
-          const totalNewSiblingW = totalOrigSiblingW - origTargetW;
 
-          // Freeze all row items to current pixel widths (no transition)
-          rowItems.forEach((el) => {
-            el.style.transition = "none";
-            el.style.flex = `0 0 ${origWidths.get(el)}px`;
+          // Freeze layout with explicit pixel widths (disable flex algorithm)
+          snapshots.forEach(({ el, width }) => {
+            el.style.flex = "none";
+            el.style.width = width + "px";
             el.style.overflow = "hidden";
+            // Thumbs and inner carousel-items may shrink; text labels must not
+            el.querySelectorAll(".carousel-thumb").forEach((t) => {
+              t.style.flexShrink = "1";
+              t.style.minWidth = "0";
+            });
+            el.querySelectorAll(".carousel-item").forEach((inner) => {
+              inner.style.flexShrink = "1";
+              inner.style.minWidth = "0";
+            });
+            el.querySelectorAll("h3, h4").forEach((t) => {
+              t.style.flexShrink = "0";
+            });
           });
-          carousel.offsetWidth; // commit freeze before animating
+          carousel.offsetWidth; // force reflow before animating
 
-          // Expand target
-          target.style.transition = "flex-basis 0.5s ease";
-          target.style.flex = `0 0 ${newTargetW}px`;
-          target.dataset.carouselExpanded = "1";
-
-          // Compress + fade siblings
-          rowSiblings.forEach((el) => {
-            const newW =
-              totalOrigSiblingW > 0
-                ? (origWidths.get(el) / totalOrigSiblingW) * totalNewSiblingW
+          // Expand target, shrink same-row siblings proportionally
+          snapshots.forEach(({ el }) => {
+            el.style.transition = "width 0.5s ease";
+          });
+          item.style.width = snap.width + extraWidth + "px";
+          item.dataset.carouselExpanded = "1";
+          rowSiblings.forEach(({ el, width }) => {
+            const share =
+              totalSiblingWidth > 0
+                ? extraWidth * (width / totalSiblingWidth)
                 : 0;
-            el.style.transition = "flex-basis 0.5s ease, opacity 0.15s ease";
-            el.style.flex = `0 0 ${newW}px`;
-            el.style.opacity = "0";
-            el.style.pointerEvents = "none";
+            el.style.width = width - share + "px";
           });
 
-          expanded = { el: target, rowItems, rowSiblings, origWidths };
+          expanded = { el: item, snapshots };
         }
 
         function collapseItem() {
           if (!expanded) return;
-          const { el, rowItems, rowSiblings, origWidths } = expanded;
+          const { el, snapshots } = expanded;
           collapsing = true;
 
-          rowItems.forEach((item) => {
-            item.style.transition = "flex-basis 0.5s ease";
-            item.style.flex = `0 0 ${origWidths.get(item)}px`;
-          });
-          rowSiblings.forEach((sib) => {
-            sib.style.transition = "flex-basis 0.5s ease, opacity 0.15s ease";
-            sib.style.opacity = "";
-            sib.style.pointerEvents = "";
+          // Animate all items back to their snapshotted widths
+          snapshots.forEach(({ el: sib, width }) => {
+            sib.style.transition = "width 0.5s ease";
+            sib.style.width = width + "px";
           });
 
           const snap = expanded;
           expanded = null;
 
           setTimeout(() => {
-            snap.rowItems.forEach((item) => {
-              item.style.flex = "";
-              item.style.overflow = "";
-              item.style.transition = "";
-              item.style.opacity = "";
+            snap.snapshots.forEach(({ el: sib }) => {
+              sib.style.flex = "";
+              sib.style.width = "";
+              sib.style.overflow = "";
+              sib.style.transition = "";
+              sib.querySelectorAll(
+                ".carousel-thumb, .carousel-item, h3, h4",
+              ).forEach((child) => {
+                child.style.flexShrink = "";
+                child.style.minWidth = "";
+              });
             });
             delete snap.el.dataset.carouselExpanded;
             collapsing = false;
+            // Mouse may already be resting on a new thumb — start its timer
+            if (hoveredThumb) {
+              const nextItem = hoveredThumb.closest(
+                ".carousel > .year, .carousel > .carousel-item",
+              );
+              if (nextItem) hoverTimer = setTimeout(() => expandItem(nextItem), 500);
+            }
           }, 500);
         }
 
-        getFlexChildren().forEach((item) => {
+        getItems().forEach((item) => {
           const thumb = item.querySelector(".carousel-thumb");
           if (!thumb) return;
 
           thumb.addEventListener("mouseenter", () => {
+            hoveredThumb = thumb;
             if (expanded || collapsing) return;
             clearTimeout(hoverTimer);
             hoverTimer = setTimeout(() => expandItem(item), 500);
           });
 
           thumb.addEventListener("mouseleave", () => {
+            if (hoveredThumb === thumb) hoveredThumb = null;
             if (!expanded) clearTimeout(hoverTimer);
           });
 
