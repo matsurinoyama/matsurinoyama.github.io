@@ -48,9 +48,7 @@
       flex-direction: column;
       box-sizing: border-box;
       margin: 0;
-      padding: 2.5vw 5vw 0;
-      height: 100vh;
-      overflow: hidden;
+      padding: 0;
       font-size: 0.75vw;
       font-family: "FOT-GMaruGo Pro", sans-serif;
       word-break: auto-phrase;
@@ -58,10 +56,16 @@
 
     .header {
       display: flex;
+      position: sticky;
+      top: 0;
       justify-content: space-between;
       align-items: center;
       gap: 2vw;
-      margin-bottom: 3vw;
+      z-index: 10;
+      box-sizing: border-box;
+      background: #fff;
+      padding: 0vw 5vw;
+      height: 25vh;
     }
 
     h1 {
@@ -69,6 +73,7 @@
       margin: 0;
       font-weight: 700;
       font-size: 2.5vw;
+      line-height: 1.5;
       text-transform: uppercase;
     }
 
@@ -77,8 +82,14 @@
       opacity: 0;
     }
 
+    #header-logo-wrap {
+      transform-origin: right center;
+      will-change: scale;
+    }
+
     .header img {
       animation: spin 8s steps(64) infinite;
+      display: block;
       width: auto;
       height: 5vw;
     }
@@ -143,17 +154,34 @@
     .carousel {
       display: flex;
       position: relative;
-      flex: 1;
       flex-direction: row;
       flex-wrap: wrap;
       align-content: flex-start;
       align-items: flex-start;
       gap: 2vw;
-      padding-bottom: 2.5vw;
+      box-sizing: border-box;
+      padding: 2.5vw 5vw;
       width: 100%;
-      min-height: 0;
-      overflow-y: auto;
-      scrollbar-width: none;
+    }
+
+    .site-footer {
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      box-sizing: border-box;
+      background: linear-gradient(
+        to bottom,
+        #fff 0% 25%,
+        #be1e37 25% 50%,
+        #fac850 50% 75%,
+        #000 75% 100%
+      );
+      padding: 2.5vw 5vw;
+      min-height: 100vh;
+      color: #fff;
+      text-align: right;
     }
 
     .year {
@@ -243,10 +271,14 @@
     }
   </style>
   <body>
-    <div id="preloader"><img src="../../static/NMC.svg" alt="" /></div>
+    <div id="preloader">
+      <img id="logo" src="../../static/NMC.svg" alt="" />
+    </div>
     <div class="header">
       <h1 id="company-name">Nippon-Malayan Applied Arts Co.</h1>
-      <img src="../../static/NMC.svg" alt="" />
+      <div id="header-logo-wrap">
+        <img src="../../static/NMC.svg" alt="" />
+      </div>
     </div>
     <div class="carousel">
       <div class="year">
@@ -400,15 +432,17 @@
           </h4>
         </div>
       </div>
-      <h1 id="tagline" style="width: 100%; margin: 0; text-align: right">
+    </div>
+    <footer class="site-footer">
+      <h1 id="tagline">
         <span id="tagline-motto">Arts, applied.</span><br />
         Kyoto, JP ↔ Shah Alam, MY
       </h1>
-      <p style="width: 100%; margin: 0">
+      <p>
         © 2026 Nippon-Malayan Applied Arts Co., Ltd / Syarikat Seni Gunaan
         Tanah Melayu-Jepun Sdn. Bhd.
       </p>
-    </div>
+    </footer>
     <script>
       function buildWheel(cycles) {
         const chars = new Set();
@@ -795,12 +829,12 @@
               sib.style.width = "";
               sib.style.overflow = "";
               sib.style.transition = "";
-              sib.querySelectorAll(
-                ".carousel-thumb, .carousel-item, h3, h4",
-              ).forEach((child) => {
-                child.style.flexShrink = "";
-                child.style.minWidth = "";
-              });
+              sib
+                .querySelectorAll(".carousel-thumb, .carousel-item, h3, h4")
+                .forEach((child) => {
+                  child.style.flexShrink = "";
+                  child.style.minWidth = "";
+                });
             });
             delete snap.el.dataset.carouselExpanded;
             collapsing = false;
@@ -809,7 +843,8 @@
               const nextItem = hoveredThumb.closest(
                 ".carousel > .year, .carousel > .carousel-item",
               );
-              if (nextItem) hoverTimer = setTimeout(() => expandItem(nextItem), 500);
+              if (nextItem)
+                hoverTimer = setTimeout(() => expandItem(nextItem), 500);
             }
           }, 500);
         }
@@ -838,6 +873,26 @@
       }
 
       setupCarouselHover();
+
+      const headerLogo = document.getElementById("header-logo-wrap");
+      const siteFooter = document.querySelector(".site-footer");
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          const rect = siteFooter.getBoundingClientRect();
+          const progress = Math.max(
+            0,
+            Math.min(
+              1,
+              (window.innerHeight - rect.top) / siteFooter.offsetHeight,
+            ),
+          );
+          const s = String(1 + progress);
+          headerLogo.style.scale = s;
+        },
+        { passive: true },
+      );
     </script>
   </body>
 </html>
