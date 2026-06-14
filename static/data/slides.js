@@ -74,14 +74,10 @@ const SLIDES = [
   },
 ];
 
-function getRandomImage(folder) {
-  const images = IMAGE_INDEX[folder];
-  const randomImage = images[Math.floor(Math.random() * images.length)];
-  return `${folder}/${randomImage}`;
-}
-
-// Initialize slides with random images
-const slidesWithImages = SLIDES.map((slide) => ({
+// Pre-compute the images array for each slide so templates can use data-attributes
+// for client-side random selection. The first image is used as the initial background.
+module.exports = SLIDES.map((slide) => ({
   ...slide,
-  image: getRandomImage(slide.folder),
+  images: IMAGE_INDEX[slide.folder],
+  firstImage: `${slide.folder}/${IMAGE_INDEX[slide.folder][0]}`,
 }));

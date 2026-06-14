@@ -1,4 +1,4 @@
-const TRANSLATIONS = {
+module.exports = {
   en: {
     pageTitle: "matsurinoyama",
     bio: "Multimedia Creative based in Kyoto and Shah Alam. Currently studying at Kyoto Seika University. Please note that the website is still being worked on as on right now 🏗️",
@@ -16,7 +16,7 @@ const TRANSLATIONS = {
       profileAlt: "profile picture",
       overview: [
         "He is a media artist whose work explores forms of art that emerge through the physical and social participation of viewers. Working primarily with installation, he develops systems that foreground interaction, miscommunication, and collective experience. Rather than treating the artwork as a static object, his works use human behaviour, dialogue, and mutual influence as the primary medium, allowing each work to unfold differently throughout an exhibition via viewer engagement.",
-        'Born in Malaysia in 2001, he spent part of his childhood in England and grew up navigating multiple linguistic and cultural environments. These experiences inform his ongoing interest in interpersonal communication and the shifting meanings that arise through dialogue. He previously studied at <a href="https://fskm.uitm.edu.my">Universiti Teknologi MARA, College of Computing, Informatics and Mathematics</a>, and is currently majoring in Image Creation at the <a href="https://www.kyoto-seika.ac.jp/eng/academics/mediacreation/">Faculty of Media Creation, Kyoto Seika University</a>, under Prof. Scott Allen\u2019s <a href="https://media.kyoto-seika.ac.jp/latentmedia/">Latent Media Lab.</a>',
+        'Born in Malaysia in 2001, he spent part of his childhood in England and grew up navigating multiple linguistic and cultural environments. These experiences inform his ongoing interest in interpersonal communication and the shifting meanings that arise through dialogue. He previously studied at <a href="https://fskm.uitm.edu.my">Universiti Teknologi MARA, College of Computing, Informatics and Mathematics</a>, and is currently majoring in Image Creation at the <a href="https://www.kyoto-seika.ac.jp/eng/academics/mediacreation/">Faculty of Media Creation, Kyoto Seika University</a>, under Prof. Scott Allen’s <a href="https://media.kyoto-seika.ac.jp/latentmedia/">Latent Media Lab.</a>',
       ],
       sections: {
         exhibitions: "Exhibitions &amp; Achievements",

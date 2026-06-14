@@ -51,7 +51,7 @@ body {
   width: 100vw;
   max-width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 h1 {
@@ -176,7 +176,6 @@ p {
 .slide {
   position: absolute;
   opacity: 0;
-  transition: opacity 1s ease-in-out;
   background-position: center;
   background-size: cover;
   width: 100%;

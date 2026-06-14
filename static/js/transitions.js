@@ -2,12 +2,11 @@
   var overlay = document.getElementById("page-transition");
   if (!overlay) return;
 
-  // Fade page in
-  requestAnimationFrame(function () {
-    requestAnimationFrame(function () {
-      overlay.classList.remove("active");
-    });
-  });
+  // Fade page in, then signal animations.js to start entrance animations
+  gsap.to(overlay, { opacity: 0, duration: 0.35, ease: "power2.out", onComplete: function () {
+    overlay.style.pointerEvents = "none";
+    document.dispatchEvent(new Event("page-in-complete"));
+  }});
 
   // Fade to red before navigating internal links
   document.addEventListener("click", function (e) {
@@ -27,14 +26,14 @@
       return;
 
     e.preventDefault();
-    overlay.classList.add("active");
-
-    overlay.addEventListener(
-      "transitionend",
-      function () {
+    overlay.style.pointerEvents = "all";
+    gsap.to(overlay, {
+      opacity: 1,
+      duration: 0.35,
+      ease: "power2.in",
+      onComplete: function () {
         window.location.href = link.href;
       },
-      { once: true }
-    );
+    });
   });
 })();

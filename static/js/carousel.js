@@ -1,98 +1,102 @@
 (function () {
-  const lang = document.documentElement.lang === "ja" ? "ja" : "en";
-  const container = document.querySelector(".slide_Container");
-  const navContainer = document.querySelector(".slideNav_Container");
-  let currentIndex = 0;
+  var container = document.querySelector(".slide_Container");
+  var navContainer = document.querySelector(".slideNav_Container");
+  if (!container || !navContainer) return;
+
+  var slideEls = container.querySelectorAll(".slide");
+  var dots = navContainer.querySelectorAll(".slideNav");
+  var currentIndex = 0;
+
+  function cdnUrl(path) {
+    return "https://cdn.03080.jp/" + path;
+  }
+
+  function getRandomImage(slide) {
+    var images = slide.dataset.images ? slide.dataset.images.split(",") : [];
+    if (!images.length) return null;
+    var folder = slide.dataset.folder;
+    var file = images[Math.floor(Math.random() * images.length)];
+    return cdnUrl(folder + "/" + file);
+  }
 
   function youtubeUrl(id, duration) {
-    const startParam = duration
-      ? "&start=" + Math.floor(Math.random() * duration)
-      : "";
+    var start = duration ? "&start=" + Math.floor(Math.random() * duration) : "";
     return (
       "https://www.youtube.com/embed/" +
       id +
       "?autoplay=1&mute=1&loop=1&playlist=" +
       id +
-      startParam +
+      start +
       "&controls=0&rel=0&iv_load_policy=3&disablekb=1&playsinline=1"
     );
   }
 
-  slidesWithImages.forEach(function (s) {
-    const div = document.createElement("div");
-    div.className = "slide";
-    div.dataset.folder = s.folder;
-    div.style.backgroundImage = "url(https://cdn.03080.jp/" + s.image + ")";
-    const caption = lang === "ja" && s.caption_ja ? s.caption_ja : s.caption;
-    div.innerHTML = '<div class="slideText"><p>' + caption + "</p></div>";
+  var timer = null;
 
-    if (s.youtube) {
-      div.dataset.youtube = s.youtube;
-      if (s.duration) div.dataset.duration = s.duration;
-      const iframe = document.createElement("iframe");
-      iframe.setAttribute("frameborder", "0");
-      iframe.setAttribute("allow", "autoplay; encrypted-media");
-      iframe.setAttribute("allowfullscreen", "");
-      div.insertBefore(iframe, div.firstChild);
-    }
-
-    container.appendChild(div);
-  });
-
-  const slideEls = container.querySelectorAll(".slide");
-
-  slideEls.forEach(function (_, i) {
-    const dot = document.createElement("div");
-    dot.className = "slideNav" + (i === 0 ? " active" : "");
-    dot.addEventListener("click", function () {
-      goToSlide(i);
-    });
-    navContainer.appendChild(dot);
-  });
-
-  const dots = navContainer.querySelectorAll(".slideNav");
-
-  function updateSlides() {
-    slideEls.forEach(function (s, i) {
-      const wasActive = s.classList.contains("active");
-      const isActive = i === currentIndex;
-      s.classList.toggle("active", isActive);
-
-      const iframe = s.querySelector("iframe");
-      if (iframe) {
-        if (isActive && !wasActive) {
-          if (Math.random() < 0.5) {
-            iframe.src = youtubeUrl(s.dataset.youtube, s.dataset.duration);
-          }
-        } else if (!isActive && wasActive) {
-          iframe.src = "";
-        }
-      }
-    });
-    dots.forEach(function (d, i) {
-      d.classList.toggle("active", i === currentIndex);
-    });
+  function resetTimer() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(nextSlide, 10000);
   }
 
-  function goToSlide(i) {
-    currentIndex = i;
-    updateSlides();
+  function activateSlide(index, isManual) {
+    var prev = slideEls[currentIndex];
+    var next = slideEls[index];
+
+    // Kill any in-progress tweens so they don't fight the new ones
+    gsap.killTweensOf(prev);
+    gsap.killTweensOf(next);
+
+    // Deactivate previous
+    gsap.to(prev, { opacity: 0, duration: 0.8, ease: "power1.inOut" });
+    prev.classList.remove("active");
+    dots[currentIndex].classList.remove("active");
+
+    // Clear previous YouTube iframe
+    var prevIframe = prev.querySelector("iframe");
+    if (prevIframe) prevIframe.src = "";
+
+    // Refresh background image on wrap-around
+    if (index === 0) {
+      slideEls.forEach(function (s) {
+        var img = getRandomImage(s);
+        if (img) s.style.backgroundImage = "url('" + img + "')";
+      });
+    }
+
+    currentIndex = index;
+
+    // Activate next
+    next.classList.add("active");
+    dots[currentIndex].classList.add("active");
+    gsap.fromTo(next, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power1.inOut" });
+
+    // Lazy-load YouTube (50% chance, matching original behavior)
+    var iframe = next.querySelector("iframe");
+    if (iframe && next.dataset.youtube && Math.random() < 0.5) {
+      iframe.src = youtubeUrl(next.dataset.youtube, next.dataset.duration ? +next.dataset.duration : 0);
+    }
+
+    // Reset auto-advance timer so a manual click always gets the full 10s
+    if (isManual) resetTimer();
   }
 
   function nextSlide() {
-    const wasLast = currentIndex === slideEls.length - 1;
-    currentIndex = (currentIndex + 1) % slideEls.length;
-    if (wasLast) {
-      slideEls.forEach(function (slide) {
-        slide.style.backgroundImage =
-          "url(https://cdn.03080.jp/" +
-          getRandomImage(slide.dataset.folder) +
-          ")";
-      });
-    }
-    updateSlides();
+    var next = (currentIndex + 1) % slideEls.length;
+    activateSlide(next, false);
   }
 
-  updateSlides();
-  setInterval(nextSlide, 10000);
+  // Wire up dot clicks
+  dots.forEach(function (dot, i) {
+    dot.addEventListener("click", function () {
+      if (i !== currentIndex) activateSlide(i, true);
+    });
+  });
+
+  // Set initial background image randomly for each slide
+  slideEls.forEach(function (s) {
+    var img = getRandomImage(s);
+    if (img) s.style.backgroundImage = "url('" + img + "')";
+  });
+
+  resetTimer();
 })();

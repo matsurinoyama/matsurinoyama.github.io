@@ -1,0 +1,87 @@
+---
+lang: en
+permalink: /en/resume/index.html
+---
+{% set t = translations.en.resume %}
+{% set s = t.sections %}
+{% set pageTitle = t.pageTitle %}
+{% from "resume-entry.njk" import renderEntry %}
+{% extends "base.njk" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/resume.css" />
+{% endblock %}
+
+{% block body %}
+<div class="resume-wrap">
+  <a class="back-nav" href="{{ t.backHref }}">{{ t.backNav }}</a>
+
+  <div class="resume-hero">
+    <div class="resume-picture-wrap">
+      <img src="/static/profile.jpg" alt="{{ t.profileAlt }}" class="resume-picture" />
+      <div class="resume-picture-gradient" aria-hidden="true"></div>
+    </div>
+    <div class="resume-hero-content">
+      <div class="resume-header">
+        <div>
+          <div class="resume-name">{{ t.name }}</div>
+        </div>
+        <div class="resume-contact">
+          <img src="/static/temp-h.svg" alt="logo" class="resume-logo" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="resume-overview">
+    {% for para in t.overview %}<div>{{ para | safe }}</div>{% endfor %}
+  </div>
+
+  <hr class="divider" />
+  <div class="section-title">{{ s.exhibitions | safe }}</div>
+
+  <div class="subsection-label">{{ s.group }}</div>
+  {% for entry in resume.exhibitions.group %}
+    {{ renderEntry(entry, lang) }}
+  {% endfor %}
+
+  <div class="subsection-label">{{ s.awards }}</div>
+  {% for entry in resume.exhibitions.awards %}
+    {{ renderEntry(entry, lang) }}
+  {% endfor %}
+
+  <div class="subsection-label">{{ s.scholarships }}</div>
+  {% for entry in resume.exhibitions.scholarships %}
+    {{ renderEntry(entry, lang) }}
+  {% endfor %}
+
+  <div class="subsection-label">{{ s.installations }}</div>
+  {% for entry in resume.exhibitions.installations %}
+    {{ renderEntry(entry, lang) }}
+  {% endfor %}
+
+  <hr class="divider" />
+  <div class="section-title">{{ s.work | safe }}</div>
+  {% for entry in resume.work %}
+    {{ renderEntry(entry, lang) }}
+  {% endfor %}
+
+  <hr class="divider" />
+  <div class="section-title">{{ s.education | safe }}</div>
+
+  <div class="subsection-label">{{ s.diplomas }}</div>
+  {% for entry in resume.education.diplomas %}
+    {{ renderEntry(entry, lang) }}
+  {% endfor %}
+
+  <div class="subsection-label">{{ s.qualifications }}</div>
+  {% for entry in resume.education.qualifications %}
+    {{ renderEntry(entry, lang) }}
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/gsap/ScrollTrigger.min.js"></script>
+<script src="/static/js/animations.js"></script>
+{% endblock %}

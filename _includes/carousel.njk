@@ -1,0 +1,21 @@
+<div class="slide_Container">
+  {% for slide in slides %}
+  <div
+    class="slide{% if loop.first %} active{% endif %}"
+    style="background-image: url('https://cdn.03080.jp/{{ slide.firstImage }}')"
+    data-folder="{{ slide.folder }}"
+    data-images="{{ slide.images | join(',') }}"
+    {% if slide.youtube %}data-youtube="{{ slide.youtube }}"{% if slide.duration %} data-duration="{{ slide.duration }}"{% endif %}{% endif %}
+  >
+    {% if slide.youtube %}<iframe frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>{% endif %}
+    <div class="slideText">
+      <p>{{ slide.caption_ja if lang == "ja" else slide.caption }}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<div class="slideNav_Container">
+  {% for slide in slides %}
+  <div class="slideNav{% if loop.first %} active{% endif %}"></div>
+  {% endfor %}
+</div>

@@ -1,0 +1,27 @@
+{# Renders a single resume entry. Expects `entry` and `lang` in scope. #}
+{% macro renderEntry(entry, lang) %}
+{% set titleText = entry.title_ja if (lang == "ja" and entry.title_ja) else entry.title %}
+{% set dateText = entry.date_ja if (lang == "ja" and entry.date_ja) else entry.date %}
+{% set subtitleText = entry.subtitle_ja if (lang == "ja" and entry.subtitle_ja) else entry.subtitle %}
+{% set locationText = entry.location_ja if (lang == "ja" and entry.location_ja) else entry.location %}
+{% set roleText = entry.role_ja if (lang == "ja" and entry.role_ja) else entry.role %}
+{% set detailText = entry.detail_ja if (lang == "ja" and entry.detail_ja) else entry.detail %}
+{% set bulletList = entry.bullets_ja if (lang == "ja" and entry.bullets_ja) else entry.bullets %}
+<div class="entry">
+  <div class="entry-row">
+    <span class="entry-title">
+      {% if entry.url %}<a href="{{ entry.url }}">{{ titleText }}</a>{% else %}{{ titleText }}{% endif %}
+    </span>
+    <span class="entry-date">{{ dateText }}</span>
+  </div>
+  {% if subtitleText %}<div class="entry-subtitle">{{ subtitleText }}</div>{% endif %}
+  {% if locationText %}<div class="entry-location">{{ locationText }}</div>{% endif %}
+  {% if roleText %}<div class="entry-role">{{ roleText }}</div>{% endif %}
+  {% if detailText %}<div class="entry-detail">{{ detailText }}</div>{% endif %}
+  {% if bulletList and bulletList.length %}
+  <ul>
+    {% for bullet in bulletList %}<li>{{ bullet }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endmacro %}

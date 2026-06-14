@@ -2,6 +2,7 @@
 
 body {
   align-items: flex-start;
+  overflow: auto;
   padding: 5vh 0;
 }
 
