@@ -1,65 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="static/favicon.png" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>matsurinoyama</title>
-    <meta
-      name="description"
-      content="Temporary landing page for matsurinoyama"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@100;400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="static/main.css" />
-  </head>
-  <body>
-    <div class="content">
-      <div class="contentContact_Container" id="selector">
-        <h3>Welcome!<br />ようこそ!<br />Selamat Datang!</h3>
-      </div>
-    </div>
-
     <script>
-      // Detect user's preferred language from browser settings
-      function detectLanguage() {
-        const userLang = navigator.language || navigator.userLanguage;
-        // Check if Japanese is preferred
-        if (userLang.startsWith("ja")) {
-          return "ja";
-        }
-        // Default to English for all other languages
-        return "en";
-      }
-
-      // Auto-redirect based on browser language (with 1.5 second delay to allow manual selection)
-      const preferredLang = detectLanguage();
-      const selector = document.getElementById("selector");
-
-      // Show loading message
-      const loadingMsg = document.createElement("p");
-      loadingMsg.className = "loading";
-      loadingMsg.textContent =
-        preferredLang === "ja"
-          ? "日本語版に自動で移動します..."
-          : "Redirecting you to the English version...";
-      loadingMsg.style.marginTop = "20px";
-      loadingMsg.style.fontSize = "14px";
-      selector.appendChild(loadingMsg);
-
-      // Redirect after delay
-      setTimeout(() => {
-        if (preferredLang === "ja") {
-          window.location.href = "ja/";
-        } else {
-          window.location.href = "en/";
-        }
-      }, 1500);
+      var lang = (navigator.language || navigator.userLanguage || "en").startsWith("ja") ? "ja" : "en";
+      window.location.replace("/" + lang + "/");
     </script>
-  </body>
+  </head>
 </html>
