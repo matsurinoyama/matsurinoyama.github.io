@@ -2,18 +2,12 @@ module.exports = {
   exhibitions: {
     group: [
       {
-        title: "1st SEIKA UMU Exhibition",
-        title_ja: "第1回 SEIKA UMU展",
-        date: "2025.01.22 – 01.30",
-        location: "Shunju-kan, Kyoto Seika University, Kyoto",
-        location_ja: "京都精華大学 春秋館（京都）",
-      },
-      {
-        title: "UNVEILED",
-        url: "https://www.instagram.com/p/DKXISNlhvh9",
-        date: "2025.06.14 – 06.15",
-        location: "Yoshida Dormitory, Kyoto University, Kyoto",
-        location_ja: "京都大学 吉田寮（京都）",
+        title: "Water Cooler Conversations @Sakyo-ku",
+        title_ja: "冷水機での対話 @左京区",
+        url: "https://gallery.kyoto-seika.ac.jp/exhibition/260227/",
+        date: "2026.02.27 – 03.07",
+        location: "Kyoto Seika University Gallery Terra-S, Kyoto",
+        location_ja: "京都精華大学 ギャラリーTerra-S（京都）",
       },
       {
         title: '"Future of Eiden" Art Project',
@@ -24,22 +18,21 @@ module.exports = {
         location_ja: "出町柳駅・木野駅（京都）",
       },
       {
-        title: "Water Cooler Conversations @Sakyo-ku",
-        title_ja: "冷水機での対話 @左京区",
-        url: "https://gallery.kyoto-seika.ac.jp/exhibition/260227/",
-        date: "2026.02.27 – 03.07",
-        location: "Kyoto Seika University Gallery Terra-S, Kyoto",
-        location_ja: "京都精華大学 ギャラリーTerra-S（京都）",
+        title: "UNVEILED",
+        url: "https://www.instagram.com/p/DKXISNlhvh9",
+        date: "2025.06.14 – 06.15",
+        location: "Yoshida Dormitory, Kyoto University, Kyoto",
+        location_ja: "京都大学 吉田寮（京都）",
+      },
+      {
+        title: "1st SEIKA UMU Exhibition",
+        title_ja: "第1回 SEIKA UMU展",
+        date: "2025.01.22 – 01.30",
+        location: "Shunju-kan, Kyoto Seika University, Kyoto",
+        location_ja: "京都精華大学 春秋館（京都）",
       },
     ],
     awards: [
-      {
-        title: "ASEAN-China Design Convergence 2025",
-        url: "https://www.instagram.com/p/DJEKOB-ppFj",
-        date: "2025.04",
-        detail: "Top 100 Selected Works",
-        detail_ja: "入選",
-      },
       {
         title: "2025 Kyoto Seika University President's Award",
         title_ja: "2025年度京都精華大学学長表彰 学長特別賞",
@@ -48,6 +41,13 @@ module.exports = {
         detail:
           'President\'s Special Prize (Jointly awarded under the "Future of Eiden" Art Project)',
         detail_ja: "受賞（「未来のえいでん」アートプロジェクトにて共同受賞）",
+      },
+      {
+        title: "ASEAN-China Design Convergence 2025",
+        url: "https://www.instagram.com/p/DJEKOB-ppFj",
+        date: "2025.04",
+        detail: "Top 100 Selected Works",
+        detail_ja: "入選",
       },
     ],
     scholarships: [
@@ -61,15 +61,6 @@ module.exports = {
     ],
     installations: [
       {
-        title: "Warna-Warni Shah Alam",
-        url: "https://maps.app.goo.gl/jMD9gFz99J3qB3d27",
-        date: "2022.01",
-        detail: "Painted Flyover Mural Installation",
-        detail_ja: "高架橋壁画設置",
-        location: "In front of Shah Alam City Hall, Shah Alam",
-        location_ja: "シャーアラム市役所前（シャーアラム）",
-      },
-      {
         title: "Mamorigami no Me (Guardian Eye)",
         title_ja: "守神の目",
         date: "2025.01",
@@ -77,6 +68,15 @@ module.exports = {
         detail_ja: "盗撮警戒公共広告設置",
         location: "Kyoto Seika University, Kyoto",
         location_ja: "京都精華大学内（京都）",
+      },
+      {
+        title: "Warna-Warni Shah Alam",
+        url: "https://maps.app.goo.gl/jMD9gFz99J3qB3d27",
+        date: "2022.01",
+        detail: "Painted Flyover Mural Installation",
+        detail_ja: "高架橋壁画設置",
+        location: "In front of Shah Alam City Hall, Shah Alam",
+        location_ja: "シャーアラム市役所前（シャーアラム）",
       },
     ],
   },
@@ -205,17 +205,17 @@ module.exports = {
         detail_ja: "デザイン芸術及び創造メディア技術部門（AM）",
       },
       {
+        title: "Malaysian University English Test",
+        date: "2023.09 – 2028.09",
+        detail: "BAND 4.5",
+        detail_ja: "BAND 4.5（英検准1級と同等）",
+      },
+      {
         title: "Japanese-Language Proficiency Test N2",
         title_ja: "日本語能力試験 N2",
         date: "2023.07",
         detail: "PASS",
         detail_ja: "合格",
-      },
-      {
-        title: "Malaysian University English Test",
-        date: "2023.09 – 2028.09",
-        detail: "BAND 4.5",
-        detail_ja: "BAND 4.5（英検准1級と同等）",
       },
     ],
   },
