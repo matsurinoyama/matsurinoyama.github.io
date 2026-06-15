@@ -1,7 +1,7 @@
 const IMAGE_INDEX = {
   "2022/WWSA": ["after_01.jpg", "after_02.jpg", "after_03.jpg", "after_04.jpg"],
   "2023/PAWD": ["PAM1.jpg", "PAM2.jpg", "PAM3.jpg"],
-  "2024/001": ["preview.gif"],
+  "2024/001": ["videoExperiment.mp4"],
   "2025/SMG": ["bathroom.jpg", "poster.jpg"],
   "2025/EER/001": [
     "peopleNotMet-Demachiyanagi_01.jpg",
