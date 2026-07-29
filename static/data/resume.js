@@ -198,17 +198,17 @@ module.exports = {
     ],
     qualifications: [
       {
+        title: "TOEIC Listening & Reading Test",
+        date: "2026.07",
+        detail: "985/990",
+        detail_ja: "985点（満点990点）",
+      },
+      {
         title: "Malaysia Board of Technologists Registered Qualified Technician",
         title_ja: "マレーシアテクノロジスト委員会登録技術者",
         date: "2024.04",
         detail: "Art Design & Creative Multimedia Technology (AM)",
         detail_ja: "デザイン芸術及び創造メディア技術部門（AM）",
-      },
-      {
-        title: "Malaysian University English Test",
-        date: "2023.09 – 2028.09",
-        detail: "BAND 4.5",
-        detail_ja: "BAND 4.5（英検准1級と同等）",
       },
       {
         title: "Japanese-Language Proficiency Test N2",
